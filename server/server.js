@@ -35,3 +35,4 @@ app.use("/api/users", userRoutes);
 // })                          //API for user routes
 
 app.listen(PORT, () => console.log(`server up at :${PORT}`));
+  

@@ -1,25 +1,64 @@
 import React, { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import useValid from "../../../server/hooks/useValid";
+import useValid from "../hooks/useValid";
 import GoogleAuth from "../components/UI/GoogleAuth";
 import LoginModal from "../components/user/LoginModal/LoginModal";
 import styles from "../components/user/LoginModal/LoginModal.module.css";
 
-
+const isNotEmpty = (val) => val.trim() != "";
+const isEmail = (val) => val.indcludes("@");
+const isPass = (val) => val.trim().length === 7;
 const Signup = ({ onToggle }) => {
-  const [formData, setFormData] = useState("");
+  // const [formData, setFormData] = useState("");
   // const [errState, errDispatch] = useReducer(reducerFunc, initialState);
-  const {} = useValid()
- 
-  const getValues = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
- 
- 
+
+  const {
+    value: enteredFname,
+    isError: fnameError,
+    isValid: fnameValid,
+    valueChangeHandler: fnameChangeHandler,
+    blurHandler: fnameBlurHandler,
+    reset: fnameReset,
+  } = useValid(isNotEmpty);
+
+  const {
+    value: enteredLname,
+    isError: lnameError,
+    isValid: lnameValid,
+    valueChangeHandler: lnameChangeHandler,
+    blurHandler: lnameBlurHandler,
+    reset: lnameReset,
+  } = useValid(isNotEmpty);
+
+  const {
+    value: enteredEmail,
+    isError: emailError,
+    isValid: emailValid,
+    valueChangeHandler: emailChangeHandler,
+    blurHandler: emailBlurHandler,
+    reset: emailReset,
+  } = useValid(isEmail);
+
+  const {
+    value: enteredPass,
+    isError: passError,
+    isValid: passValid,
+    valueChangeHandler: passChangeHandler,
+    blurHandler: passBlurHandler,
+    reset: passReset,
+  } = useValid(isEmail);
+
+  // const getValues = (e) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
+
+  let formValid = false;
+  if (fnameValid && lnameValid && emailValid,passValid) formValid = true;
+
   const toggleLogin = () => onToggle("login");
 
   const onSignup = (e) => {
@@ -34,12 +73,20 @@ const Signup = ({ onToggle }) => {
       <Row className="mb-3">
         <Form.Group as={Col} controlId="fname">
           <Form.Label>First Name</Form.Label>
+
           <Form.Control
             type="text"
             placeholder="First Name"
             name="firstName"
-            onChange={getValues}
+            onChange={fnameChangeHandler}
+            onBlur={fnameBlurHandler}
+            value={enteredFname}
           />
+          {fnameError && (
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid Name.
+            </Form.Control.Feedback>
+          )}
         </Form.Group>
 
         <Form.Group as={Col} controlId="lname">
@@ -48,8 +95,15 @@ const Signup = ({ onToggle }) => {
             type="text"
             placeholder="Last Name"
             name="lastName"
-            onChange={getValues}
+            onChange={lnameChangeHandler}
+            onBlur={lnameBlurHandler}
+            value={enteredLname}
           />
+          {lnameError && (
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid Last Name.
+            </Form.Control.Feedback>
+          )}
         </Form.Group>
       </Row>
 
@@ -59,18 +113,35 @@ const Signup = ({ onToggle }) => {
           type="email"
           placeholder="Enter email"
           name="email"
-          onChange={getValues}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
+          value={enteredEmail}
         />
+        {emailError && (
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid Email.
+          </Form.Control.Feedback>
+        )}
       </Form.Group>
       <Row>
         <Form.Group as={Col} controlId="password">
           <Form.Label>Password</Form.Label>
+          
           <Form.Control
             type="password"
             placeholder="Password"
             name="password"
-            onChange={getValues}
+            onChange={passChangeHandler}
+            onBlur ={passBlurHandler}
+            value={enteredPass}
+
           />
+
+          {passError && (
+            <Form.Control.Feedback type="invalid">
+              Please enter a valid password more than 7 letters
+            </Form.Control.Feedback>
+          )}
         </Form.Group>
         <Form.Group as={Col} controlId="confrmPassword">
           <Form.Label>Password</Form.Label>
