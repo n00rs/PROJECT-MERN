@@ -1,13 +1,17 @@
-import { GoogleOAuthProvider } from "@react-oauth/google";
+
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import GoogleAuth from "../components/UI/GoogleAuth";
-import LoginModal from "../components/user/LoginModal/LoginModal";
 import styles from "../components/user/LoginModal/LoginModal.module.css";
+import { USER_LOGIN_URL } from "../Constant";
 
 const Login = ({ onToggle }) => {
+  console.log("LOGIN");
   const navigate = useNavigate();
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({
+    email:'',password:''
+  });
 
   const getValues = (e) => {
     setFormData((prev) => ({
@@ -21,26 +25,28 @@ const Login = ({ onToggle }) => {
   async function LoginHandler() {
     try {
       if (!formData.email || !formData.password)
-        alert("please provide login details");
-      const res = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { "Content-type": "application/json" },
-      });
-      const data = await res.json();
-      console.log(data);
-      alert(data);
+        toast("please provide login details");
+      else {
+        const res = await fetch(USER_LOGIN_URL, {
+          method: "POST",
 
+          body: JSON.stringify(formData),
+          headers: { "Content-type": "application/json" },
+          credentials:'include'
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw data;
+        console.log(data, "data");
+        onToggle('')
+
+        toast(document.cookie='access_token');
+      }
     } catch (err) {
-      console.log(err);
-      alert(err, "error");
+      console.log(err, "er.......");
+      toast.error(err, "error");
     }
   }
-
-
-  const googleLoginHandler = (googleData) => {
-    console.log(googleData);
-  };
 
   return (
     <div className={styles.loginContainer}>
@@ -79,7 +85,7 @@ const Login = ({ onToggle }) => {
         </button>
         <span className="or">OR</span>
 
-        <GoogleAuth onSuccess={googleLoginHandler} />
+        <GoogleAuth page="login" navigate={navigate} />
 
         <span>
           Not registered yet ?

@@ -1,24 +1,27 @@
 import React, { useState } from "react";
-import { createPortal } from "react-dom";
+import { memo } from "react";
+// import { createPortal } from "react-dom";
 import { Modal } from "react-bootstrap";
-import styles from "./LoginModal.module.css";
-import { Link, useNavigate } from "react-router-dom";
+// import styles from "./LoginModal.module.css";
+// import { Link, useNavigate } from "react-router-dom";
+// // import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 // import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { GOOGLE_CLIENT_ID } from "../../../Constant";
+// import { GOOGLE_CLIENT_ID } from "../../../Constant";
 import Login from "../../../pages/Login";
 import Signup from "../../../pages/Signup";
 
 const LoginModal = ({ showModal, onClose }) => {
   const [toggle, setToggle] = useState("login");
   const closeHandler = () => {
-    onClose(false)
-  setToggle('login')
-  }
+    onClose(false);
+    setToggle("login");
+  };
+  // const setTogle = (val)=>setToggle(val)
+  console.log("Modal");
   return (
     <>
       <Modal
-        backdrop="static"
+        // backdrop="static"
         centered={true}
         // scrollable={true}
         size="m"
@@ -35,7 +38,7 @@ const LoginModal = ({ showModal, onClose }) => {
           ) : toggle === "signup" ? (
             <Signup onToggle={setToggle} />
           ) : (
-            onClose(false)
+           closeHandler()
           )}
         </Modal.Body>
       </Modal>
@@ -44,4 +47,4 @@ const LoginModal = ({ showModal, onClose }) => {
   );
 };
 
-export default LoginModal;
+export default memo(LoginModal);

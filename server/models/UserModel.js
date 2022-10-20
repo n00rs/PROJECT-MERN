@@ -49,7 +49,7 @@ userSchema.statics.signup = async function (userData) {
 };
 
 userSchema.statics.login = async function ({ email, password }) {
-  const user = await this.findOne({ email });
+  const user = await this.findOne({ email },{email_verified:true,password:true});
   console.log(user);
   if (!user) throw { status: 403, message: "user does'nt exist" };
   if (user && !user.email_verified) throw { status: 403 ,message:"please verify your email"};

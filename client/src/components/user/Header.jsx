@@ -1,39 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+// import { Modal, Row } from "react-bootstrap";
+// import { useEffect } from "react";
+import LoginModal from "./LoginModal/LoginModal";
 import styles from "./Header.module.css";
 import img from "../../assets/logo.png";
-import { Modal, Row } from "react-bootstrap";
-import { useEffect } from "react";
-import LoginModal from "./LoginModal/LoginModal";
-import { useState } from "react";
-import Login from "../../pages/Login";
 
 const Header = (onRouteChange) => {
   const [showModal, setShowModal] = useState(false);
+  const { userExist } = useSelector((state) => state.auth);
+  console.log(userExist, "==header");
 
-  let hamClick;
-  useEffect(() => {
-    const hamburger = document.querySelector(".hamburger");
-    const navLinks = document.querySelector(".nav-links");
-    const links = document.querySelectorAll(".nav-links li");
-    hamClick = () => {
-      console.log("fg");
-      //Animate Links
-      navLinks.classList.toggle("open");
+  const loginHandler = () => setShowModal(true);
 
-      links.forEach((link) => {
-        link.classList.toggle("fade");
-      });
-
-      //Hamburger Animation
-      hamburger.classList.toggle("toggle");
-    };
-  }, []);
-
-  const loginHandler = () => {
-    setShowModal(true);
+  const logoutHandler = () => {
+    console.log(logout);
   };
+  const loginComponent = (
+    <button className={styles["join-button"]} onClick={loginHandler}>
+      Login
+    </button>
+  );
 
+  const logoutComponet = (
+    <button className={styles["join-button"]} onClick={logoutHandler}>
+      Logout
+    </button>
+  );
   return (
     <nav>
       <div className={styles.logo}>
@@ -41,7 +35,7 @@ const Header = (onRouteChange) => {
           <img src={img} alt="Logo Image" className="rounded-circle" />
         </Link>
       </div>
-      <div className={styles.hamburger} onClick={hamClick}>
+      <div className={styles.hamburger} onClick="">
         <div className={styles.line1}></div>
         <div className={styles.line2}></div>
         <div className={styles.line3}></div>
@@ -67,13 +61,9 @@ const Header = (onRouteChange) => {
             Chat Room
           </button>
         </li>
-        <li>
-          <button className={styles["join-button"]} onClick={loginHandler}>
-            Login
-          </button>
-        </li>
+        <li>{userExist ? logoutComponet : loginComponent}</li>
       </ul>
-        <LoginModal showModal={showModal} onClose={setShowModal} />
+      <LoginModal showModal={showModal} onClose={setShowModal} />
     </nav>
   );
 };

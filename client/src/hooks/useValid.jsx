@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useReducer } from "react";
 const initialState = {
   value: "",
   isTouched: false,
 };
 const reducerFunc = (state, action) => {
-  switch (action.key) {
+  switch (action.type) {
     case "INPUT":
       return { value: action.value, isTouched: state.isTouched };
     case "BLUR":

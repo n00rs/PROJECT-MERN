@@ -82,7 +82,7 @@ const userSignup = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     const statusCode = error.status ? error.status : 500;
-    res.status(statusCode).json(error.message);
+    res.status(statusCode).json({ message: error.message });
   }
 };
 
@@ -92,19 +92,38 @@ const userSignup = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     console.log(req.params);
+
     const { token } = req.params;
+
     const decode = verify(token, process.env.EMAIL_SECRET);
+
     console.log(decode);
+
     const verifyEmail = await UserModel.findOneAndUpdate(
       { email: decode.email },
-      { $set: { verified: true } },
-      { new: true, select: "verified" }
+      { $set: { email_verified: true } },
+      { new: true, select: "email_verified" }
     );
     console.log(verifyEmail);
-    res.json(verifyEmail);
+    res.status(200).json(verifyEmail);
   } catch (err) {
     console.log(err);
     res.status(500).json(err.message);
+  }
+};
+
+//METHOD PUT
+//ROUTE /api/users/verify
+
+const resendEmail = async (req, res) => {
+  try {
+    console.log(req.body,'from patch');
+    const {email} = req?.body
+    await sendEmail(email);
+res.status(200).json({success:true})
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({})
   }
 };
 
@@ -116,7 +135,7 @@ const cart = (req, res) => {
   }
 };
 
-module.exports = { userLogin, userSignup, verifyEmail ,cart};
+module.exports = { userLogin, userSignup, verifyEmail, cart, resendEmail };
 
 const loginRespone = (res, user) => {
   const access_token = sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -133,7 +152,7 @@ const loginRespone = (res, user) => {
       expires: new Date(Date.now() + 60 * 60 * 24 * 1000),
     })
 
-    .cookie("userId", user._id, {
+    .cookie("userId", user._id.toString(), {
       path: "/",
       httpOnly: false,
       expires: new Date(Date.now() + 60 * 60 * 24 * 1000),

@@ -3,6 +3,7 @@ const {
   userSignup,
   verifyEmail,
   cart,
+  resendEmail,
 } = require("../controller/authController");
 const verifyAccessToken = require("../middlewares/authMiddleware");
 
@@ -19,6 +20,9 @@ router.post("/signup", userSignup);
 
 router.get("/verify/:token", verifyEmail);
 
+router.patch('/verify',resendEmail)
+
 router.get("/protect", verifyAccessToken, cart);
 
 module.exports = router;
+  

@@ -1,8 +1,7 @@
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 
-// user = process.env.USER
-// email= process.env.
+
 const sendVerifyEmail = async (email) => {
   console.log(process.env.USER, process.env.PASS);
   const transport = nodemailer.createTransport({
@@ -17,7 +16,7 @@ const sendVerifyEmail = async (email) => {
   });
 
   const token = jwt.sign({ email }, process.env.EMAIL_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "1d",
   });
   console.log(token);
   let mailOptions;
@@ -26,7 +25,7 @@ const sendVerifyEmail = async (email) => {
     from: sender,
     to: email,
     subject: "EMAIL VERIFICATION",
-    html: `Press <a href="http://localhost:5000/api/users/verify/${token}" > here</a> 
+    html: `Press <a href="http://localhost:3000/emailVerify/${token}" > here</a> 
     to verify your email and welcome to the world of adventures`,
   };
 
