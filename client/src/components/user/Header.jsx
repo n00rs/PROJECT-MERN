@@ -1,22 +1,35 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-// import { Modal, Row } from "react-bootstrap";
-// import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import authSlice, { setUser } from "../../store/authSlice";
 import LoginModal from "./LoginModal/LoginModal";
 import styles from "./Header.module.css";
 import img from "../../assets/logo.png";
+import { LOGOUT_URL } from "../../Constant";
 
 const Header = (onRouteChange) => {
   const [showModal, setShowModal] = useState(false);
   const { userExist } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   console.log(userExist, "==header");
 
   const loginHandler = () => setShowModal(true);
 
-  const logoutHandler = () => {
-    console.log(logout);
+  const logoutHandler = async () => {
+    try {
+      const response = await fetch(LOGOUT_URL, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const data = await response.json();
+
+      console.log(data);
+      if (data.logout) dispatch(setUser(""));
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   const loginComponent = (
     <button className={styles["join-button"]} onClick={loginHandler}>
       Login
@@ -42,7 +55,7 @@ const Header = (onRouteChange) => {
       </div>
       <ul className={styles["nav-links"]}>
         <li>
-          <Link href="#">Home</Link>
+          <Link to="/">Home</Link>
         </li>
         <li>
           <Link href="#">Gallery</Link>
@@ -57,9 +70,9 @@ const Header = (onRouteChange) => {
           <Link href="#">Blog</Link>
         </li>
         <li>
-          <button className={styles["login-button"]} href="#">
+          <Link className={styles["login-button"]} to="/chat">
             Chat Room
-          </button>
+          </Link>
         </li>
         <li>{userExist ? logoutComponet : loginComponent}</li>
       </ul>

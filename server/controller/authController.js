@@ -3,7 +3,8 @@ const { verify, sign } = require("jsonwebtoken");
 const UserModel = require("../models/UserModel");
 const sendEmail = require("../utils/emailVerify");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
+const moongoose = require("mongoose");
+const { compareSync } = require("bcryptjs");
 //METHOD POST
 //ROUTE /api/users/login
 
@@ -117,14 +118,27 @@ const verifyEmail = async (req, res) => {
 
 const resendEmail = async (req, res) => {
   try {
-    console.log(req.body,'from patch');
-    const {email} = req?.body
+    console.log(req.body, "from patch");
+    const { email } = req?.body;
     await sendEmail(email);
-res.status(200).json({success:true})
+    res.status(200).json({ success: true });
   } catch (err) {
     console.log(err);
-    res.status(500).json({})
+    res.status(500).json({});
   }
+};
+
+//METHOD DELETE
+//ROUTE /api/users/logout
+
+const userLogout = (req, res) => {
+  console.log(req.userId, req.cookiees);
+
+  //clearing cookie
+
+  res.clearCookie("access_token", { path: "/" });
+  res.clearCookie("userId", { path: "/" });
+  res.status(200).json({ logout: true });
 };
 
 const cart = (req, res) => {
@@ -135,7 +149,60 @@ const cart = (req, res) => {
   }
 };
 
-module.exports = { userLogin, userSignup, verifyEmail, cart, resendEmail };
+//METHOD POST
+//ROUTE /api/admin/login
+
+const adminLogin = async (req, res) => {
+  console.log(req.body);
+  try {
+    const { email, password } = req?.body;
+    if (!email || !password)
+      throw { status: 403, message: "please provide admin credentials" };
+
+    const admin = await moongoose.connection
+      .collection("admin")
+      .findOne({ email: email });
+    console.log(admin);
+    
+    
+    if (!admin)
+      throw { status: 403, message: "please provide correct credentials" };
+    
+    console.log(compareSync(password,admin.password));
+      if (admin && compareSync(password, admin.password)) {
+      const adminToken = sign(
+        { adminEmail: email },
+        process.env.ADMIN_JWT_KEY,
+        { expiresIn: "1d" }
+      );
+      res.cookie("adminAccessToken", adminToken, {
+        httpOnly: true,
+        withCredentials: true,
+        expires: new Date(Date.now() + 60 * 60 * 24 * 1000),
+      })
+      .cookie('admin_Id',admin._id,{
+        expires:new Date(Date.now() + 60 * 60 * 24 * 1000),
+
+      })
+      res.status(200).json({adminId:admin._id})
+    }
+  } catch (error) {
+    const statusCode = error.status ? error.status : 500;
+    res.status(statusCode).json(error.message);
+  }
+};
+
+module.exports = {
+  userLogin,
+  userSignup,
+  verifyEmail,
+  cart,
+  resendEmail,
+  userLogout,
+  adminLogin,
+};
+
+//login response to login user
 
 const loginRespone = (res, user) => {
   const access_token = sign({ userId: user._id }, process.env.JWT_SECRET, {

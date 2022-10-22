@@ -1,24 +1,26 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import GoogleAuth from "../components/UI/GoogleAuth";
-import styles from "../components/user/LoginModal/LoginModal.module.css";
 import { USER_LOGIN_URL } from "../Constant";
+import styles from "../components/user/LoginModal/LoginModal.module.css";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/authSlice";
 
 const Login = ({ onToggle }) => {
   console.log("LOGIN");
+
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    email:'',password:''
+    email: "",
+    password: "",
   });
 
-  const getValues = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const dispatch = useDispatch();
+
+  const getValues = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const toggleSignup = () => onToggle("signup");
 
@@ -32,15 +34,15 @@ const Login = ({ onToggle }) => {
 
           body: JSON.stringify(formData),
           headers: { "Content-type": "application/json" },
-          credentials:'include'
+          credentials: "include",
         });
 
         const data = await res.json();
         if (!res.ok) throw data;
         console.log(data, "data");
-        onToggle('')
-
-        toast(document.cookie='access_token');
+        onToggle("");
+        dispatch(setUser(data._id));
+        toast(document.cookie);
       }
     } catch (err) {
       console.log(err, "er.......");

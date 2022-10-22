@@ -4,7 +4,12 @@ const {
   verifyEmail,
   cart,
   resendEmail,
+  userLogout,
+  adminLogin,
 } = require("../controller/authController");
+
+const { fetchUsers } = require("../controller/userController");
+
 const verifyAccessToken = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
@@ -20,9 +25,15 @@ router.post("/signup", userSignup);
 
 router.get("/verify/:token", verifyEmail);
 
-router.patch('/verify',resendEmail)
+router.patch("/verify", resendEmail);
 
 router.get("/protect", verifyAccessToken, cart);
 
+router.delete("/logout", verifyAccessToken, userLogout);
+
+router.get("/fetchUsers", verifyAccessToken, fetchUsers);
+
+//admin
+router.post("/adminlogin", adminLogin);
+
 module.exports = router;
-  
