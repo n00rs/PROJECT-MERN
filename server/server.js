@@ -2,15 +2,17 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const cookieeParser = require("cookie-parser");
 const cors = require("cors");
+const socket = require("socket.io");
+const app = express();
 const connectDB = require("./config/dbconfig");
 const PORT = process.env.PORT || 5001;
-const app = express();
 
 const userRoutes = require("./routes/userRoutes");
+const MessageModel = require("./models/MessageModel");
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "PUT", "POST", "DELETE","PATCH"],
+    methods: ["GET", "PUT", "POST", "DELETE", "PATCH"],
     credentials: true,
   })
 );
@@ -18,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieeParser());
 connectDB();
-app.use("/api/users", userRoutes); 
+app.use("/api/users", userRoutes);
 
 // app.get('/',(req,res)=>{
 //     var users = {
@@ -32,7 +34,47 @@ app.use("/api/users", userRoutes);
 //       };
 //     console.log(req.body,users);
 //     res.send(users)
-// })                          //API for user routes 
+// })                          //API for user routes
 
-app.listen(PORT, () => console.log(`server up at :${PORT}`));
-  
+const server = app.listen(PORT, () => console.log(`server up at :${PORT}`));
+
+const io = socket(server, {
+  cors: {
+    origin: "http://localhost:3000", //setting socket io to connect to client
+    credentials: true,
+  },
+});
+
+global.onlineUsers = new Map();
+
+io.on("connection", (socket) => {
+  // console.log(socket);
+  global.chatSocket = socket;
+  console.log("connected");
+
+  socket.on("add-user", (userId) => {
+    console.log(`add user: ${userId}`);
+    onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("send-msg", async (data) => {
+    // console.log(data);
+    try {
+      const { from, to, message } = data;
+
+      const sendUserSocket = onlineUsers.get(to);
+      console.log(sendUserSocket, "hi");
+      const saveChat = await MessageModel.create({
+        message: { text: message },
+        users: [from,to],
+        sender: from,
+      });
+      console.log(`saved chats: ${saveChat }`);
+      if (sendUserSocket) {
+        socket.to(sendUserSocket).emit("msg-recieve", data.message);
+      }
+    } catch (err) {
+      console.error(err.message, "errr");
+    }
+  });
+});

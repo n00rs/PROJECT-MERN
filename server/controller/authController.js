@@ -5,6 +5,9 @@ const sendEmail = require("../utils/emailVerify");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const moongoose = require("mongoose");
 const { compareSync } = require("bcryptjs");
+
+
+
 //METHOD POST
 //ROUTE /api/users/login
 
@@ -20,14 +23,14 @@ const userLogin = async (req, res) => {
         idToken: credentials,
         audience: process.env.GOOGLE_CLIENT_ID,
       });
-      console.log(data);
+      // console.log(data);
 
-      const user = await UserModel.find(
+      const user = await UserModel.findOne(
         { email: data?.payload?.email },
         { firstName: true }
       );
 
-      console.log(user);
+       // console.log(user);
 
       loginRespone(res, user);
       //creating access token
@@ -80,7 +83,10 @@ const userSignup = async (req, res) => {
     console.log(user);
     await sendEmail(email);
     res.status(201).json({ message: "please verify your email" });
+
+
   } catch (error) {
+    
     console.log(error.message);
     const statusCode = error.status ? error.status : 500;
     res.status(statusCode).json({ message: error.message });
@@ -208,7 +214,7 @@ const loginRespone = (res, user) => {
   const access_token = sign({ userId: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
-
+console.log(access_token);
   //setting access token in cookie
 
   res
@@ -224,7 +230,7 @@ const loginRespone = (res, user) => {
       httpOnly: false,
       expires: new Date(Date.now() + 60 * 60 * 24 * 1000),
     });
-
+ 
   res.status(200).json(user);
 };
 

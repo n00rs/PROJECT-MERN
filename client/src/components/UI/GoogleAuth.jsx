@@ -18,12 +18,14 @@ const GoogleAuth = ({ page, navigate }) => {
       const response = await fetch(url, {
         method: "POST",
         headers: { Authorization: `Bearer ${data.credential}` },
+        credentials: "include",
       });
 
       const resData = await response.json();
+      console.log(resData);
       if (!response.ok) throw resData;
-      if(page === "signup") navigate();
-      if(page === "login") navigate('/')
+      if (page === "signup") navigate();
+      if (page === "login") navigate("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);

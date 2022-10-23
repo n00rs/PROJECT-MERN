@@ -8,7 +8,7 @@ const {
   adminLogin,
 } = require("../controller/authController");
 
-const { fetchUsers } = require("../controller/userController");
+const { fetchUsers, fetchMsgs } = require("../controller/userController");
 
 const verifyAccessToken = require("../middlewares/authMiddleware");
 
@@ -33,7 +33,10 @@ router.delete("/logout", verifyAccessToken, userLogout);
 
 router.get("/fetchUsers", verifyAccessToken, fetchUsers);
 
+router.get('/fetch-messages/:to',verifyAccessToken,fetchMsgs)
+
 //admin
+
 router.post("/adminlogin", adminLogin);
 
 module.exports = router;

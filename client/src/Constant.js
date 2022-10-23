@@ -6,3 +6,4 @@ export const EMAIL_VERIFY_URL = "http://localhost:5000/api/users/verify/";
 export const LOGOUT_URL = "http://localhost:5000/api/users/logout";
 // export const RESEND_EMAIL_URL = "http://localhost:5000"
 export const FETCH_USERS_URL = 'http://localhost:5000/api/users/fetchUsers'
+export const FETCH_MSGS_URL = 'http://localhost:5000/api/users/fetch-messages/'
