@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./ChatContainer.module.css";
 import { ChatInput } from "./ChatInput";
 import { useSelector } from "react-redux";
 import { FETCH_MSGS_URL } from "../../../Constant";
+import styles from "./ChatContainer.module.css";
 
 export const ChatContainer = ({ currentChat, socket }) => {
   const [messages, setMessages] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import authSlice, { setUser } from "../../store/authSlice";
+import  { setUser } from "../../store/authSlice";
 import LoginModal from "./LoginModal/LoginModal";
 import styles from "./Header.module.css";
 import img from "../../assets/logo.png";
@@ -11,7 +11,7 @@ const Header = (onRouteChange) => {
   const [showModal, setShowModal] = useState(false);
   const { userExist } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  console.log(userExist, "==header");
+  // console.log(userExist, "==header");
 
   const loginHandler = () => setShowModal(true);
 
@@ -41,11 +41,12 @@ const Header = (onRouteChange) => {
       Logout
     </button>
   );
+
   return (
     <nav>
       <div className={styles.logo}>
         <Link>
-          <img src={img} alt="Logo Image" className="rounded-circle" />
+          <img src={img} alt="Logo" className="rounded-circle" />
         </Link>
       </div>
       <div className={styles.hamburger} onClick="">
@@ -58,16 +59,16 @@ const Header = (onRouteChange) => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link href="#">Gallery</Link>
+          <Link to="#">Gallery</Link>
         </li>
         <li>
-          <Link href="#">Latest News</Link>
+          <Link to="#">Latest News</Link>
         </li>
         <li>
-          <Link href="#">Shop</Link>
+          <Link to="/shop">Shop</Link>
         </li>
         <li>
-          <Link href="#">Blog</Link>
+          <Link to="/blogs">Blog</Link>
         </li>
         <li>
           <Link className={styles["login-button"]} to="/chat">

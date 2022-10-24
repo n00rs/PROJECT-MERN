@@ -47,7 +47,10 @@ export const Contacts = ({ contacts, changeChat, currentUser }) => {
             src={currentUser.picture ? currentUser.picture : userLogo}
             alt="img"
           />
+          <div className={styles.username}>
+
           <h2>{currentUser}</h2>
+          </div>
         </div>
       </div>
     </div>

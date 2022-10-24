@@ -4,21 +4,26 @@ const cookieeParser = require("cookie-parser");
 const cors = require("cors");
 const socket = require("socket.io");
 const app = express();
+const path = require('path')
 const connectDB = require("./config/dbconfig");
 const PORT = process.env.PORT || 5001;
 
 const userRoutes = require("./routes/userRoutes");
 const MessageModel = require("./models/MessageModel");
 app.use(
-  cors({
+  cors({ 
     origin: ["http://localhost:3000"],
     methods: ["GET", "PUT", "POST", "DELETE", "PATCH"],
     credentials: true,
   })
 );
+
+// app.use(cookieeParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieeParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 connectDB();
 app.use("/api/users", userRoutes);
 
@@ -37,10 +42,10 @@ app.use("/api/users", userRoutes);
 // })                          //API for user routes
 
 const server = app.listen(PORT, () => console.log(`server up at :${PORT}`));
-
+ 
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000", //setting socket io to connect to client
+    origin: "http://localhost:3000", //setting socket io to connect to client  
     credentials: true,
   },
 });

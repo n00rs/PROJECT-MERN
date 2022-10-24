@@ -5,8 +5,8 @@
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    align-items: center;
-    background-color: #131324;
+    align-items: center;    background-image: url('../assets/chat-bg.jpg');
+    background-size: cover;
 }
 
 .container2 {

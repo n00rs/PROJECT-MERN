@@ -2,7 +2,8 @@
     display: grid;
     grid-template-rows: 10% 75% 15%;
     overflow: hidden;
-    background-color: #080420;
+    /* background-color: #080420; */
+    background-color: #08042038;
 }
 
 .brand {
@@ -69,7 +70,7 @@
 }
 
 .current-user {
-    background-color: #0d0d30;
+    background-color: #b1220b85;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,10 +81,12 @@
 
     height: 4rem;
     max-inline-size: 100%;
+    border-radius: 30px;
 
 }
 
-.current-user  h2 {
+.username  h2 {
+    font-size: 1rem;
     color: white;
 }
 
