@@ -18,7 +18,7 @@ app.use(
   })
 );
 
-// app.use(cookieeParser());
+app.use(cookieeParser());  
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -45,7 +45,7 @@ const server = app.listen(PORT, () => console.log(`server up at :${PORT}`));
  
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000", //setting socket io to connect to client  
+    origin: "http://localhost:3000",      //setting socket io to connect to client  
     credentials: true,
   },
 });

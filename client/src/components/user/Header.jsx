@@ -43,13 +43,13 @@ const Header = (onRouteChange) => {
   );
 
   return (
-    <nav>
-      <div className={styles.logo}>
+    <nav >
+      <div className={styles.logo}> 
         <Link>
           <img src={img} alt="Logo" className="rounded-circle" />
         </Link>
       </div>
-      <div className={styles.hamburger} onClick="">
+      <div className={styles.hamburger} >
         <div className={styles.line1}></div>
         <div className={styles.line2}></div>
         <div className={styles.line3}></div>

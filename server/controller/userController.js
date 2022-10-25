@@ -62,23 +62,37 @@ const newBlog = async (req, res) => {
     const url = req.protocol + "://" + req.get("host");
     const image = url + "/blog_images/" + req.file.filename;
     const { author, title, content, category } = req?.body;
- console.log(req.body,req.userId) ;
+    console.log(req.body, req.userId);
+
     if (!userId || !author || !title || !content || !category)
       throw { status: 400, message: "invalid request" };
- 
-      const blogObj = { author, title, content, category, image, userId };
+
+    const blogObj = { author, title, content, category, image, userId };
 
     const blog = await BlogModel.create(blogObj);
+
     console.log(blog);
+
     res.status(201).json({ created: true });
-
-
   } catch (err) {
-    
     console.log(err.message);
-    const statusCode = err?.status ? err?.status : 500
-    res.status(statusCode).json(err.message)  
+    const statusCode = err?.status ? err?.status : 500;
+    res.status(statusCode).json(err.message);
   }
 };
 
-module.exports = { fetchUsers, fetchMsgs, newBlog };
+//METHOD GET
+//ROUTE /api/users/all-blogs
+
+const allBlogs = async (req, res) => {
+  try {
+    const blogs = await BlogModel.find({ verified: true }).limit(6);
+    console.log(blogs);
+    res.status(200).json(blogs);
+  } catch (err) {
+    const statusCode = err.status ? err.status : 500;
+    res.status(statusCode).json(err.message);
+  }
+};
+
+module.exports = { fetchUsers, fetchMsgs, newBlog, allBlogs };

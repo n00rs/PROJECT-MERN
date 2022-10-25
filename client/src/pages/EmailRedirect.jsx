@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Col, Container, Form, InputGroup, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { EMAIL_VERIFY_URL } from "../Constant";
 import { toast } from "react-toastify";
+import { Spinner } from "../components/UI/Spinner";
 
 const EmailRedirect = () => {
   const { token } = useParams();
@@ -36,7 +37,7 @@ const EmailRedirect = () => {
   }, [verifyToken]);
 
   const sendEmail = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const email = emailRef.current.value;
       if (!email.includes("@"))
@@ -54,13 +55,12 @@ const EmailRedirect = () => {
         if (data.success) {
           toast.dark("please check and verify your email");
           navigate("/", { replace: true });
-          setIsLoading(false)
+          setIsLoading(false);
         }
       }
     } catch (error) {
       toast.error(error.message);
-      setIsLoading(false)
-
+      setIsLoading(false);
     }
   };
 
@@ -91,9 +91,7 @@ const EmailRedirect = () => {
     </>
   );
 
-
-
-if(isLoading) return <Spinner animation="border"  />
+  if (isLoading) return <Spinner />;
 
   return (
     <Container className="mt-5">

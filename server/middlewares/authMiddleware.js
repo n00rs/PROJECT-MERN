@@ -2,7 +2,7 @@ const { verify } = require("jsonwebtoken");
 
 const verifyAccessToken = async (req, res, next) => {
   try {
-    // console.log(req?.cookies);
+    console.log(req?.cookies);
     //access_token from cookies
     const access_token = req?.cookies?.access_token;
     if (!access_token)
@@ -23,3 +23,4 @@ const verifyAccessToken = async (req, res, next) => {
 };
 
 module.exports = verifyAccessToken;
+ 

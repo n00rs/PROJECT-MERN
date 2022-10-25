@@ -8,11 +8,15 @@ const {
   adminLogin,
 } = require("../controller/authController");
 
-const { fetchUsers, fetchMsgs, newBlog } = require("../controller/userController");
+const {
+  fetchUsers,
+  fetchMsgs,
+  newBlog,
+  allBlogs,
+} = require("../controller/userController");
 
 const verifyAccessToken = require("../middlewares/authMiddleware");
-
-const {upload} = require('../middlewares/multer')
+const { upload } = require("../middlewares/multer");
 const router = require("express").Router();
 
 router.get("/", (req, res) => {
@@ -34,12 +38,19 @@ router.delete("/logout", verifyAccessToken, userLogout);
 
 router.get("/fetchUsers", verifyAccessToken, fetchUsers);
 
-router.get('/fetch-messages/:to',verifyAccessToken,fetchMsgs)
+router.get("/fetch-messages/:to", verifyAccessToken, fetchMsgs);
 
+router.post(
+  "/new-blog",
+  verifyAccessToken,
+  upload.single("blogImage"),
+  newBlog
+);
 
-router.post('/new-blog',verifyAccessToken,upload.single('blogImage'),newBlog)
+router.get('/all-blogs',allBlogs)
+
 //admin
 
 router.post("/adminlogin", adminLogin);
- 
+
 module.exports = router;
