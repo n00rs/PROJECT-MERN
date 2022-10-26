@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import useValid from "../../../hooks/useValid";
-import { postBlog } from "../../../store/blogSlice";
+import { postBlog, reset } from "../../../store/blogSlice";
 
 const isNotEmpty = (val) => val.trim() !== "";
 
 export const BlogForm = () => {
-
   const [image, setImage] = useState("");
 
   const dispatch = useDispatch();
@@ -51,12 +50,17 @@ export const BlogForm = () => {
   } = useValid(isNotEmpty);
 
   let formValid = false;
-  if (authorIsValid && titleIsValid && contentIsValid && categoryIsValid)
+  if (
+    authorIsValid &&
+    titleIsValid &&
+    contentIsValid &&
+    categoryIsValid &&
+    image
+  )
     formValid = true;
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(author, content, title, category);
     const formData = new FormData();
     formData.append("blogImage", image);
     formData.append("author", author);
@@ -65,9 +69,11 @@ export const BlogForm = () => {
     formData.append("content", content);
 
     dispatch(postBlog(formData));
+    
   };
+
   return (
-    <Form onSubmit={submitHandler}>
+    <Form onSubmit={submitHandler} >
       <Row className="g-2 mb-3">
         <Col md>
           <FloatingLabel label="AUTHOR">
@@ -143,7 +149,7 @@ export const BlogForm = () => {
           Please provide a title Name.
         </Form.Control.Feedback>
       </FloatingLabel>
-     
+
       <Form.Control
         type="file"
         name="blogImage"
@@ -156,12 +162,10 @@ export const BlogForm = () => {
         className="mt-4"
         variant="outline-secondary"
         type="submit"
-       disabled={!formValid}
+        disabled={!formValid}
       >
         Post New Blog
       </Button>
     </Form>
   );
 };
-
-

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export const SideBar = () => {
   return (
-    <Col lg={4}>
+    <Col lg={4} className='mt-4'>
       <div className="sticky-top">
         <Card className="mb-4">
           <Card.Header>Search</Card.Header>
@@ -64,10 +64,10 @@ export const SideBar = () => {
           <Card.Body>
             <Nav className="flex-column" fill variant="tabs">
               <Nav.Item>
-                <Link className="nav-link text-black">My Blogs</Link>
+                <Link to='/blogs/my-blogs' className="nav-link text-black">My Blogs</Link>
               </Nav.Item>
               <Nav.Item>
-                <Link to="/blogs/newblog" className="nav-link text-black">
+                <Link to="/blogs/new-blog" className="nav-link text-black">
                   Write a Blog
                 </Link>
               </Nav.Item>

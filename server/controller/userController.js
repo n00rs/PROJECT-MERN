@@ -82,13 +82,31 @@ const newBlog = async (req, res) => {
 };
 
 //METHOD GET
-//ROUTE /api/users/all-blogs
+//ROUTE /api/users/all-blogs?pages=
 
 const allBlogs = async (req, res) => {
   try {
-    const blogs = await BlogModel.find({ verified: true }).limit(6);
+    const pageSize = 6;
+
+    const pageNumber = req.query.page;
+    if (!pageNumber)
+      throw { status: 400, message: "please provide an page number" };
+
+    const totalDocs = await BlogModel.aggregate([
+      { $match: { verified: true } },
+      { $count: "total_docs" },
+    ]);
+
+    console.log(totalDocs);
+
+    const blogs = await BlogModel.find({ verified: true })
+      .limit(pageSize)
+      .skip(pageNumber * pageSize);
+
     console.log(blogs);
-    res.status(200).json(blogs);
+
+    const totalPages = Math.ceil(totalDocs[0]?.total_docs / pageSize);
+    res.status(200).json({ blogs, totalPages });
   } catch (err) {
     const statusCode = err.status ? err.status : 500;
     res.status(statusCode).json(err.message);

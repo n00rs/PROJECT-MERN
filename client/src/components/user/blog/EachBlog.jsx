@@ -1,69 +1,54 @@
-import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import dummyImg from "../../../assets/dummyBlogImg.jpg";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import { BlogComment } from "./BlogComment";
-import { SideBar } from "./SideBar";
-export const EachBlog = () => {
-  const { blogId } = useParams();
+
+export const EachBlog = ({ blogId }) => {
+  const [blog, setBlog] = useState({});
+
   console.log(blogId, "from /:id");
+
+  const { blogs } = useSelector((state) => state.blog);
+
+  useEffect(() => {
+    const blog = blogs.find((blog) => blog._id === blogId);
+    console.log(blog);
+    if (blog && blogId) setBlog(blog);
+    // else throw new Error ('opps lost your way go home')
+  }, [blogs,blogId]);
+  
+
+
+
   return (
     <>
-      <Container className="mt-5">
-        <Row>
-          <Col lg={8}>
-            {/* <!-- Post content--> */}
-            <article>
-              {/* <!-- Post header--> */}
-              <header class="mb-4">
-                {/* <!-- Post title--> */}
-                <h1 class="fw-bolder mb-1">Welcome to Blog Post!</h1>
-                {/* <!-- Post meta content--> */}
-                <div class="text-muted fst-italic mb-2">
-                  Posted on January 1, 2022 by Start Bootstrap
-                </div>
-                {/* <!-- Post categories--> */}
-                <a
-                  class="badge bg-secondary text-decoration-none link-light"
-                  href="#!"
-                >
-                  Web Design
-                </a>
-                <a
-                  class="badge bg-secondary text-decoration-none link-light"
-                  href="#!"
-                >
-                  Freebies
-                </a>
-              </header>
+      <article>
+        <header className="mb-4">
+          <h1 className="fw-bolder mb-1">{blog.title}</h1>
+          <div className="text-muted fst-italic mb-2">
+            {`Posted on ${new Date(blog.createdAt).toDateString()} by ${
+              blog.author
+            }`}
+          </div>
 
-              <figure class="mb-4">
-                <img class="img-fluid rounded" src={dummyImg} alt="..." />
-              </figure>
+          <a
+            className="badge bg-secondary text-decoration-none link-light"
+            href="#!"
+          >
+            {blog.category}
+          </a>
+        </header>
 
-              {/* <!-- Post content--> */}
-              <section class="mb-5">
-                <p class="fs-5 mb-4">
-                  Science is an enterprise that should be cherished as an
-                  activity of the free human mind. Because it transforms who we
-                  are, how we live, and it gives us an understanding of our
-                  place in the universe. The universe is large and old, and the
-                  ingredients for life as we know it are everywhere, so there's
-                  no reason to think that Earth would be unique in that regard.
-                  Whether of not the life became intelligent is a different
-                  question, and we'll see if we find that.
-                </p>
-              </section>
-            </article>
+        <figure className="mb-4">
+          <img className="img-fluid rounded" src={blog.image} alt="..." />
+        </figure>
 
-            <BlogComment />
-          </Col>
+        <section className="mb-5">
+          <p className="fs-5 mb-4">{blog.content}</p>
+        </section>
+      </article>
 
-          {/* <!-- Side widgets--> */}
-          <SideBar />
-
-        </Row>
-      </Container>
+      <BlogComment />
     </>
   );
 };

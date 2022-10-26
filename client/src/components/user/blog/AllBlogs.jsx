@@ -1,126 +1,99 @@
-import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import dummyImg from "../../../assets/dummyBlogImg.jpg";
-import { ALL_BLOG_URL } from "../../../Constant";
+import { Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
-import { SideBar } from "../blog/SideBar";
+import { nextPage, prevPage, setPageNo } from "../../../store/blogSlice";
+import { PaginationBar } from "../../UI/PaginationBar";
+
 import { BlogCard } from "./BlogCard";
 
 export const AllBlogs = () => {
-  const [blogs, setBlogs] = useState([]);
-  const fetchAllBlogs = async () => {
-    try {
-      const response = await fetch(ALL_BLOG_URL);
-      const data = await response.json();
-      setBlogs(data)
-      console.log(data);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+  // const [blogs, setBlogs] = useState([]);
+  // const [totalPages, setTotalPages] = useState(0);
+  // const [pageNo, setPageNo] = useState(0);
+  // const fetchAllBlogs = async () => {
+  //   try {
+  //     const response = await fetch(ALL_BLOG_URL + pageNo);
+  //     const { blogs, totalPages } = await response.json();
+  //     setBlogs(blogs);
+  //     setTotalPages(totalPages);
+  //     console.log(totalPages);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchAllBlogs();
-  }, []);
+  // console.log(pages);
+  // useEffect(() => {
+  //   fetchAllBlogs();
+  // }, [pageNo]);
 
-  
+  const dispatch = useDispatch();
+  const { blogs, totalPages, pageNo } = useSelector((state) => state.blog);
+  const pages = new Array(totalPages).fill(null).map((val, ind) => ind);
+
   const blogContent = blogs.map((blog) => (
     <BlogCard
+      key={blog._id}
       id={blog._id}
+      author={blog.author}
       title={blog.title}
       date={new Date(blog.createdAt).toDateString()}
-      desciption={blog.content.slice(0,150)}
+      content={blog.content.slice(0, 150)}
       image={blog.image}
     />
   ));
+
+  const prev = () => dispatch(prevPage());
+
+  const next = () => dispatch(nextPage());
+
+  const changePage = (pageNo) => dispatch(setPageNo(pageNo));
+
   return (
     <>
-      <Container className="p-5">
-        <Row>
-          {/* <!-- Blog entries--> */}
-          <Col lg={8}>
-            {/* <!-- Featured blog post--> */}
-            <Card className="mb-4">
-              <a href="#!">
-                <Card.Img
-                  className="card-img-top"
-                  src="http://localhost:5000/blog_images/abc.png"
-                  alt="..."
-                />
-              </a>
-              <Card.Body>
-                <div className="small text-muted">January 1, 2022</div>
-                <Card.Title>Featured Post Title</Card.Title>
-                <Card.Text>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a
-                  laboriosam. Dicta expedita corporis animi vero voluptate
-                  voluptatibus possimus, veniam magni quis!
-                </Card.Text>
-                <a className="btn btn-primary" href="#!">
-                  Read more →
-                </a>
-              </Card.Body>
-            </Card>
-            {/* <!-- Nested row for non-featured blog posts--> */}
-            <Row xs={1} md={2} className="g-4 ">
-              {blogs.length > 0 && blogContent}
-            </Row>
-            {/* <!-- Pagination--> */}
-            <div aria-label="Pagination">
-              <hr className="my-0" />
-              <ul className="pagination justify-content-center my-4">
-                <li className="page-item disabled">
-                  <a
-                    className="page-link"
-                    href="#"
-                    tabindex="-1"
-                    aria-disabled="true"
-                  >
-                    Newer
-                  </a>
-                </li>
-                <li className="page-item active" aria-current="page">
-                  <a className="page-link" href="#!">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#!">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#!">
-                    3
-                  </a>
-                </li>
-                <li className="page-item disabled">
-                  <a className="page-link" href="#!">
-                    ...
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#!">
-                    15
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#!">
-                    Older
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </Col>
+      {/* <!-- Featured blog post--> */}
+      <BlogCard
+        title={"Featured Post Title"}
+        content={`  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis
+            aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta
+            expedita corporis animi vero voluptate voluptatibus possimus, veniam
+            magni quis!`}
+        date="January 1, 2022"
+        image={"http://localhost:5000/blog_images/abc.png"}
+      />
 
-          <SideBar />
-        </Row>
-      </Container>
+      <Row xs={1} md={2} className="g-4 mt-4">
+        {blogs.length > 0 && blogContent}
+      </Row>
+      <PaginationBar
+        next={next}
+        prev={prev}
+        pages={pages}
+        pageNo={pageNo}
+        changePage={changePage}
+      />
     </>
   );
 };
+
+//  <div aria-label="Pagination">
+//       <hr className="my-0" />
+
+//       <Pagination className="justify-content-center my-4">
+//         <Pagination.Prev onClick={prev} />
+//         {pages?.map((index) => (
+//           <Pagination.Item
+//             key={index}
+//             onClick={() => dispatch(setPageNo(index))}
+//             active={index === pageNo}
+//           >
+//             {index + 1}
+//           </Pagination.Item>
+//         ))}
+
+//         <Pagination.Next onClick={next} />
+//       </Pagination>
+//     </div>
 
 // <Row>
 //   <div className="col-lg-6">
