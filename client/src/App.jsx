@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -6,8 +7,10 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
 import { toast } from "react-toastify";
 import Layout from "./components/UI/Layout";
+// import { actions as commentAction } from "./components/user/blog/EachBlog";
 import { NewBlog } from "./components/user/blog/NewBlog";
 import { UserBlogs } from "./components/user/blog/UserBlogs";
 import Blog from "./pages/Blog";
@@ -33,7 +36,7 @@ function App() {
         <Route path="/chat" element={<ChatRoom />} />
         <Route path="/blogs">
           <Route index element={<Blog />} />
-          <Route path=":blogId" element={<Blog />} />
+          <Route path=":blogId" element={<Blog />}  />
           <Route path="new-blog" element={<NewBlog />} loader={userLoader} />
           <Route path="my-blogs" element={<UserBlogs />} loader={userLoader} />
         </Route>

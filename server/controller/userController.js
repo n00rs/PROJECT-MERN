@@ -55,6 +55,9 @@ const fetchMsgs = async (req, res) => {
   }
 };
 
+//METHOD POST
+//ROUTE /api/users/new-blog
+
 const newBlog = async (req, res) => {
   try {
     // console.log(req.file.filename);
@@ -103,7 +106,7 @@ const allBlogs = async (req, res) => {
       .limit(pageSize)
       .skip(pageNumber * pageSize);
 
-    console.log(blogs);
+    // console.log(blogs);
 
     const totalPages = Math.ceil(totalDocs[0]?.total_docs / pageSize);
     res.status(200).json({ blogs, totalPages });
@@ -113,4 +116,72 @@ const allBlogs = async (req, res) => {
   }
 };
 
-module.exports = { fetchUsers, fetchMsgs, newBlog, allBlogs };
+//METHOD GET
+//ROUTE /api/users/my-blog
+
+const myBlog = async (req, res) => {
+  try {
+    if (!req.userId) throw { statusCode: 403, message: "no authorization" };
+    const userId = req.userId;
+    const blogs = await BlogModel.find({ userId }).sort({ createdAt: -1 });
+    if (!blogs) throw { statusCode: 404, message: "not found" };
+    else res.status(200).json(blogs);
+  } catch (err) {
+    const statusCode = err.statusCode ? err.statusCode : 500;
+    res.status(statusCode).json(err.message);
+  }
+};
+
+//METHOD  DELETE
+//ROUTE /api/users/my-blog/:blogId
+
+const deleteBlog = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+
+    if (!blogId) throw { statusCode: 400, message: "please provide an blogId" };
+    const { deleteBlog } = await BlogModel.deleteOne({ _id: blogId });
+    console.log(deleteBlog);
+    res.status(200).json({ removed: "removed" });
+  } catch (error) {
+    const statusCode = err.statusCode ? err.statusCode : 500;
+    res.status(statusCode).json(err.message);
+  }
+};
+
+
+//METHOD PUT
+//ROUTE /api/users/blog/add-comment
+
+const addComment = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { blogId, name, comment } = req.body;
+    
+    
+    if ((!blogId, !name, !comment))
+      throw { statusCode: 400, message: "invalid data" };
+
+    const addComments = await BlogModel.findByIdAndUpdate(blogId, {
+      $push: { comments: { name, comment } },
+    },{new:true}).select('comments -_id');
+
+    console.log(addComments,'afteradding comment');
+    
+    res.status(200).json(addComments);
+  } catch (err) {
+    const statusCode = err.statusCode ? err.statusCode : 500;
+    res.status(statusCode).json(err.message);
+    console.log(err.message);
+  }
+};
+
+module.exports = {
+  fetchUsers,
+  fetchMsgs,
+  newBlog,
+  allBlogs,
+  myBlog,
+  deleteBlog,
+  addComment,
+};

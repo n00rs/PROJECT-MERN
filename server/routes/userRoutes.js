@@ -13,16 +13,16 @@ const {
   fetchMsgs,
   newBlog,
   allBlogs,
+  myBlog,
+  deleteBlog,
+  addComment,
 } = require("../controller/userController");
 
 const verifyAccessToken = require("../middlewares/authMiddleware");
-const { upload } = require("../middlewares/multer");
-const router = require("express").Router();
 
-router.get("/", (req, res) => {
-  console.log("hi");
-  res.send("asdf");
-});
+const { upload } = require("../middlewares/multer");
+
+const router = require("express").Router();
 
 router.post("/login", userLogin);
 
@@ -47,8 +47,13 @@ router.post(
   newBlog
 );
 
-router.get('/all-blogs',allBlogs)
+router.get("/all-blogs", allBlogs);
 
+router.get("/my-blog", verifyAccessToken, myBlog);
+
+router.delete("/my-blog/:blogId", verifyAccessToken, deleteBlog);
+
+router.put("/blog/add-comment", addComment);
 //admin
 
 router.post("/adminlogin", adminLogin);

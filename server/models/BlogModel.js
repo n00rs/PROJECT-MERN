@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const commentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  comment: { type: String, required: true },
+});
+
 const blogSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true },
@@ -9,9 +14,9 @@ const blogSchema = new mongoose.Schema(
     content: { type: String, required: true },
     image: { type: String },
     verified: { type: Boolean, default: false },
-    comments: Array,
+    comments: [commentSchema],
   },
   { timestamps: true }
 );
-
-module.exports = mongoose.model('Blog',blogSchema)
+blogSchema.index({ createdAt: 1 });
+module.exports = mongoose.model("Blog", blogSchema);
