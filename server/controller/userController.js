@@ -149,7 +149,6 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-
 //METHOD PUT
 //ROUTE /api/users/blog/add-comment
 
@@ -157,22 +156,71 @@ const addComment = async (req, res) => {
   try {
     console.log(req.body);
     const { blogId, name, comment } = req.body;
-    
-    
+
     if ((!blogId, !name, !comment))
       throw { statusCode: 400, message: "invalid data" };
 
-    const addComments = await BlogModel.findByIdAndUpdate(blogId, {
-      $push: { comments: { name, comment } },
-    },{new:true}).select('comments -_id');
+    const addComments = await BlogModel.findByIdAndUpdate(
+      blogId,
+      {
+        $push: { comments: { name, comment } },
+      },
+      { new: true }
+    ).select("comments -_id");
 
-    console.log(addComments,'afteradding comment');
-    
+    console.log(addComments, "afteradding comment");
+
     res.status(200).json(addComments);
   } catch (err) {
     const statusCode = err.statusCode ? err.statusCode : 500;
     res.status(statusCode).json(err.message);
     console.log(err.message);
+  }
+};
+
+//METHOD DELETE
+//ROUTE /api/users/blog/delete-comment
+
+const deleteComment = async (req, res) => {
+  try {
+    console.log(req.params);
+    const commentId = req?.params?.commentId;
+    if (!commentId) throw { statusCode: 403, message: "invalid request" };
+
+    const deleteComm = await BlogModel.findOneAndUpdate(
+      { "comments._id": commentId },
+      { $pull: { comments: { _id: commentId } } },
+      { new: true }
+    ).select("comments -_id");
+
+    console.log(deleteComm);
+    res.status(200).json(deleteComm);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json(err.message);
+  }
+};
+
+//METHOD PUT
+//ROUTE /api/users/blog/update-blog
+
+const updateBlog = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { content, title, blogId } = req.body;
+    if (!content || !title || !blogId)
+      throw { statusCode: 400, message: "invalid update request" };
+    const updateBlg = await BlogModel.findByIdAndUpdate(
+      blogId,
+      {
+        $set: { content, title },
+      },
+      { new: true }
+    );
+    res.status(200).json(updateBlg);
+  } catch (err) {
+    console.log(err);
+    const statusCode = err.statusCode ? err.statusCode : 500;
   }
 };
 
@@ -184,4 +232,6 @@ module.exports = {
   myBlog,
   deleteBlog,
   addComment,
+  deleteComment,
+  updateBlog,
 };

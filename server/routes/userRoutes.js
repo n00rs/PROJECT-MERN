@@ -16,6 +16,8 @@ const {
   myBlog,
   deleteBlog,
   addComment,
+  deleteComment,
+  updateBlog,
 } = require("../controller/userController");
 
 const verifyAccessToken = require("../middlewares/authMiddleware");
@@ -53,7 +55,12 @@ router.get("/my-blog", verifyAccessToken, myBlog);
 
 router.delete("/my-blog/:blogId", verifyAccessToken, deleteBlog);
 
-router.put("/blog/add-comment", addComment);
+router.put("/blog/comment", addComment);
+
+router.delete("/blog/comment/:commentId", verifyAccessToken, deleteComment);
+
+router.put("/blog/update-blog", verifyAccessToken, updateBlog);
+
 //admin
 
 router.post("/adminlogin", adminLogin);

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useActionData } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ADD_COMMENT_URL } from "../../../Constant";
+import { COMMENT_URL } from "../../../Constant";
 
 import { BlogComment } from "./BlogComment";
 
@@ -33,7 +33,7 @@ export const EachBlog = ({ blogId }) => {
     try {
       const body = { ...commentInput, blogId };
 
-      const response = await fetch(ADD_COMMENT_URL, {
+      const response = await fetch(COMMENT_URL, {
         method: "PUT",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" },
@@ -42,7 +42,7 @@ export const EachBlog = ({ blogId }) => {
       if (!response.ok) throw data;
 
       setBlog((prev) => ({ ...prev, comments: data.comments }));
-
+      setCommentInput(initialState);
       // console.log(data);
     } catch (e) {
       console.log(e.message);
