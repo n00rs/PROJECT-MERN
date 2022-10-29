@@ -11,17 +11,15 @@ import { store } from "./store/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
- <Provider store={store}>
-
-    <ThemeProvider
-      breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
-      minBreakpoint="xxs"
+  // <React.StrictMode>
+    <Provider store={store}>
+      <ThemeProvider
+        breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
+        minBreakpoint="xxs"
       >
-      <App />
-    </ThemeProvider>
-      </Provider> 
- 
-
-
+        <App />
+      </ThemeProvider>
+    </Provider>
+//  </React.StrictMode>
 );
 reportWebVitals();

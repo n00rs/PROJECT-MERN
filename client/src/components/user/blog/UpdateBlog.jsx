@@ -1,3 +1,4 @@
+import { memo, useEffect } from "react";
 import {
   Button,
   Col,
@@ -6,19 +7,24 @@ import {
   Offcanvas,
   Row,
 } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { hideUpdateCanvas } from "../../../store/userBlogSlice";
 
-export const UpdateBlog = ({
-  show,
-  hide,
-  values,
-  titleRef,
-  contentRef,
-  submitHandler,
-}) => {
+export const UpdateBlog = ({ titleRef, contentRef, submitHandler }) => {
+  const dispatch = useDispatch();
+  const { showUpdateCanvas, updateData: values } = useSelector(
+    (state) => state.userBlog
+  );
+  // useEffect(() => {
+  // }, []);
+  
+  const hide =()=> dispatch(hideUpdateCanvas());
+  console.log(`entered update component`);
+
   return (
     <Offcanvas
       placement="end"
-      show={show}
+      show={showUpdateCanvas}
       onHide={hide}
       className="text-bg-dark  offcanvas-size-xl"
     >

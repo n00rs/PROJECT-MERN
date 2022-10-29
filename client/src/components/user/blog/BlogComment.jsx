@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import { CommentsSection } from "./CommentsSection";
 
 export const BlogComment = ({
   commentInpVal,
@@ -8,24 +9,13 @@ export const BlogComment = ({
   commentInput,
 }) => {
   if (comments) {
-    var commentContent = comments.map((comment) => (
-      <div className="d-flex mb-4" key={comment._id}>
-        <div className="ms-3">
-          <div className="d-flex mt-4">
-            <div className="flex-shrink-0">
-              <img
-                className="rounded-circle"
-                src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                alt="..."
-              />
-            </div>
-            <div className="ms-3">
-              <div className="fw-bold">{comment.name}</div>
-              {comment.comment}
-            </div>
-          </div>
-        </div>
-      </div>
+    var commentContent = comments?.map((comment) => (
+      <CommentsSection
+        key={comment._id}
+        name={comment.name}
+        comment={comment.comment}
+      />
+ 
     ));
   }
   return (
