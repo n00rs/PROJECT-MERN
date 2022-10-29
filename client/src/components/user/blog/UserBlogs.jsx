@@ -44,15 +44,17 @@ export const UserBlogs = () => {
     // showUpdateCanvas,
     updateData,
   } = useSelector((state) => state.userBlog);
+  
+  const titleRef = useRef();
+  const contentRef = useRef();
 
+  
   // const [userBlogs, setUserBlogs] = useState([]);
   // const [showComment, setShowComment] = useState(false);
   // const [comment, setComment] = useState([]);
   // const [showUpdate, setShowUpdate] = useState(false);
   // const [updateData, setUpdateData] = useState(initialState);
 
-  const titleRef = useRef();
-  const contentRef = useRef();
 
   // const fetchUserBlogs = async () => {
   //   try {

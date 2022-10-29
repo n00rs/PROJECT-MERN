@@ -191,7 +191,7 @@ const deleteComment = async (req, res) => {
       { "comments._id": commentId },
       { $pull: { comments: { _id: commentId } } },
       { new: true }
-    ).select("comments -_id");
+    )
 
     console.log(deleteComm);
     res.status(200).json(deleteComm);

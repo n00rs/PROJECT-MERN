@@ -15,8 +15,7 @@ export const UpdateBlog = ({ titleRef, contentRef, submitHandler }) => {
   const { showUpdateCanvas, updateData: values } = useSelector(
     (state) => state.userBlog
   );
-  // useEffect(() => {
-  // }, []);
+
   
   const hide =()=> dispatch(hideUpdateCanvas());
   console.log(`entered update component`);

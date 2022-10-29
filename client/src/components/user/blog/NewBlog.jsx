@@ -11,6 +11,7 @@ import { BlogContainer } from "../../UI/BlogContainer";
 import newBlogBanner from '../../../assets/newBlogBanner.png'
 
 export const NewBlog = () => {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, isSubmitting, isSubmitted, message } = useSelector(

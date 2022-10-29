@@ -157,9 +157,16 @@ const userBlogSlice = createSlice({
       })
 
       .addCase(removeComment.fulfilled, (state, action) => {
+        console.log(action.payload);
+        const id = action.payload._id;
+
         state.isLoading = false;
         state.isError = null;
-        state.comments = action.payload.comments;
+        state.comments = action.payload?.comments;
+
+        state.userBlogs = state.userBlogs.map((blog) =>
+          blog._id === id ? action.payload : blog
+        );
       })
 
       .addCase(removeComment.rejected, (state, action) => {

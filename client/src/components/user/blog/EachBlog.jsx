@@ -9,6 +9,7 @@ import { BlogComment } from "./BlogComment";
 const initialState = { name: "", comment: "" };
 
 export const EachBlog = ({ blogId }) => {
+  
   const [blog, setBlog] = useState({});
 
   const [commentInput, setCommentInput] = useState(initialState);
