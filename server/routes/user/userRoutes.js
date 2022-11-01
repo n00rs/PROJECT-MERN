@@ -10,7 +10,7 @@ const {
 
 const { fetchUsers, fetchMsgs } = require("../../controller/userController");
 
-const verifyAccessToken = require("../../middlewares/authMiddleware");
+const {verifyAccessToken} = require("../../middlewares/authMiddleware");
 
 const { upload } = require("../../middlewares/multer");
 
@@ -24,8 +24,6 @@ router.get("/verify/:token", verifyEmail);
 
 router.patch("/verify", resendEmail);
 
-router.get("/protect", verifyAccessToken, cart);
-
 router.delete("/logout", verifyAccessToken, userLogout);
 
 router.get("/fetchUsers", verifyAccessToken, fetchUsers);
@@ -34,6 +32,5 @@ router.get("/fetch-messages/:to", verifyAccessToken, fetchMsgs);
 
 //admin
 
-router.post("/adminlogin", adminLogin);
 
 module.exports = router;

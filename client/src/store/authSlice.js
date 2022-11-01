@@ -2,7 +2,8 @@ const { createSlice } = require("@reduxjs/toolkit");
 
 console.log(document.cookie.slice("="));
 
-let userId = getCookie("userId");
+let user = getCookie("userId");
+const admin = getCookie("admin");
 
 function getCookie(cname) {
   let name = cname + "=";
@@ -20,7 +21,8 @@ function getCookie(cname) {
 }
 
 const initialState = {
-  userExist: userId ? userId : "",
+  userExist: user ? user : "",
+  adminExist: admin ? admin : "",
 };
 
 export const authSlice = createSlice({
@@ -30,8 +32,11 @@ export const authSlice = createSlice({
     setUser: (state, action) => {
       state.userExist = action.payload;
     },
+    setAdmin: (state, action) => {
+      state.adminExist = action.payload;
+    },
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, setAdmin } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const verifyAccessToken = require("../../middlewares/authMiddleware");
+const {verifyAccessToken} = require("../../middlewares/authMiddleware");
 const { upload } = require("../../middlewares/multer");
 const {
   newBlog,

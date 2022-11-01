@@ -4,7 +4,7 @@ const UserModel = require("../models/UserModel");
 
 //METHOD GET
 //ROUTE /api/users/fetchusers
-const fetchUsers = async (req, res) => {
+const fetchUsers = async (req, res, next) => {
   try {
     // console.log(req.userId);
 
@@ -16,15 +16,14 @@ const fetchUsers = async (req, res) => {
     // console.log(users);
     if (users) res.status(200).json(users);
   } catch (err) {
-    const statusCode = err.status ? err.status : 500;
-    res.status(statusCode).json(err.message);
+    next(err);
   }
 };
 
 //METHOD POST
 //ROUTE /api/users/fetch-messages/:to
 
-const fetchMsgs = async (req, res) => {
+const fetchMsgs = async (req, res, next) => {
   try {
     console.log(req.userId, req.params.to);
 
@@ -32,7 +31,7 @@ const fetchMsgs = async (req, res) => {
       to = req?.params?.to;
 
     if (!from || !to)
-      throw { status: 400, message: "please provide chat details" };
+      throw { statusCode: 400, message: "please provide chat details" };
 
     const messages = await MessageModel.find({
       users: { $all: [from, to] },
@@ -49,16 +48,14 @@ const fetchMsgs = async (req, res) => {
 
     res.status(200).json(projectMsg);
   } catch (err) {
-    const statusCode = err.status ? err.status : 500;
-
-    res.status(statusCode).json(err.message);
+    next(err);
   }
 };
 
 //METHOD POST
 //ROUTE /api/users/new-blog
 
-const newBlog = async (req, res) => {
+const newBlog = async (req, res, next) => {
   try {
     // console.log(req.file.filename);
     const userId = req?.userId;
@@ -68,7 +65,7 @@ const newBlog = async (req, res) => {
     console.log(req.body, req.userId);
 
     if (!userId || !author || !title || !content || !category)
-      throw { status: 400, message: "invalid request" };
+      throw { statusCode: 400, message: "invalid request" };
 
     const blogObj = { author, title, content, category, image, userId };
 
@@ -78,22 +75,20 @@ const newBlog = async (req, res) => {
 
     res.status(201).json({ created: true });
   } catch (err) {
-    console.log(err.message);
-    const statusCode = err?.status ? err?.status : 500;
-    res.status(statusCode).json(err.message);
+    next(err);
   }
 };
 
 //METHOD GET
 //ROUTE /api/users/all-blogs?pages=
 
-const allBlogs = async (req, res) => {
+const allBlogs = async (req, res, next) => {
   try {
     const pageSize = 6;
 
     const pageNumber = req.query.page;
     if (!pageNumber)
-      throw { status: 400, message: "please provide an page number" };
+      throw { statusCode: 400, message: "please provide an page number" };
 
     const totalDocs = await BlogModel.aggregate([
       { $match: { verified: true } },
@@ -111,15 +106,14 @@ const allBlogs = async (req, res) => {
     const totalPages = Math.ceil(totalDocs[0]?.total_docs / pageSize);
     res.status(200).json({ blogs, totalPages });
   } catch (err) {
-    const statusCode = err.status ? err.status : 500;
-    res.status(statusCode).json(err.message);
+    next(err);
   }
 };
 
 //METHOD GET
 //ROUTE /api/users/my-blog
 
-const myBlog = async (req, res) => {
+const myBlog = async (req, res, next) => {
   try {
     if (!req.userId) throw { statusCode: 403, message: "no authorization" };
     const userId = req.userId;
@@ -127,15 +121,14 @@ const myBlog = async (req, res) => {
     if (!blogs) throw { statusCode: 404, message: "not found" };
     else res.status(200).json(blogs);
   } catch (err) {
-    const statusCode = err.statusCode ? err.statusCode : 500;
-    res.status(statusCode).json(err.message);
+    next(err);
   }
 };
 
 //METHOD  DELETE
 //ROUTE /api/users/my-blog/:blogId
 
-const deleteBlog = async (req, res) => {
+const deleteBlog = async (req, res, next) => {
   try {
     const { blogId } = req.params;
 
@@ -144,15 +137,14 @@ const deleteBlog = async (req, res) => {
     console.log(deleteBlog);
     res.status(200).json({ removed: "removed" });
   } catch (error) {
-    const statusCode = err.statusCode ? err.statusCode : 500;
-    res.status(statusCode).json(err.message);
+    next(err);
   }
 };
 
 //METHOD PUT
 //ROUTE /api/users/blog/add-comment
 
-const addComment = async (req, res) => {
+const addComment = async (req, res, next) => {
   try {
     console.log(req.body);
     const { blogId, name, comment } = req.body;
@@ -172,16 +164,14 @@ const addComment = async (req, res) => {
 
     res.status(200).json(addComments);
   } catch (err) {
-    const statusCode = err.statusCode ? err.statusCode : 500;
-    res.status(statusCode).json(err.message);
-    console.log(err.message);
+    next(err);
   }
 };
 
 //METHOD DELETE
 //ROUTE /api/users/blog/delete-comment
 
-const deleteComment = async (req, res) => {
+const deleteComment = async (req, res, next) => {
   try {
     console.log(req.params);
     const commentId = req?.params?.commentId;
@@ -196,15 +186,14 @@ const deleteComment = async (req, res) => {
     console.log(deleteComm);
     res.status(200).json(deleteComm);
   } catch (err) {
-    console.log(err.message);
-    res.status(500).json(err.message);
+    next(err);
   }
 };
 
 //METHOD PUT
 //ROUTE /api/users/blog/update-blog
 
-const updateBlog = async (req, res) => {
+const updateBlog = async (req, res, next) => {
   try {
     console.log(req.body);
     const { content, title, blogId } = req.body;
@@ -219,15 +208,14 @@ const updateBlog = async (req, res) => {
     );
     res.status(200).json(updateBlg);
   } catch (err) {
-    console.log(err);
-    const statusCode = err.statusCode ? err.statusCode : 500;
+    next(err);
   }
 };
 
 //METHOD GET
 //ROUTE /api/users/blog/search?text=
 
-const search = async (req, res) => {
+const search = async (req, res, next) => {
   try {
     const { text } = req.query;
     if (!text) throw { statusCode: 400, message: "invalid search data" };
@@ -239,16 +227,14 @@ const search = async (req, res) => {
 
     res.status(200).json(searchDocs);
   } catch (err) {
-    const statusCode = err.statusCode ? err.statusCode : 500;
-    res.status(statusCode).json(err.message);
-    console.error(err.message);
+    next(err);
   }
 };
 
 //METHOD GET
 //ROUTE /api/users/blog/:blogId
 
-const fetchEachBlog = async (req, res) => {
+const fetchEachBlog = async (req, res, next) => {
   try {
     console.log(req.params);
     const { blogId } = req.params;
@@ -260,16 +246,14 @@ const fetchEachBlog = async (req, res) => {
     console.log(blog);
     res.status(200).json(blog);
   } catch (err) {
-    console.error(err);
-    res.status(err.statusCode).json(err.message);
-    // console.log(err);
+    next(err);
   }
 };
 
 //METOH GET
 //ROUTE /api/users/blog/featured-blog
 
-const fetchFeaturedBlog = async (req, res) => {
+const fetchFeaturedBlog = async (req, res, next) => {
   try {
     const featuredBlog = await BlogModel.aggregate([
       {
@@ -287,8 +271,7 @@ const fetchFeaturedBlog = async (req, res) => {
     if (featuredBlog.length > 0) res.status(200).json(featuredBlog[0]);
     else throw new Error("opps. somethings wrong in moongoose");
   } catch (err) {
-    console.log(err.message);
-    res.statusCode(500).json(err.message);
+    next(err);
   }
 };
 
@@ -304,5 +287,5 @@ module.exports = {
   updateBlog,
   search,
   fetchEachBlog,
-  fetchFeaturedBlog
+  fetchFeaturedBlog,
 };

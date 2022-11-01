@@ -9,16 +9,22 @@ import {
 } from "react-router-dom";
 
 import { toast } from "react-toastify";
+import { DashBoard } from "./components/admin/DashBoard";
+import { AdminLayout } from "./components/UI/AdminLayout";
 import Layout from "./components/UI/Layout";
 // import { actions as commentAction } from "./components/user/blog/EachBlog";
 import { NewBlog } from "./components/user/blog/NewBlog";
 import { UserBlogs } from "./components/user/blog/UserBlogs";
-import AdminLogin from "./pages/admin/AdminLogin";
+import { AddProduct } from "./pages/admin/AddProduct";
+import ManageProduct from "./pages/admin/ManageProduct";
+import ManageUsers from "./pages/admin/ManageUsers";
+import Orders from "./pages/admin/Orders";
 import Blog from "./pages/Blog";
 import ChatRoom from "./pages/ChatRoom";
 import EmailRedirect from "./pages/EmailRedirect";
 import ErrorPage from "./pages/ErrorPage";
 import LandingPage from "./pages/LandingPage";
+import Login from "./pages/Login";
 import Shop from "./pages/Shop";
 
 function App() {
@@ -52,8 +58,13 @@ function App() {
           </Route>
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>
-        <Route path="/admin">
-          <Route index element={<AdminLogin />} />
+        <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index path="dash" element={<DashBoard />} />
+          <Route path="add-products" element={<AddProduct />} />
+          <Route path="manage-orders" element={<Orders />} />
+          <Route path="manage-products" element={<ManageProduct />} />
+          <Route path="manage-users" element={<ManageUsers />} />
         </Route>
       </>
     )

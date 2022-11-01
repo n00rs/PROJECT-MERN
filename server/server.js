@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5001;
 const userRoutes = require("./routes/user/userRoutes");
 const blogRoutes = require("./routes/user/blogRoutes");
 const MessageModel = require("./models/MessageModel");
+const adminRoutes = require("./routes/adminRoutes/adminRoute");
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -25,8 +26,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 connectDB();
+
 app.use("/api/users", userRoutes);
 app.use("/api/users/blog", blogRoutes);
+app.use("/api/admin", adminRoutes);
+
+
+app.use((err,req,res,next)=>{
+  const statusCode = err.statusCode ? err.statusCode : 500;
+  res.status(statusCode).json(err.message); 
+})
 
 const server = app.listen(PORT, () => console.log(`server up at :${PORT}`));
 

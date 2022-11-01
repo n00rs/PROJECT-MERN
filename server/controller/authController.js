@@ -6,12 +6,10 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const moongoose = require("mongoose");
 const { compareSync } = require("bcryptjs");
 
-
-
 //METHOD POST
 //ROUTE /api/users/login
 
-const userLogin = async (req, res) => {
+const userLogin = async (req, res,next) => {
   try {
     console.log();
     //checking for google credentials
@@ -30,28 +28,26 @@ const userLogin = async (req, res) => {
         { firstName: true }
       );
 
-       // console.log(user);
+      // console.log(user);
 
       loginRespone(res, user);
       //creating access token
     } else {
       const { email, password } = req.body;
       if (!email || !password)
-        throw { status: 400, message: "please provide login credentials" };
+        throw { statusCode: 400, message: "please provide login credentials" };
       const user = await UserModel.login(req.body);
 
       loginRespone(res, user);
     }
   } catch (err) {
-    console.log(err);
-    const statusCode = err.status ? err.status : 500;
-    res.status(statusCode).json(err.message);
+    next(err);
   }
 };
 
 //METHOD POST
 //ROUTE /api/users/signup
-const userSignup = async (req, res) => {
+const userSignup = async (req, res,next) => {
   try {
     if (req?.headers?.authorization?.startsWith("Bearer")) {
       //checking for google credentials
@@ -83,24 +79,20 @@ const userSignup = async (req, res) => {
     console.log(user);
     await sendEmail(email);
     res.status(201).json({ message: "please verify your email" });
-
-
   } catch (error) {
-    
-    console.log(error.message);
-    const statusCode = error.status ? error.status : 500;
-    res.status(statusCode).json({ message: error.message });
+    next(err);
   }
 };
 
 //METHOD GET
 //ROUTE /api/users/verify/:token
 
-const verifyEmail = async (req, res) => {
+const verifyEmail = async (req, res,next) => {
   try {
     console.log(req.params);
 
     const { token } = req.params;
+    if (!token) throw { statusCode: 400, message: "invalid request " };
 
     const decode = verify(token, process.env.EMAIL_SECRET);
 
@@ -114,30 +106,30 @@ const verifyEmail = async (req, res) => {
     console.log(verifyEmail);
     res.status(200).json(verifyEmail);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err.message);
+    next(err);
   }
 };
 
 //METHOD PUT
 //ROUTE /api/users/verify
 
-const resendEmail = async (req, res) => {
+const resendEmail = async (req, res,next) => {
   try {
     console.log(req.body, "from patch");
     const { email } = req?.body;
+    if (!email) throw { statusCode: 400, message: "invalid request " };
+
     await sendEmail(email);
     res.status(200).json({ success: true });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({});
+    next(err);
   }
 };
 
 //METHOD DELETE
 //ROUTE /api/users/logout
 
-const userLogout = (req, res) => {
+const userLogout = (req, res,next) => {
   console.log(req.userId, req.cookiees);
 
   //clearing cookie
@@ -147,54 +139,49 @@ const userLogout = (req, res) => {
   res.status(200).json({ logout: true });
 };
 
-const cart = (req, res) => {
-  try {
-    res.status(200).json(req.userId);
-  } catch (err) {
-    const statusCode = err.status ? err.status : 500;
-  }
-};
+
 
 //METHOD POST
 //ROUTE /api/admin/login
 
-const adminLogin = async (req, res) => {
-  console.log(req.body);
+const adminLogin = async (req, res,next) => {
+  console.log(req.body,'admin');
   try {
     const { email, password } = req?.body;
     if (!email || !password)
-      throw { status: 403, message: "please provide admin credentials" };
+      throw { statusCode: 403, message: "please provide admin credentials" };
 
     const admin = await moongoose.connection
       .collection("admin")
       .findOne({ email: email });
-    console.log(admin);
-    
-    
+    // console.log(admin);
+
     if (!admin)
-      throw { status: 403, message: "please provide correct credentials" };
-    
-    console.log(compareSync(password,admin.password));
-      if (admin && compareSync(password, admin.password)) {
+      throw { statusCode: 403, message: "please provide correct credentials" };
+
+    console.log(compareSync(password, admin.password));
+    if (admin && compareSync(password, admin.password)) {
       const adminToken = sign(
-        { adminEmail: email },
+        { adminId: admin._id },
         process.env.ADMIN_JWT_KEY,
         { expiresIn: "1d" }
       );
-      res.cookie("adminAccessToken", adminToken, {
-        httpOnly: true,
-        withCredentials: true,
-        expires: new Date(Date.now() + 60 * 60 * 24 * 1000),
-      })
-      .cookie('admin_Id',admin._id,{
-        expires:new Date(Date.now() + 60 * 60 * 24 * 1000),
 
-      })
-      res.status(200).json({adminId:admin._id})
-    }
-  } catch (error) {
-    const statusCode = error.status ? error.status : 500;
-    res.status(statusCode).json(error.message);
+      res
+        .cookie("adminAccessToken", adminToken, {
+          httpOnly: true,
+          withCredentials: true,
+          expires: new Date(Date.now() + 60 * 60 * 24 * 1000),
+        })
+        .cookie("admin", admin._id, {
+          expires: new Date(Date.now() + 60 * 60 * 24 * 1000),
+        });
+
+      res.status(200).json({ adminId: admin._id });
+    } else
+      throw { statusCode: 403, message: "please provide correct credentials" };
+  } catch (err) {
+    next(err)
   }
 };
 
@@ -202,7 +189,7 @@ module.exports = {
   userLogin,
   userSignup,
   verifyEmail,
-  cart,
+  
   resendEmail,
   userLogout,
   adminLogin,
@@ -214,7 +201,8 @@ const loginRespone = (res, user) => {
   const access_token = sign({ userId: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
-console.log(access_token);
+
+  // console.log(access_token);
   //setting access token in cookie
 
   res
@@ -230,7 +218,7 @@ console.log(access_token);
       httpOnly: false,
       expires: new Date(Date.now() + 60 * 60 * 24 * 1000),
     });
- 
+
   res.status(200).json(user);
 };
 

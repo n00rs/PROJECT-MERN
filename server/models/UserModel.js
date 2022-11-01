@@ -31,7 +31,7 @@ userSchema.statics.signup = async function (userData) {
 
   console.log(existingUser);
 
-  if (existingUser) throw { status: 422, message: "user Exist please login" };
+  if (existingUser) throw { statusCode: 422, message: "user Exist please login" };
 
   const hashPass = userData.password && hashSync(userData.password);
   const userObj = {
@@ -51,11 +51,11 @@ userSchema.statics.signup = async function (userData) {
 userSchema.statics.login = async function ({ email, password }) {
   const user = await this.findOne({ email },{email_verified:true,password:true});
   console.log(user);
-  if (!user) throw { status: 403, message: "user does'nt exist" };
-  if (user && !user.email_verified) throw { status: 403 ,message:"please verify your email"};
+  if (!user) throw { statusCode: 403, message: "user does'nt exist" };
+  if (user && !user.email_verified) throw { statusCode: 403 ,message:"please verify your email"};
   if (user && user.email_verified && compareSync(password, user?.password))
     return user;
-  else throw { status: 403, message: "user does'nt exist or not verified" };
+  else throw { statusCode: 403, message: "user does'nt exist or not verified" };
 };
 
 module.exports = mongoose.model("User", userSchema);

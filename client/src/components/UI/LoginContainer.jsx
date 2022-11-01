@@ -1,11 +1,12 @@
-import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "../user/LoginModal/LoginModal.module.css";
 import GoogleAuth from "./GoogleAuth";
 
-export const LoginContainer = ({ onChange, header, LoginHandler, user }) => {
+export const LoginContainer = ({ onChange, header, loginHandler, user }) => {
+  // header='admin'
+  const adminClass = 'text-black mt-5'
   return (
-      <div className={`${styles.loginContainer} modal-body bg-dark `}>
+      <div className={`${styles.loginContainer} ${user ? "":adminClass}` }>
         <div>
           <h3>{header}</h3>
 
@@ -40,7 +41,7 @@ export const LoginContainer = ({ onChange, header, LoginHandler, user }) => {
             </div>
           )}
 
-          <button className={styles.loginBTN} onClick={LoginHandler}>
+          <button className={styles.loginBTN} onClick={loginHandler}>
             LOGIN
           </button>
 
