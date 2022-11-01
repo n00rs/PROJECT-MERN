@@ -5,7 +5,9 @@
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    align-items: center;    background-image: url('../assets/chat-bg.jpg');
+    align-items: center;    
+    background:linear-gradient(to right, #cc00fff5,#0d0e0d 50%);
+    /* border-radius: 50%; */
     background-size: cover;
 }
 

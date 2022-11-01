@@ -191,7 +191,7 @@ const deleteComment = async (req, res) => {
       { "comments._id": commentId },
       { $pull: { comments: { _id: commentId } } },
       { new: true }
-    )
+    );
 
     console.log(deleteComm);
     res.status(200).json(deleteComm);
@@ -224,6 +224,74 @@ const updateBlog = async (req, res) => {
   }
 };
 
+//METHOD GET
+//ROUTE /api/users/blog/search?text=
+
+const search = async (req, res) => {
+  try {
+    const { text } = req.query;
+    if (!text) throw { statusCode: 400, message: "invalid search data" };
+
+    // console.log(text);
+    const searchDocs = await BlogModel.find({ $text: { $search: text } }).sort({
+      score: { $meta: "textScore" },
+    });
+
+    res.status(200).json(searchDocs);
+  } catch (err) {
+    const statusCode = err.statusCode ? err.statusCode : 500;
+    res.status(statusCode).json(err.message);
+    console.error(err.message);
+  }
+};
+
+//METHOD GET
+//ROUTE /api/users/blog/:blogId
+
+const fetchEachBlog = async (req, res) => {
+  try {
+    console.log(req.params);
+    const { blogId } = req.params;
+    console.log(blogId);
+    if (!blogId) throw { statusCode: 404, message: "please provide an id" };
+    const blog = await BlogModel.findById(blogId).select(
+      "-__v -userId -verified"
+    );
+    console.log(blog);
+    res.status(200).json(blog);
+  } catch (err) {
+    console.error(err);
+    res.status(err.statusCode).json(err.message);
+    // console.log(err);
+  }
+};
+
+//METOH GET
+//ROUTE /api/users/blog/featured-blog
+
+const fetchFeaturedBlog = async (req, res) => {
+  try {
+    const featuredBlog = await BlogModel.aggregate([
+      {
+        $project: {
+          title: 1,
+          author: 1,
+          createdAt: 1,
+          content: 1,
+          commentsCount: { $size: "$comments" },
+        },
+      },
+      { $sort: { commentsCount: -1 } },
+      { $limit: 1 },
+    ]);
+    if (featuredBlog.length > 0) res.status(200).json(featuredBlog[0]);
+    else throw new Error("opps. somethings wrong in moongoose");
+  } catch (err) {
+    console.log(err.message);
+    res.statusCode(500).json(err.message);
+  }
+};
+
 module.exports = {
   fetchUsers,
   fetchMsgs,
@@ -234,4 +302,7 @@ module.exports = {
   addComment,
   deleteComment,
   updateBlog,
+  search,
+  fetchEachBlog,
+  fetchFeaturedBlog
 };

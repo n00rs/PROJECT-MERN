@@ -62,6 +62,9 @@ export const ChatContainer = ({ currentChat, socket }) => {
     scrollRef?.current?.scrollIntoView({ behaviour: "smooth" });
   }, [messages]);
   console.log(scrollRef.current);
+  
+  
+  
   return (
     <div className={styles["chat-container"]}>
       <div className={styles["user-details"]}>

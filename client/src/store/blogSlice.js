@@ -13,6 +13,8 @@ const initialState = {
   pageNo: 0,
 };
 
+//posting new BLOG
+
 export const postBlog = createAsyncThunk(
   "blog/postblog",
   async (blogData, thunkApi) => {
@@ -33,6 +35,9 @@ export const postBlog = createAsyncThunk(
     }
   }
 );
+
+
+//fetching all blogs from 
 
 export const fetchAllBlogs = createAsyncThunk(
   "blog/fetchAllBlogs",

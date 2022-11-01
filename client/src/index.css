@@ -15,3 +15,12 @@ code {
 .offcanvas-size-xl {
   --bs-offcanvas-width: min(95vw, 600px) !important;
 }
+
+
+
+.searchBlogIcon {
+  background-image: url('https://i.ytimg.com/vi/_NltVXqwGQw/maxresdefault.jpg');
+  background-size: 66px;
+  background-repeat: no-repeat;
+  background-position: 245px;
+}

@@ -19,4 +19,7 @@ const blogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 blogSchema.index({ createdAt: 1 });
+blogSchema.index({ title: "text",author:'text',category:'text' });
+
 module.exports = mongoose.model("Blog", blogSchema);
+    

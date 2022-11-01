@@ -4,48 +4,35 @@ const cookieeParser = require("cookie-parser");
 const cors = require("cors");
 const socket = require("socket.io");
 const app = express();
-const path = require('path')
+const path = require("path");
 const connectDB = require("./config/dbconfig");
 const PORT = process.env.PORT || 5001;
 
-const userRoutes = require("./routes/userRoutes");
+const userRoutes = require("./routes/user/userRoutes");
+const blogRoutes = require("./routes/user/blogRoutes");
 const MessageModel = require("./models/MessageModel");
 app.use(
-  cors({ 
+  cors({
     origin: ["http://localhost:3000"],
     methods: ["GET", "PUT", "POST", "DELETE", "PATCH"],
     credentials: true,
   })
 );
 
-app.use(cookieeParser());  
+app.use(cookieeParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, "public")));
 
 connectDB();
 app.use("/api/users", userRoutes);
-
-// app.get('/',(req,res)=>{
-//     var users = {
-//         agent: req.header('user-agent'), // User Agent we get from headers
-//         referrer: req.headers['referer'], //  Likewise for referrer
-//         ip: req.header('x-forwarded-for') || req.connection.remoteAddress, // Get IP - allow for proxy
-//         screen: { // Get screen info that we passed in url post data
-//           width: req.param('width'),
-//           height: req.param('height')
-//         }
-//       };
-//     console.log(req.body,users);
-//     res.send(users)
-// })                          //API for user routes
+app.use("/api/users/blog", blogRoutes);
 
 const server = app.listen(PORT, () => console.log(`server up at :${PORT}`));
- 
+
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",      //setting socket io to connect to client  
+    origin: "http://localhost:3000", //setting socket io to connect to client
     credentials: true,
   },
 });
@@ -69,12 +56,13 @@ io.on("connection", (socket) => {
 
       const sendUserSocket = onlineUsers.get(to);
       console.log(sendUserSocket, "hi");
+
       const saveChat = await MessageModel.create({
         message: { text: message },
-        users: [from,to],
+        users: [from, to],
         sender: from,
       });
-      console.log(`saved chats: ${saveChat }`);
+      console.log(`saved chats: ${saveChat}`);
       if (sendUserSocket) {
         socket.to(sendUserSocket).emit("msg-recieve", data.message);
       }
@@ -83,3 +71,17 @@ io.on("connection", (socket) => {
     }
   });
 });
+
+// app.get('/',(req,res)=>{
+//     var users = {
+//         agent: req.header('user-agent'), // User Agent we get from headers
+//         referrer: req.headers['referer'], //  Likewise for referrer
+//         ip: req.header('x-forwarded-for') || req.connection.remoteAddress, // Get IP - allow for proxy
+//         screen: { // Get screen info that we passed in url post data
+//           width: req.param('width'),
+//           height: req.param('height')
+//         }
+//       };
+//     console.log(req.body,users);
+//     res.send(users)
+// })                          //API for user routes

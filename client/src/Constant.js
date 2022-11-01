@@ -1,16 +1,32 @@
 export const GOOGLE_CLIENT_ID =
   "776116297541-okm4oor8ffa43umtku091bvc8frbfnen.apps.googleusercontent.com";
 
-const BASE_URL = "http://localhost:5000/api";
-export const USER_SIGNUP_URL = `${BASE_URL}/users/signup`;
-export const USER_LOGIN_URL = `${BASE_URL}/users/login`;
-export const EMAIL_VERIFY_URL = `${BASE_URL}/users/verify/`;
-export const LOGOUT_URL = `${BASE_URL}/users/logout`;
+const USER_BASE_URL = "http://localhost:5000/api/users";
+export const USER_SIGNUP_URL = `${USER_BASE_URL}/signup`;
+
+export const USER_LOGIN_URL = `${USER_BASE_URL}/login`;
+
+export const EMAIL_VERIFY_URL = `${USER_BASE_URL}/verify/`;
+
+export const LOGOUT_URL = `${USER_BASE_URL}/logout`;
 // export const RESEND_EMAIL_URL = `http://localhost:5000`
-export const FETCH_USERS_URL = `${BASE_URL}/users/fetchUsers`;
-export const FETCH_MSGS_URL = `${BASE_URL}/users/fetch-messages/`;
-export const NEW_BLOG_URL = `${BASE_URL}/users/new-blog`;
-export const ALL_BLOG_URL = `${BASE_URL}/users/all-blogs?page=`;
-export const USER_BLOGS_URL = `${BASE_URL}/users/my-blog`;
-export const COMMENT_URL = `${BASE_URL}/users/blog/comment`;
-export const UPDATE_BLOG_URL = `${BASE_URL}/users/blog/update-blog`;
+
+export const FETCH_USERS_URL = `${USER_BASE_URL}/fetchUsers`;
+
+export const FETCH_MSGS_URL = `${USER_BASE_URL}/fetch-messages/`;
+
+export const NEW_BLOG_URL = `${USER_BASE_URL}/blog/new-blog`;
+
+export const ALL_BLOG_URL = `${USER_BASE_URL}/blog/all-blogs?page=`;
+
+export const USER_BLOGS_URL = `${USER_BASE_URL}/blog/my-blog`;
+
+export const COMMENT_URL = `${USER_BASE_URL}/blog/comment`;
+
+export const UPDATE_BLOG_URL = `${USER_BASE_URL}/blog/update-blog`;
+
+export const SEARCH_BLOG_URL = `${USER_BASE_URL}/blog/search?text=`;
+
+export const EACH_BLOG_URL = `${USER_BASE_URL}/blog/`; // blog/:blogId
+
+export const FEATURED_BLOG_URL = `${USER_BASE_URL}/blog/featured-blog`;

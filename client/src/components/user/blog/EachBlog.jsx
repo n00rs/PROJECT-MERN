@@ -2,24 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { COMMENT_URL } from "../../../Constant";
+import { COMMENT_URL, EACH_BLOG_URL } from "../../../Constant";
 
 import { BlogComment } from "./BlogComment";
 
 const initialState = { name: "", comment: "" };
 
 export const EachBlog = ({ blogId }) => {
-  
   const [blog, setBlog] = useState({});
 
   const [commentInput, setCommentInput] = useState(initialState);
 
   const { blogs, isFetching } = useSelector((state) => state.blog);
 
+  const fetchBlog = async () => {
+    try {
+      const res = await fetch(EACH_BLOG_URL + blogId);
+      const data = await res.json();
+      if (!res.ok) throw data;
+      setBlog(data);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const useEffectFunc = () => {
     const blog = blogs.find((blog) => blog._id === blogId);
     console.log(blog);
     if (blog && blogId) setBlog(blog);
+    else fetchBlog();
     // else throw new Error ('opps lost your way go home')
   };
 
@@ -84,7 +95,7 @@ export const EachBlog = ({ blogId }) => {
       <BlogComment
         commentInpVal={commentInpVal}
         commentHandler={commentHandler}
-        comments={blog.comments}
+        comments={blog?.comments}
         commentInput={commentInput}
       />
     </>

@@ -11,7 +11,7 @@ import { store } from "./store/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
@@ -20,6 +20,6 @@ root.render(
         <App />
       </ThemeProvider>
     </Provider>
-//  </React.StrictMode>
+ </React.StrictMode>
 );
 reportWebVitals();

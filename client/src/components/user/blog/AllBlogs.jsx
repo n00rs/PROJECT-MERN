@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,6 +29,7 @@ export const AllBlogs = () => {
   // }, [pageNo]);
 
   const dispatch = useDispatch();
+  const [featuredBlog, setFeaturedBlog] = useState({});
   const { blogs, totalPages, pageNo } = useSelector((state) => state.blog);
   const pages = new Array(totalPages).fill(null).map((val, ind) => ind);
 
@@ -49,17 +51,35 @@ export const AllBlogs = () => {
 
   const changePage = (pageNo) => dispatch(setPageNo(pageNo));
 
+  // useEffect(()=>{
+  //   fetch()
+  // },[])
+  // const countComments = (data) => {
+  //   console.log(data,'data');
+  //   data.reduce((res, d) => {
+  //     // console.log(d, "d");
+  //     return res + d.comments?.length + countComments(d.comments);
+  //   });
+  // };
+  // if (blogs.length > 0) console.log(countComments(blogs));
+
+  const countComment = blogs?.slice().sort((a, b) => {
+    console.log(a?.comments?.length, "comments");
+    if (a?.comments.length < b?.comments.length) return 1;
+    if (a?.comments.length > b?.comments.length) return -1;
+    return 0;
+  });
+  //  return  a?.comments.length - b?.comments.length});
+  console.log(countComment);
   return (
     <>
       {/* <!-- Featured blog post--> */}
       <BlogCard
-        title={"Featured Post Title"}
-        content={`  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis
-            aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta
-            expedita corporis animi vero voluptate voluptatibus possimus, veniam
-            magni quis!`}
-        date="January 1, 2022"
-        image={"http://localhost:5000/blog_images/abc.png"}
+        title={countComment[0]?.title}
+        content={countComment[0]?.content.slice(0,20)  }
+        date={new Date(countComment[0]?.createdAt).toDateString()}
+        image={countComment[0]?.image}
+        id={countComment[0]?._id}
       />
 
       <Row xs={1} md={2} className="g-4 mt-4">

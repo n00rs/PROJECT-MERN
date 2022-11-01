@@ -12,12 +12,12 @@ const Login = ({ onToggle }) => {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
-  const dispatch = useDispatch();
 
   const getValues = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -74,6 +74,7 @@ const Login = ({ onToggle }) => {
             onChange={(e) => getValues(e)}
           />
         </div>
+        
         <div className={styles.forgetContainer}>
           <div>
             Remeber me <input type="checkbox" />
@@ -82,9 +83,12 @@ const Login = ({ onToggle }) => {
             <Link to="/forget-password">Forget password ?</Link>
           </div>
         </div>
+
+
         <button className={styles.loginBTN} onClick={LoginHandler}>
           LOGIN
         </button>
+        
         <span className="or">OR</span>
 
         <GoogleAuth page="login" navigate={navigate} />
