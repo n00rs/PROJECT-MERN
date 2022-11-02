@@ -1,7 +1,12 @@
 import React from "react";
 import { Col, Container, Nav, Navbar } from "react-bootstrap";
-import { Link, NavLink } from "react-router-dom";
-import { Dash } from "../../assets/icons/Dash";
+import { NavLink } from "react-router-dom";
+import { TableIcon } from "../../assets/icons/TableIcon";
+import { DashIcon } from "../../assets/icons/DashIcon";
+import { GridIcon } from "../../assets/icons/GridIcon";
+import { UsersIcon } from "../../assets/icons/UsersIcon";
+import { WareHouseIcon } from "../../assets/icons/WareHouseIcon";
+import { BlogIcon } from "../../assets/icons/BlogIcon";
 export const SideBar = () => {
   return (
     <>
@@ -26,8 +31,8 @@ export const SideBar = () => {
         </Container>
       </Navbar>
 
-      <Col md={2} className="bg-black">
-        <div className="d-flex flex-column flex-shrink-0 p-3 text-warning sticky-top  h-25 position-sticky ">
+      <Col md={2} className="bg-black text-white">
+        <div className="d-flex flex-column flex-shrink-0 p-3 text-warning sticky-top  position-sticky ">
           <a className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg className="bi me-2" width="40" height="32">
               <use xlinkHref="#grid"></use>
@@ -36,58 +41,72 @@ export const SideBar = () => {
           </a>
           <hr />
           <ul className="nav nav-pills  flex-column mb-auto">
-            <li className="nav-item">
+            <li>
               <NavLink
                 to="/admin/dash"
                 className={({ isActive }) =>
-                  isActive ? "nav-link active bg-warning" : "nav-link"
+                  isActive
+                    ? "nav-link active bg-warning"
+                    : "nav-link text-white ms-1"
                 }
               >
-                <Dash />
+                <DashIcon />
                 Dashboard
               </NavLink>
             </li>
-            <li>
+            <li className="nav-item">
               <NavLink
                 to="/admin/manage-products"
                 className={({ isActive }) =>
                   isActive ? "nav-link active bg-warning" : "nav-link"
                 }
               >
-                <svg className="bi me-2" width="16" height="16">
-                  <use xlinkHref="#speedometer2"></use>
-                </svg>
+                <GridIcon />
                 Product Management
               </NavLink>
             </li>
             <li>
-              <NavLink to='/admin/manage-orders'  className={({ isActive }) =>
+              <NavLink
+                to="/admin/manage-orders"
+                className={({ isActive }) =>
                   isActive ? "nav-link active bg-warning" : "nav-link"
-                }>
-                <svg className="bi me-2" width="16" height="16">
-                  <use xlinkHref="#table"></use>
-                </svg>
+                }
+              >
+                <TableIcon />
                 Orders
               </NavLink>
             </li>
             <li>
-              <NavLink to='/admin/add-products'  className={({ isActive }) =>
+              <NavLink
+                to="/admin/add-products"
+                className={({ isActive }) =>
                   isActive ? "nav-link active bg-warning" : "nav-link"
-                }>
-                <svg className="bi me-2" width="16" height="16">
-                  <use xlinkHref="#grid"></use>
-                </svg>
+                }
+              >
+                <WareHouseIcon />
                 Add Products
               </NavLink>
             </li>
             <li>
-              <NavLink to="/admin/manage-users"  className={({ isActive }) =>
+              <NavLink
+                to="/admin/manage-users"
+                className={({ isActive }) =>
                   isActive ? "nav-link active bg-warning" : "nav-link"
-                }>
-                <svg className="bi me-2" width="16" height="16">
-                  <use xlinkHref="#people-circle"></use>
-                </svg>
+                }
+              >
+                <UsersIcon />
                 Users
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/admin/manage-blogs"
+                className={({ isActive }) =>
+                  isActive ? "nav-link active bg-warning" : "nav-link"
+                }
+              >
+                <BlogIcon />
+                Blogs
               </NavLink>
             </li>
           </ul>

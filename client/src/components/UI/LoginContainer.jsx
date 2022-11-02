@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styles from "../user/LoginModal/LoginModal.module.css";
+import styles from "./LoginModal.module.css";
 import GoogleAuth from "./GoogleAuth";
 
 export const LoginContainer = ({ onChange, header, loginHandler, user }) => {

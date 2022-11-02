@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {verifyAccessToken} = require("../../middlewares/authMiddleware");
+const { verifyAccessToken } = require("../../middlewares/authMiddleware");
 const { upload } = require("../../middlewares/multer");
 const {
   newBlog,
@@ -12,7 +12,7 @@ const {
   search,
   fetchEachBlog,
   fetchFeaturedBlog,
-} = require("../../controller/userController");
+} = require("../../controller/blogController");
 
 router.post(
   "/new-blog",
@@ -31,13 +31,12 @@ router.put("/comment", addComment);
 
 router.delete("/comment/:commentId", verifyAccessToken, deleteComment);
 
-router.put("/update-blog", verifyAccessToken, updateBlog); 
+router.put("/update-blog", verifyAccessToken, updateBlog);
 
 router.get("/search", search);
 
-router.get("/featured-blog", fetchFeaturedBlog); 
+router.get("/featured-blog", fetchFeaturedBlog);
 
 router.get("/:blogId", fetchEachBlog);
 
 module.exports = router;
- 

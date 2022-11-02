@@ -9,14 +9,14 @@ const { compareSync } = require("bcryptjs");
 //METHOD POST
 //ROUTE /api/users/login
 
-const userLogin = async (req, res,next) => {
+const userLogin = async (req, res, next) => {
   try {
     console.log();
     //checking for google credentials
     if (req?.headers?.authorization?.startsWith("Bearer")) {
       const credentials = req.headers.authorization.split(" ")[1];
 
-      //user details from google
+      //user details from googleToken
       const data = await client.verifyIdToken({
         idToken: credentials,
         audience: process.env.GOOGLE_CLIENT_ID,
@@ -27,10 +27,12 @@ const userLogin = async (req, res,next) => {
         { email: data?.payload?.email },
         { firstName: true }
       );
-
+      if (!user)
+        throw { statusCode: 404, message: "please signup and try again" };
+      if (user && user?.isBlocked)
+        throw { statusCode: 403, message: "your id has been blocked" };
       // console.log(user);
-
-      loginRespone(res, user);
+      else loginRespone(res, user);
       //creating access token
     } else {
       const { email, password } = req.body;
@@ -47,7 +49,7 @@ const userLogin = async (req, res,next) => {
 
 //METHOD POST
 //ROUTE /api/users/signup
-const userSignup = async (req, res,next) => {
+const userSignup = async (req, res, next) => {
   try {
     if (req?.headers?.authorization?.startsWith("Bearer")) {
       //checking for google credentials
@@ -87,7 +89,7 @@ const userSignup = async (req, res,next) => {
 //METHOD GET
 //ROUTE /api/users/verify/:token
 
-const verifyEmail = async (req, res,next) => {
+const verifyEmail = async (req, res, next) => {
   try {
     console.log(req.params);
 
@@ -113,7 +115,7 @@ const verifyEmail = async (req, res,next) => {
 //METHOD PUT
 //ROUTE /api/users/verify
 
-const resendEmail = async (req, res,next) => {
+const resendEmail = async (req, res, next) => {
   try {
     console.log(req.body, "from patch");
     const { email } = req?.body;
@@ -129,7 +131,7 @@ const resendEmail = async (req, res,next) => {
 //METHOD DELETE
 //ROUTE /api/users/logout
 
-const userLogout = (req, res,next) => {
+const userLogout = (req, res, next) => {
   console.log(req.userId, req.cookiees);
 
   //clearing cookie
@@ -139,13 +141,11 @@ const userLogout = (req, res,next) => {
   res.status(200).json({ logout: true });
 };
 
-
-
 //METHOD POST
 //ROUTE /api/admin/login
 
-const adminLogin = async (req, res,next) => {
-  console.log(req.body,'admin');
+const adminLogin = async (req, res, next) => {
+  console.log(req.body, "admin");
   try {
     const { email, password } = req?.body;
     if (!email || !password)
@@ -181,7 +181,7 @@ const adminLogin = async (req, res,next) => {
     } else
       throw { statusCode: 403, message: "please provide correct credentials" };
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 
@@ -189,7 +189,7 @@ module.exports = {
   userLogin,
   userSignup,
   verifyEmail,
-  
+
   resendEmail,
   userLogout,
   adminLogin,

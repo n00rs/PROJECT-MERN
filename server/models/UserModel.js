@@ -17,11 +17,9 @@ const userSchema = new mongoose.Schema({
   },
   password: { type: String, default: null },
   picture: { type: String, default: null },
-  email_verified: {
-    type: Boolean,
-    default: false,
-  },
+  email_verified: { type: Boolean, default: false },
   address: addressSchema,
+  isBlocked: { type: Boolean, default: false },
 });
 
 userSchema.statics.signup = async function (userData) {
@@ -31,7 +29,8 @@ userSchema.statics.signup = async function (userData) {
 
   console.log(existingUser);
 
-  if (existingUser) throw { statusCode: 422, message: "user Exist please login" };
+  if (existingUser)
+    throw { statusCode: 422, message: "user Exist please login" };
 
   const hashPass = userData.password && hashSync(userData.password);
   const userObj = {
@@ -49,12 +48,24 @@ userSchema.statics.signup = async function (userData) {
 };
 
 userSchema.statics.login = async function ({ email, password }) {
-  const user = await this.findOne({ email },{email_verified:true,password:true});
+  const user = await this.findOne(
+    { email },
+    { email_verified: true, password: true, firstName: true, isBlocked: true }
+  );
   console.log(user);
   if (!user) throw { statusCode: 403, message: "user does'nt exist" };
-  if (user && !user.email_verified) throw { statusCode: 403 ,message:"please verify your email"};
-  if (user && user.email_verified && compareSync(password, user?.password))
-    return user;
+  if (user && !user.email_verified)
+    throw { statusCode: 403, message: "please verify your email" };
+  if (user && user.isBlocked)
+    throw { statusCode: 403, message: "this id has been blocked " };
+
+  if (
+    user &&
+    user.email_verified &&
+    !user.isBlocked &&
+    compareSync(password, user?.password)
+  )
+    return { firstName: user.firstName, _id: user._id };
   else throw { statusCode: 403, message: "user does'nt exist or not verified" };
 };
 

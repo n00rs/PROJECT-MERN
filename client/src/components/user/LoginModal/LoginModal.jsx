@@ -1,12 +1,7 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { memo } from "react";
-// import { createPortal } from "react-dom";
 import { Modal } from "react-bootstrap";
-// import styles from "./LoginModal.module.css";
-// import { Link, useNavigate } from "react-router-dom";
-// // import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-// import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-// import { GOOGLE_CLIENT_ID } from "../../../Constant";
+
 import Login from "../../../pages/Login";
 import Signup from "../../../pages/Signup";
 
@@ -38,11 +33,11 @@ const LoginModal = ({ showModal, onClose }) => {
           ) : toggle === "signup" ? (
             <Signup onToggle={setToggle} />
           ) : (
-           closeHandler()
+            closeHandler()
           )}
         </Modal.Body>
       </Modal>
-      {/* <Signup */}
+    
     </>
   );
 };

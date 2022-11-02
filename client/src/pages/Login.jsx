@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import GoogleAuth from "../components/UI/GoogleAuth";
 import { ADMIN_LOGIN_URL, USER_LOGIN_URL } from "../Constant";
-import styles from "../components/user/LoginModal/LoginModal.module.css";
 import { useDispatch } from "react-redux";
 import { setAdmin, setUser } from "../store/authSlice";
 import { LoginContainer } from "../components/UI/LoginContainer";
@@ -47,7 +45,7 @@ const Login = ({ onToggle }) => {
         console.log(data, "data");
         onToggle("");
         dispatch(setUser(data._id));
-        toast(document.cookie);
+        toast(`welcome back ${data?.firstName}`);
       }
     } catch (err) {
       console.log(err, "er.......");

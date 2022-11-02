@@ -35,3 +35,7 @@ export const EACH_BLOG_URL = `${USER_BASE_URL}/blog/`; // blog/:blogId
 export const FEATURED_BLOG_URL = `${USER_BASE_URL}/blog/featured-blog`;
 
 export const ADMIN_LOGIN_URL = `${ADMIN_BASE_URL}/login`;
+
+export const ADMIN_ALLUSERS_URL = `${ADMIN_BASE_URL}/fetch-allusers`;
+
+export const BLOCK_USER_URL = `${ADMIN_BASE_URL}/block-user/`; // /block-user/:USERiD

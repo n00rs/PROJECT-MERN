@@ -4,10 +4,9 @@ const UserModel = require("../models/UserModel");
 
 //METHOD GET
 //ROUTE /api/users/fetchusers
+
 const fetchUsers = async (req, res, next) => {
   try {
-    // console.log(req.userId);
-
     const userId = req.userId;
 
     const users = await UserModel.find({
@@ -52,240 +51,241 @@ const fetchMsgs = async (req, res, next) => {
   }
 };
 
-//METHOD POST
-//ROUTE /api/users/new-blog
 
-const newBlog = async (req, res, next) => {
-  try {
-    // console.log(req.file.filename);
-    const userId = req?.userId;
-    const url = req.protocol + "://" + req.get("host");
-    const image = url + "/blog_images/" + req.file.filename;
-    const { author, title, content, category } = req?.body;
-    console.log(req.body, req.userId);
+// //METHOD POST
+// //ROUTE /api/users/blog/new-blog
 
-    if (!userId || !author || !title || !content || !category)
-      throw { statusCode: 400, message: "invalid request" };
+// const newBlog = async (req, res, next) => {
+//   try {
+//     // console.log(req.file.filename);
+//     const userId = req?.userId;
+//     const url = req.protocol + "://" + req.get("host");
+//     const image = url + "/blog_images/" + req.file.filename;
+//     const { author, title, content, category } = req?.body;
+//     console.log(req.body, req.userId);
 
-    const blogObj = { author, title, content, category, image, userId };
+//     if (!userId || !author || !title || !content || !category)
+//       throw { statusCode: 400, message: "invalid request" };
 
-    const blog = await BlogModel.create(blogObj);
+//     const blogObj = { author, title, content, category, image, userId };
 
-    console.log(blog);
+//     const blog = await BlogModel.create(blogObj);
 
-    res.status(201).json({ created: true });
-  } catch (err) {
-    next(err);
-  }
-};
+//     console.log(blog);
 
-//METHOD GET
-//ROUTE /api/users/all-blogs?pages=
+//     res.status(201).json({ created: true });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const allBlogs = async (req, res, next) => {
-  try {
-    const pageSize = 6;
+// //METHOD GET
+// //ROUTE /api/users/blog/all-blogs?pages=
 
-    const pageNumber = req.query.page;
-    if (!pageNumber)
-      throw { statusCode: 400, message: "please provide an page number" };
+// const allBlogs = async (req, res, next) => {
+//   try {
+//     const pageSize = 6;
 
-    const totalDocs = await BlogModel.aggregate([
-      { $match: { verified: true } },
-      { $count: "total_docs" },
-    ]);
+//     const pageNumber = req.query.page;
+//     if (!pageNumber)
+//       throw { statusCode: 400, message: "please provide an page number" };
 
-    console.log(totalDocs);
+//     const totalDocs = await BlogModel.aggregate([
+//       { $match: { verified: true } },
+//       { $count: "total_docs" },
+//     ]);
 
-    const blogs = await BlogModel.find({ verified: true })
-      .limit(pageSize)
-      .skip(pageNumber * pageSize);
+//     console.log(totalDocs);
 
-    // console.log(blogs);
+//     const blogs = await BlogModel.find({ verified: true })
+//       .limit(pageSize)
+//       .skip(pageNumber * pageSize);
 
-    const totalPages = Math.ceil(totalDocs[0]?.total_docs / pageSize);
-    res.status(200).json({ blogs, totalPages });
-  } catch (err) {
-    next(err);
-  }
-};
+//     // console.log(blogs);
 
-//METHOD GET
-//ROUTE /api/users/my-blog
+//     const totalPages = Math.ceil(totalDocs[0]?.total_docs / pageSize);
+//     res.status(200).json({ blogs, totalPages });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const myBlog = async (req, res, next) => {
-  try {
-    if (!req.userId) throw { statusCode: 403, message: "no authorization" };
-    const userId = req.userId;
-    const blogs = await BlogModel.find({ userId }).sort({ createdAt: -1 });
-    if (!blogs) throw { statusCode: 404, message: "not found" };
-    else res.status(200).json(blogs);
-  } catch (err) {
-    next(err);
-  }
-};
+// //METHOD GET
+// //ROUTE /api/users/blog/my-blog
 
-//METHOD  DELETE
-//ROUTE /api/users/my-blog/:blogId
+// const myBlog = async (req, res, next) => {
+//   try {
+//     if (!req.userId) throw { statusCode: 403, message: "no authorization" };
+//     const userId = req.userId;
+//     const blogs = await BlogModel.find({ userId }).sort({ createdAt: -1 });
+//     if (!blogs) throw { statusCode: 404, message: "not found" };
+//     else res.status(200).json(blogs);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const deleteBlog = async (req, res, next) => {
-  try {
-    const { blogId } = req.params;
+// //METHOD  DELETE
+// //ROUTE /api/users/blog/my-blog/:blogId
 
-    if (!blogId) throw { statusCode: 400, message: "please provide an blogId" };
-    const { deleteBlog } = await BlogModel.deleteOne({ _id: blogId });
-    console.log(deleteBlog);
-    res.status(200).json({ removed: "removed" });
-  } catch (error) {
-    next(err);
-  }
-};
+// const deleteBlog = async (req, res, next) => {
+//   try {
+//     const { blogId } = req.params;
 
-//METHOD PUT
-//ROUTE /api/users/blog/add-comment
+//     if (!blogId) throw { statusCode: 400, message: "please provide an blogId" };
+//     const { deleteBlog } = await BlogModel.deleteOne({ _id: blogId });
+//     console.log(deleteBlog);
+//     res.status(200).json({ removed: "removed" });
+//   } catch (error) {
+//     next(err);
+//   }
+// };
 
-const addComment = async (req, res, next) => {
-  try {
-    console.log(req.body);
-    const { blogId, name, comment } = req.body;
+// //METHOD PUT
+// //ROUTE /api/users/blog/add-comment
 
-    if ((!blogId, !name, !comment))
-      throw { statusCode: 400, message: "invalid data" };
+// const addComment = async (req, res, next) => {
+//   try {
+//     console.log(req.body);
+//     const { blogId, name, comment } = req.body;
 
-    const addComments = await BlogModel.findByIdAndUpdate(
-      blogId,
-      {
-        $push: { comments: { name, comment } },
-      },
-      { new: true }
-    ).select("comments -_id");
+//     if ((!blogId, !name, !comment))
+//       throw { statusCode: 400, message: "invalid data" };
 
-    console.log(addComments, "afteradding comment");
+//     const addComments = await BlogModel.findByIdAndUpdate(
+//       blogId,
+//       {
+//         $push: { comments: { name, comment } },
+//       },
+//       { new: true }
+//     ).select("comments -_id");
 
-    res.status(200).json(addComments);
-  } catch (err) {
-    next(err);
-  }
-};
+//     console.log(addComments, "afteradding comment");
 
-//METHOD DELETE
-//ROUTE /api/users/blog/delete-comment
+//     res.status(200).json(addComments);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const deleteComment = async (req, res, next) => {
-  try {
-    console.log(req.params);
-    const commentId = req?.params?.commentId;
-    if (!commentId) throw { statusCode: 403, message: "invalid request" };
+// //METHOD DELETE
+// //ROUTE /api/users/blog/delete-comment
 
-    const deleteComm = await BlogModel.findOneAndUpdate(
-      { "comments._id": commentId },
-      { $pull: { comments: { _id: commentId } } },
-      { new: true }
-    );
+// const deleteComment = async (req, res, next) => {
+//   try {
+//     console.log(req.params);
+//     const commentId = req?.params?.commentId;
+//     if (!commentId) throw { statusCode: 403, message: "invalid request" };
 
-    console.log(deleteComm);
-    res.status(200).json(deleteComm);
-  } catch (err) {
-    next(err);
-  }
-};
+//     const deleteComm = await BlogModel.findOneAndUpdate(
+//       { "comments._id": commentId },
+//       { $pull: { comments: { _id: commentId } } },
+//       { new: true }
+//     );
 
-//METHOD PUT
-//ROUTE /api/users/blog/update-blog
+//     console.log(deleteComm);
+//     res.status(200).json(deleteComm);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const updateBlog = async (req, res, next) => {
-  try {
-    console.log(req.body);
-    const { content, title, blogId } = req.body;
-    if (!content || !title || !blogId)
-      throw { statusCode: 400, message: "invalid update request" };
-    const updateBlg = await BlogModel.findByIdAndUpdate(
-      blogId,
-      {
-        $set: { content, title },
-      },
-      { new: true }
-    );
-    res.status(200).json(updateBlg);
-  } catch (err) {
-    next(err);
-  }
-};
+// //METHOD PUT
+// //ROUTE /api/users/blog/update-blog
 
-//METHOD GET
-//ROUTE /api/users/blog/search?text=
+// const updateBlog = async (req, res, next) => {
+//   try {
+//     console.log(req.body);
+//     const { content, title, blogId } = req.body;
+//     if (!content || !title || !blogId)
+//       throw { statusCode: 400, message: "invalid update request" };
+//     const updateBlg = await BlogModel.findByIdAndUpdate(
+//       blogId,
+//       {
+//         $set: { content, title },
+//       },
+//       { new: true }
+//     );
+//     res.status(200).json(updateBlg);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const search = async (req, res, next) => {
-  try {
-    const { text } = req.query;
-    if (!text) throw { statusCode: 400, message: "invalid search data" };
+// //METHOD GET
+// //ROUTE /api/users/blog/search?text=
 
-    // console.log(text);
-    const searchDocs = await BlogModel.find({ $text: { $search: text } }).sort({
-      score: { $meta: "textScore" },
-    });
+// const search = async (req, res, next) => {
+//   try {
+//     const { text } = req.query;
+//     if (!text) throw { statusCode: 400, message: "invalid search data" };
 
-    res.status(200).json(searchDocs);
-  } catch (err) {
-    next(err);
-  }
-};
+//     // console.log(text);
+//     const searchDocs = await BlogModel.find({ $text: { $search: text } }).sort({
+//       score: { $meta: "textScore" },
+//     });
 
-//METHOD GET
-//ROUTE /api/users/blog/:blogId
+//     res.status(200).json(searchDocs);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const fetchEachBlog = async (req, res, next) => {
-  try {
-    console.log(req.params);
-    const { blogId } = req.params;
-    console.log(blogId);
-    if (!blogId) throw { statusCode: 404, message: "please provide an id" };
-    const blog = await BlogModel.findById(blogId).select(
-      "-__v -userId -verified"
-    );
-    console.log(blog);
-    res.status(200).json(blog);
-  } catch (err) {
-    next(err);
-  }
-};
+// //METHOD GET
+// //ROUTE /api/users/blog/:blogId
 
-//METOH GET
-//ROUTE /api/users/blog/featured-blog
+// const fetchEachBlog = async (req, res, next) => {
+//   try {
+//     console.log(req.params);
+//     const { blogId } = req.params;
+//     console.log(blogId);
+//     if (!blogId) throw { statusCode: 404, message: "please provide an id" };
+//     const blog = await BlogModel.findById(blogId).select(
+//       "-__v -userId -verified"
+//     );
+//     console.log(blog);
+//     res.status(200).json(blog);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const fetchFeaturedBlog = async (req, res, next) => {
-  try {
-    const featuredBlog = await BlogModel.aggregate([
-      {
-        $project: {
-          title: 1,
-          author: 1,
-          createdAt: 1,
-          content: 1,
-          commentsCount: { $size: "$comments" },
-        },
-      },
-      { $sort: { commentsCount: -1 } },
-      { $limit: 1 },
-    ]);
-    if (featuredBlog.length > 0) res.status(200).json(featuredBlog[0]);
-    else throw new Error("opps. somethings wrong in moongoose");
-  } catch (err) {
-    next(err);
-  }
-};
+// //METOH GET
+// //ROUTE /api/users/blog/featured-blog
+
+// const fetchFeaturedBlog = async (req, res, next) => {
+//   try {
+//     const featuredBlog = await BlogModel.aggregate([
+//       {
+//         $project: {
+//           title: 1,
+//           author: 1,
+//           createdAt: 1,
+//           content: 1,
+//           commentsCount: { $size: "$comments" },
+//         },
+//       },
+//       { $sort: { commentsCount: -1 } },
+//       { $limit: 1 },
+//     ]);
+//     if (featuredBlog.length > 0) res.status(200).json(featuredBlog[0]);
+//     else throw new Error("opps. somethings wrong in moongoose");
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 module.exports = {
   fetchUsers,
   fetchMsgs,
-  newBlog,
-  allBlogs,
-  myBlog,
-  deleteBlog,
-  addComment,
-  deleteComment,
-  updateBlog,
-  search,
-  fetchEachBlog,
-  fetchFeaturedBlog,
+  // newBlog,
+  // allBlogs,
+  // myBlog,
+  // deleteBlog,
+  // addComment,
+  // deleteComment,
+  // updateBlog,
+  // search,
+  // fetchEachBlog,
+  // fetchFeaturedBlog,
 };

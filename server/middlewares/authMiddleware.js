@@ -15,6 +15,7 @@ const verifyAccessToken = async (req, res, next) => {
 };
 
 const verifyAdmin = (req, res, next) => {
+  
   console.log(req.cookies);
 
   const token = req?.cookies?.adminAccessToken;

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import GoogleAuth from "../components/UI/GoogleAuth";
 import useValid from "../hooks/useValid";
-import styles from "../components/user/LoginModal/LoginModal.module.css";
+import styles from "../components/UI/LoginModal.module.css";
 import { USER_SIGNUP_URL } from "../Constant";
 import { toast } from "react-toastify";
 
@@ -60,11 +60,10 @@ const Signup = ({ onToggle }) => {
     blurHandler: confirmPassBlurHandler,
     reset: confirmPassReset,
   } = useValid((val) => val === enteredPass);
-  // const { isLoading, error, sendReq } = useFetch();
 
-  // console.log(fnameError);
 
   let formValid = false;
+
   if (fnameValid && lnameValid && emailValid && passValid && confirmPassValid)
     formValid = true;
 
@@ -111,6 +110,7 @@ const Signup = ({ onToggle }) => {
   };
 
   if (isLoading) return <Spinner animation="border" size="M" />;
+
   return (
     <Form className="text-white" noValidate onSubmit={onSignup}>
       <Row className="mb-3">
