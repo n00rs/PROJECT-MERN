@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { COMMENT_URL, EACH_BLOG_URL } from "../../../Constant";
+import { BlogArticle } from "../../UI/BlogArticle";
 
 import { BlogComment } from "./BlogComment";
 
@@ -10,9 +11,7 @@ const initialState = { name: "", comment: "" };
 
 export const EachBlog = ({ blogId }) => {
   const [blog, setBlog] = useState({});
-
   const [commentInput, setCommentInput] = useState(initialState);
-
   const { blogs, isFetching } = useSelector((state) => state.blog);
 
   const fetchBlog = async () => {
@@ -66,31 +65,7 @@ export const EachBlog = ({ blogId }) => {
 
   return (
     <>
-      <article>
-        <header className="mb-4">
-          <h1 className="fw-bolder mb-1">{blog.title}</h1>
-          <div className="text-muted fst-italic mb-2">
-            {`Posted on ${new Date(blog.createdAt).toDateString()} by ${
-              blog.author
-            }`}
-          </div>
-
-          <Link
-            className="badge bg-secondary text-decoration-none link-light"
-            href="#!"
-          >
-            {blog.category}
-          </Link>
-        </header>
-
-        <figure className="mb-4">
-          <img className="img-fluid rounded" src={blog.image} alt="..." />
-        </figure>
-
-        <section className="mb-5">
-          <p className="fs-5 mb-4">{blog.content}</p>
-        </section>
-      </article>
+      <BlogArticle blog={blog} />
 
       <BlogComment
         commentInpVal={commentInpVal}

@@ -6,8 +6,7 @@ const BlogModel = require("../models/BlogModel");
 const adminUserBlog = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    if (!userId)
-      throw { statusCode: 422, message: "please provide valid paramd" };
+    if (!userId) throw { statusCode: 422, message: "please provide valid paramd" };
 
     const userBlog = await BlogModel.find({ userId }, { __v: 0 }).sort({
       createdAt: -1,
@@ -69,8 +68,7 @@ const allBlogs = async (req, res, next) => {
     const pageSize = 6;
 
     const pageNumber = req.query.page;
-    if (!pageNumber)
-      throw { statusCode: 400, message: "please provide an page number" };
+    if (!pageNumber) throw { statusCode: 400, message: "please provide an page number" };
 
     const totalDocs = await BlogModel.aggregate([
       { $match: { verified: true } },
@@ -99,10 +97,13 @@ const deleteBlog = async (req, res, next) => {
   try {
     const { blogId } = req.params;
 
-    if (!blogId) throw { statusCode: 400, message: "please provide an blogId" };
-    const { deleteBlog } = await BlogModel.deleteOne({ _id: blogId });
-    console.log(deleteBlog);
-    res.status(200).json({ removed: "removed" });
+    if (!blogId) throw { statusCode: 422, message: "please provide an blogId" };
+
+    const { deletedCount } = await BlogModel.deleteOne({ _id: blogId });
+
+    console.log(deletedCount);
+    if (deletedCount === 1) res.status(200).json({ removed: "removed" });
+    else throw { statusCode: 500, message: "data base betrayed" };
   } catch (error) {
     next(err);
   }
@@ -116,8 +117,7 @@ const addComment = async (req, res, next) => {
     console.log(req.body);
     const { blogId, name, comment } = req.body;
 
-    if ((!blogId, !name, !comment))
-      throw { statusCode: 400, message: "invalid data" };
+    if ((!blogId, !name, !comment)) throw { statusCode: 400, message: "invalid data" };
 
     const addComments = await BlogModel.findByIdAndUpdate(
       blogId,
@@ -164,15 +164,13 @@ const updateBlog = async (req, res, next) => {
   try {
     console.log(req.body);
     const { content, title, blogId } = req.body;
-    if (!content || !title || !blogId)
-      throw { statusCode: 400, message: "invalid update request" };
+    if (!content || !title || !blogId) throw { statusCode: 400, message: "invalid update request" };
     const updateBlg = await BlogModel.findByIdAndUpdate(
       blogId,
-      {
-        $set: { content, title },
-      },
+      { $set: { content, title } },
       { new: true }
     );
+
     res.status(200).json(updateBlg);
   } catch (err) {
     next(err);
@@ -203,21 +201,19 @@ const search = async (req, res, next) => {
 
 const fetchEachBlog = async (req, res, next) => {
   try {
-    console.log(req.params);
     const { blogId } = req.params;
-    console.log(blogId);
+
     if (!blogId) throw { statusCode: 404, message: "please provide an id" };
-    const blog = await BlogModel.findById(blogId).select(
-      "-__v -userId -verified"
-    );
-    console.log(blog);
+
+    const blog = await BlogModel.findById(blogId).select("-__v -userId -verified");
+
     res.status(200).json(blog);
   } catch (err) {
     next(err);
   }
 };
 
-//METOH GET
+//METHOD GET
 //ROUTE /api/users/blog/featured-blog
 
 const fetchFeaturedBlog = async (req, res, next) => {
@@ -242,6 +238,40 @@ const fetchFeaturedBlog = async (req, res, next) => {
   }
 };
 
+//METHOD GET
+//ROUTE /api/admin/all-blogs
+
+const fetchAllBlogs = async (req, res, next) => {
+  try {
+    const allBlogs = await BlogModel.find({}, { userId: 0, __v: 0, updatedAt: 0 });
+    res.status(200).json(allBlogs);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD PUT
+//ROUTE /api/admin/verify-blog/:blogId
+
+const verifyBlog = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+    if (!blogId) throw { statusCode: 422, message: "invalid params" };
+    else {
+      const verifyBlog = await BlogModel.findByIdAndUpdate(
+        blogId,
+        {
+          $set: { verified: true },
+        },
+        { new: true }
+      ).select("-userId -__v -updatedAt");
+      res.status(200).json(verifyBlog);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   newBlog,
   allBlogs,
@@ -253,5 +283,7 @@ module.exports = {
   search,
   fetchEachBlog,
   fetchFeaturedBlog,
-  adminUserBlog
+  adminUserBlog,
+  fetchAllBlogs,
+  verifyBlog,
 };

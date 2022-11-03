@@ -34,8 +34,14 @@ export const EACH_BLOG_URL = `${USER_BASE_URL}/blog/`; // blog/:blogId
 
 export const FEATURED_BLOG_URL = `${USER_BASE_URL}/blog/featured-blog`;
 
+//ADMIN_API
+
 export const ADMIN_LOGIN_URL = `${ADMIN_BASE_URL}/login`;
 
 export const ADMIN_ALLUSERS_URL = `${ADMIN_BASE_URL}/fetch-allusers`;
 
-export const BLOCK_USER_URL = `${ADMIN_BASE_URL}/block-user/`; // /block-user/:USERiD
+export const BLOCK_USER_URL = `${ADMIN_BASE_URL}/block-user/`; //      /block-user/:USERiD
+
+export const ADMIN_ALLBLOG_API = `${ADMIN_BASE_URL}/all-blogs`;
+
+export const ADMIN_BLOG_API = `${ADMIN_BASE_URL}/blog/`; //    /api/admin/verify-blog/:blogId 

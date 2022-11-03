@@ -51,7 +51,7 @@ export const UserTable = ({data:user, index,blockHandler}) => {
       <td>{index}</td>
       <td>
         <div className="p-2 d-flex flex-row align-items-center mb-2">
-          <img src={user?.picture} width="40" className="rounded-circle" />
+          <img src={user?.picture} width="40" className="rounded-circle"  alt=""/>
           <div className="d-flex flex-column ms-2">
             <span className="d-block font-weight-bold">{user?.firstName}</span>
             <small className="text-muted">{user?.lastName}</small>
