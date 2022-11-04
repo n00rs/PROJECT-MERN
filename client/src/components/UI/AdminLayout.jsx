@@ -6,7 +6,6 @@ import { ToastContainer } from "react-toastify";
 import { SideBar } from "../admin/SideBar";
 
 export const AdminLayout = ({ children }) => {
-  
   return (
     <>
       <Row>
@@ -17,7 +16,6 @@ export const AdminLayout = ({ children }) => {
         </Col>
       </Row>
       <ToastContainer />
-
     </>
   );
 };

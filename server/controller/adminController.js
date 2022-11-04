@@ -1,43 +1,34 @@
 const UserModel = require("../models/UserModel");
 
-//METHOD GET
-//ROUTE /api/admin/fetch-allusers
+//METHOD POST
+//ROUTE /api/admin/product
 
-const fetchAllUsers = async (req, res, next) => {
+const addProduct = async (req, res, next) => {
   try {
-    const users = await UserModel.find({}, { password: 0, __v: 0 });
-    res.status(200).json(users);
-  } catch (err) {
-    next(err);
-  }
-};
+    const addProperties = Object.keys(req.body);
 
-//METHOD PUT
-//ROUTE /api/admin/block-user/:id
-
-const userBlocking = async (req, res, next) => {
-  try {
-    console.log(req.body);
-    console.log(req.paramas);
-    const { userId } = req.params;
-
-    if (!userId)
-      throw { statusCode: 422, message: "please provide valid params" };
-
-    const updateStatus = await UserModel.findByIdAndUpdate(
-      userId,
-      [{ $set: { isBlocked: { $not: "$isBlocked" } } }],
-      { new: true, isBlocked: true }
+    const reqProperties = [
+      "category",
+      "subcategory",
+      "brand",
+      "productName",
+      "size",
+      "price",
+      "description",
+      "images",
+    ];
+    const check = addProperties.every(
+      (prop) => reqProperties.includes(prop) && req.body[prop] !== ""
     );
 
-    if (updateStatus) res.status(200).json(updateStatus);
-    else throw { statusCode: 500, message: "oops some wrong in mongo" };
+    if (!check) throw { statusCode: 422, message: "invalid request" };
+const newProduct = await ProductModel
+    res.status(201).json(req.body);
   } catch (err) {
     next(err);
   }
 };
 
 module.exports = {
-  fetchAllUsers,
-  userBlocking,
+  addProduct,
 };

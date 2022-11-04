@@ -19,6 +19,18 @@ const fetchUsers = async (req, res, next) => {
   }
 };
 
+//METHOD GET
+//ROUTE /api/admin/fetch-allusers
+
+const fetchAllUsers = async (req, res, next) => {
+  try {
+    const users = await UserModel.find({}, { password: 0, __v: 0 });
+    res.status(200).json(users);
+  } catch (err) {
+    next(err);
+  }
+};
+
 //METHOD POST
 //ROUTE /api/users/fetch-messages/:to
 
@@ -29,8 +41,7 @@ const fetchMsgs = async (req, res, next) => {
     const from = req?.userId,
       to = req?.params?.to;
 
-    if (!from || !to)
-      throw { statusCode: 400, message: "please provide chat details" };
+    if (!from || !to) throw { statusCode: 400, message: "please provide chat details" };
 
     const messages = await MessageModel.find({
       users: { $all: [from, to] },
@@ -51,8 +62,32 @@ const fetchMsgs = async (req, res, next) => {
   }
 };
 
+//METHOD PUT
+//ROUTE /api/admin/block-user/:id
 
+const userBlocking = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    console.log(req.paramas);
+    const { userId } = req.params;
+
+    if (!userId) throw { statusCode: 422, message: "please provide valid params" };
+
+    const updateStatus = await UserModel.findByIdAndUpdate(
+      userId,
+      [{ $set: { isBlocked: { $not: "$isBlocked" } } }],
+      { new: true, isBlocked: true }
+    );
+
+    if (updateStatus) res.status(200).json(updateStatus);
+    else throw { statusCode: 500, message: "oops some wrong in mongo" };
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   fetchUsers,
   fetchMsgs,
+  userBlocking,
+  fetchAllUsers
 };
