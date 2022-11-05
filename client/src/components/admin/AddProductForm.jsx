@@ -1,6 +1,7 @@
-import { set } from "mongoose";
 import React, { useRef, useState } from "react";
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
+import { ADD_PRODUCT_API } from "../../Constant";
+import { Spinner } from "../UI/Spinner";
 import { s3UploadHandler } from "./awsService";
 
 export const AddProductForm = () => {
@@ -14,11 +15,10 @@ export const AddProductForm = () => {
   const sizeHandler = (e) =>
     setSizeVal((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 
-  // console.log(inputVal);
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log(inputVal, sizeVal, fileRef.current?.files);
     setIsloading(true);
+
     try {
       const imageFiles = fileRef.current?.files;
       const imageLinks = [];
@@ -30,19 +30,26 @@ export const AddProductForm = () => {
         imageLinks.push(imageLink);
       }
 
-      const body = {
-        ...inputVal,
-        size: { ...sizeVal },
-        images: imageLinks,
-      };
-
+      const body = JSON.stringify({ ...inputVal, size: { ...sizeVal }, images: imageLinks });
       console.log(body);
+      const res = await fetch(ADD_PRODUCT_API, {
+        method: "POST",
+        body,
+        headers: { "Content-Type": "application/json" },
+        credentials:'include'
+      });
+      const data = await res.json();
+      console.log(data);
+      if (!res.ok) throw data;
+
       setIsloading(false);
     } catch (err) {
       setIsloading(false);
-      console.log(err.message);
+      console.log(err, "err.in add product");
     }
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <Form onSubmit={submitHandler}>
@@ -90,7 +97,7 @@ export const AddProductForm = () => {
       <Row className="g-2 mb-3">
         <Col md>
           <FloatingLabel label="BRAND NAME">
-            <Form.Control type="text" name="brand" placeholder="brand" />
+            <Form.Control type="text" name="brand" placeholder="brand" onChange={changeHandler} />
           </FloatingLabel>
         </Col>
         <Col md>

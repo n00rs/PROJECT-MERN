@@ -44,4 +44,6 @@ export const BLOCK_USER_URL = `${ADMIN_BASE_URL}/block-user/`; //      /block-us
 
 export const ADMIN_ALLBLOG_API = `${ADMIN_BASE_URL}/all-blogs`;
 
-export const ADMIN_BLOG_API = `${ADMIN_BASE_URL}/blog/`; //    /api/admin/verify-blog/:blogId 
+export const ADMIN_BLOG_API = `${ADMIN_BASE_URL}/blog/`; //    /api/admin/verify-blog/:blogId
+
+export const ADD_PRODUCT_API = `${ADMIN_BASE_URL}/products`;

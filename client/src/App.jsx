@@ -27,7 +27,7 @@ import Shop from "./pages/Shop";
 import ManageBlogs from "./pages/admin/ManageBlogs";
 
 function App() {
-  const { userExist } = useSelector((state) => state.auth);
+  const { userExist, adminExist } = useSelector((state) => state.auth);
 
   const userLoader = () => {
     if (!userExist) {
@@ -36,6 +36,15 @@ function App() {
     }
   };
 
+  const adminLoader = () => {
+    // log
+    if (!adminExist) {
+      toast.dark("you are not authorizised ");
+      return redirect("/admin/login");
+    } else {
+     return redirect("/admin/dash");
+    }
+  };
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -46,30 +55,27 @@ function App() {
             <Route index element={<Blog />} />
             <Route path=":blogId" element={<Blog />} />
             <Route path="new-blog" element={<NewBlog />} loader={userLoader} />
-            <Route
-              path="my-blogs"
-              element={<UserBlogs />}
-              loader={userLoader}
-            />
+            <Route path="my-blogs" element={<UserBlogs />} loader={userLoader} />
           </Route>
           <Route path="/shop">
             <Route index element={<Shop />} />
           </Route>
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>
-        <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin" element={<AdminLayout />} errorElement={<ErrorPage />}>
+        <Route path="/admin/login" element={<Login />} loader={adminLoader} />
+        <Route
+          path="/admin"
+          element={<AdminLayout />}
+          errorElement={<ErrorPage />}
+          // loader={adminLoader}
+        >
           <Route index path="dash" element={<DashBoard />} />
           <Route path="add-products" element={<AddProduct />} />
           <Route path="manage-orders" element={<Orders />} />
           <Route path="manage-products" element={<ManageProduct />} />
           <Route path="manage-blogs" element={<ManageBlogs />} />
 
-          <Route
-            path="manage-users"
-            element={<ManageUsers />}
-            loader={fetchUsers}
-          />
+          <Route path="manage-users" element={<ManageUsers />} loader={fetchUsers} />
         </Route>
       </>
     )

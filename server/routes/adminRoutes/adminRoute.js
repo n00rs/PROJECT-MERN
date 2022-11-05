@@ -5,13 +5,18 @@ const { adminLogin } = require("../../controller/authController");
 const { verifyAdmin } = require("../../middlewares/authMiddleware");
 
 const { fetchAllUsers, userBlocking } = require("../../controller/userController");
+
 const {
   adminUserBlog,
   fetchAllBlogs,
   verifyBlog,
   deleteBlog,
 } = require("../../controller/blogController");
-const { addProduct } = require("../../controller/adminController");
+
+const { addProduct, fetchAllProducts } = require("../../controller/adminController");
+
+//ROUTES
+
 
 router.post("/login", adminLogin);
 
@@ -27,7 +32,9 @@ router.put("/blog/:blogId", verifyAdmin, verifyBlog);
 
 router.delete("/blog/:blogId", verifyAdmin, deleteBlog);
 
-router.post('/products',verifyAdmin,addProduct)
+router.post("/products", verifyAdmin, addProduct);
+
+router.get("/products", verifyAdmin, fetchAllProducts);
 
 
 

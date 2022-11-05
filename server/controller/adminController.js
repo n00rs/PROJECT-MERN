@@ -1,3 +1,5 @@
+const BlogModel = require("../models/BlogModel");
+const ProductModel = require("../models/ProductModel");
 const UserModel = require("../models/UserModel");
 
 //METHOD POST
@@ -17,18 +19,65 @@ const addProduct = async (req, res, next) => {
       "description",
       "images",
     ];
-    const check = addProperties.every(
-      (prop) => reqProperties.includes(prop) && req.body[prop] !== ""
+    console.log(
+      reqProperties.every((prop) => {
+        // console.log(reqProperties.indexOf(prop));
+        return addProperties.includes(prop) && req.body[prop] !== "";
+      })
     );
 
+    const check = reqProperties.every(
+      (prop) => {
+        console.log(reqProperties.indexOf(prop));
+        return addProperties.includes(prop) && req.body[prop] !== "";
+      }
+      //
+    );
+    console.log(check);
     if (!check) throw { statusCode: 422, message: "invalid request" };
-const newProduct = await ProductModel
-    res.status(201).json(req.body);
+
+    const newProd = new ProductModel(req.body);
+    const saveProd = await newProd.save();
+
+    console.log(saveProd === newProd);
+    res.status(201).json(saveProd === newProd);
   } catch (err) {
     next(err);
   }
 };
 
+//METHOD GET
+//ROUTE /api/admin/products?page=
+
+const fetchAllProducts = async (req, res, next) => {
+  try {
+    const pageSize = 1;
+    const pageNo = req.query?.page;
+    if (!pageNo) throw { statusCode: 422, message: "invalid query request" };
+    // const totalDocs = req.query?.totalDocs;
+
+    const totalDocs = await ProductModel.find().count();
+
+    const fetchAllProducts = await ProductModel.find({}, { __v: 0 })
+      .sort({
+        delete: 1,
+        createdAt: -1,
+      })
+
+      .limit(pageSize)
+      .skip(pageNo * pageSize);
+
+    const totalPages = Math.ceil(totalDocs / pageSize);
+    res.status(200).json({ fetchAllProducts, totalPages, totalDocs });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD DELETE
+//ROUTE /api/admin/
+
 module.exports = {
   addProduct,
+  fetchAllProducts,
 };

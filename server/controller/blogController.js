@@ -1,5 +1,9 @@
 const BlogModel = require("../models/BlogModel");
 
+
+
+
+
 //METHOD GET
 //ROUTE /api/admin/user-blog/:userId
 
@@ -75,7 +79,6 @@ const allBlogs = async (req, res, next) => {
       { $count: "total_docs" },
     ]);
 
-    console.log(totalDocs);
 
     const blogs = await BlogModel.find({ verified: true })
       .limit(pageSize)
