@@ -1,10 +1,16 @@
-import React, { useRef, useState } from "react";
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
-import { ADD_PRODUCT_API } from "../../Constant";
+// import { ADD_PRODUCT_API } from "../../Constant";
+// import { Spinner } from "../../components/UI/Spinner";
+// import { s3UploadHandler } from "../../store/admin/awsService";
+import { useRef, useState } from "react";
+import { s3UploadHandler } from "../../store/admin/awsService";
 import { Spinner } from "../UI/Spinner";
-import { s3UploadHandler } from "./awsService";
+import { ADD_PRODUCT_API } from "../../Constant";
 
-export const AddProductForm = () => {
+
+
+export const AddProductForm = ({ updateProdValues }) => {
+  
   const [inputVal, setInputVal] = useState({});
   const [sizeVal, setSizeVal] = useState({});
   const [isLoading, setIsloading] = useState();
@@ -22,9 +28,9 @@ export const AddProductForm = () => {
     try {
       const imageFiles = fileRef.current?.files;
       const imageLinks = [];
-      console.log(imageFiles.isArray);
 
-      for (let i = 0; i < imageFiles.length; i++) {
+      //addming images to aws S3 bucket
+      for (let i = 0; i < imageFiles?.length; i++) {
         console.log(imageFiles[i]);
         const imageLink = await s3UploadHandler(imageFiles[i]);
         imageLinks.push(imageLink);
@@ -36,7 +42,7 @@ export const AddProductForm = () => {
         method: "POST",
         body,
         headers: { "Content-Type": "application/json" },
-        credentials:'include'
+        credentials: "include",
       });
       const data = await res.json();
       console.log(data);
@@ -49,7 +55,7 @@ export const AddProductForm = () => {
     }
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner  />;
 
   return (
     <Form onSubmit={submitHandler}>
@@ -62,6 +68,7 @@ export const AddProductForm = () => {
               value="men"
               name="category"
               type="radio"
+              defaultChecked={updateProdValues.category === "men"}
               inline
               onChange={changeHandler}
             />
@@ -70,6 +77,7 @@ export const AddProductForm = () => {
               type="radio"
               name="category"
               value="women"
+              defaultChecked={updateProdValues.category === "wommen"}
               inline
               onChange={changeHandler}
             />
@@ -77,6 +85,7 @@ export const AddProductForm = () => {
               label="unisex"
               type="radio"
               name="category"
+              defaultChecked={updateProdValues.category === "unisex"}
               value="unisex"
               inline
               onChange={changeHandler}
@@ -89,6 +98,7 @@ export const AddProductForm = () => {
               type="text"
               name="subcategory"
               placeholder="t-shirt,shirt,pants,boots"
+              defaultValue={updateProdValues.subcategory}
               onChange={changeHandler}
             />
           </FloatingLabel>
@@ -97,7 +107,13 @@ export const AddProductForm = () => {
       <Row className="g-2 mb-3">
         <Col md>
           <FloatingLabel label="BRAND NAME">
-            <Form.Control type="text" name="brand" placeholder="brand" onChange={changeHandler} />
+            <Form.Control
+              type="text"
+              name="brand"
+              placeholder="brand"
+              onChange={changeHandler}
+              defaultValue={updateProdValues?.brand}
+            />
           </FloatingLabel>
         </Col>
         <Col md>
@@ -105,6 +121,7 @@ export const AddProductForm = () => {
             <Form.Control
               type="text"
               name="productName"
+              defaultValue={updateProdValues.productName}
               placeholder="product name"
               onChange={changeHandler}
             />
@@ -115,35 +132,66 @@ export const AddProductForm = () => {
       <Row className="g-2 mb-3">
         <Col md={2}>
           <FloatingLabel label="small">
-            <Form.Control type="number" name="small" placeholder="size" onChange={sizeHandler} />
+            <Form.Control
+              type="number"
+              name="small"
+              placeholder="size"
+              onChange={sizeHandler}
+              defaultValue={updateProdValues.size?.small}
+            />
           </FloatingLabel>
         </Col>
         <Col md={2}>
           <FloatingLabel label="medium">
-            <Form.Control type="number" name="medium" placeholder="size" onChange={sizeHandler} />
+            <Form.Control
+              type="number"
+              name="medium"
+              placeholder="size"
+              onChange={sizeHandler}
+              defaultValue={updateProdValues.size?.medium}
+            />
           </FloatingLabel>
         </Col>
         <Col md={2}>
           <FloatingLabel label="large">
-            <Form.Control type="number" name="large" placeholder="size" onChange={sizeHandler} />
+            <Form.Control
+              type="number"
+              name="large"
+              placeholder="size"
+              onChange={sizeHandler}
+              defaultValue={updateProdValues.size?.large}
+            />
           </FloatingLabel>
         </Col>
         <Col md={2}>
           <FloatingLabel label="EXTRA LARGE">
-            <Form.Control type="number" name="xl" placeholder="size" onChange={sizeHandler} />
+            <Form.Control
+              type="number"
+              name="xl"
+              placeholder="size"
+              onChange={sizeHandler}
+              defaultValue={updateProdValues?.size?.extraLarge}
+            />
           </FloatingLabel>
         </Col>
         <Col md={2}>
           <FloatingLabel label="XXL">
-            <Form.Control type="number" name="xxl" placeholder="size" onChange={sizeHandler} />
+            <Form.Control
+              type="number"
+              name="xxl"
+              placeholder="size"
+              onChange={sizeHandler}
+              defaultValue={updateProdValues?.size?.xxl}
+            />
           </FloatingLabel>
         </Col>
         <Col md={2}>
           <FloatingLabel label="FREE-SIZE">
             <Form.Control
               type="number"
-              name="free-size"
+              name="freeSize"
               placeholder="size"
+              defaultValue={updateProdValues?.size?.freeSize}
               onChange={sizeHandler}
             />
           </FloatingLabel>
@@ -152,7 +200,13 @@ export const AddProductForm = () => {
       <Row className="mt-3 ">
         <Col md={3}>
           <FloatingLabel label="PRICE">
-            <Form.Control type="number" name="price" placeholder="price" onChange={changeHandler} />
+            <Form.Control
+              type="number"
+              name="price"
+              placeholder="price"
+              defaultValue={updateProdValues?.price}
+              onChange={changeHandler}
+            />
           </FloatingLabel>
         </Col>
         <Col md={9}>
@@ -164,11 +218,12 @@ export const AddProductForm = () => {
             placeholder="decribe"
             name="description"
             style={{ height: "100px" }}
+            defaultValue={updateProdValues?.description}
             onChange={changeHandler}
           />
         </FloatingLabel>
       </Row>
-      <Button type="submit" className="text-center m-5">
+      <Button type="submit" className="text-center m-5 bg-warning">
         SUBMIT
       </Button>
     </Form>

@@ -16,6 +16,9 @@ code {
   --bs-offcanvas-width: min(95vw, 600px) !important;
 }
 
+.offcanvas-size-xxl {
+  --bs-offcanvas-width: min(95vw, 50vw) !important;
+}
 
 
 .searchBlogIcon {

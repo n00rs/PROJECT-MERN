@@ -1,11 +1,7 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import React from "react";
 import { toast } from "react-toastify";
-import {
-  GOOGLE_CLIENT_ID,
-  USER_LOGIN_URL,
-  USER_SIGNUP_URL,
-} from "../../Constant";
+import { USER_LOGIN_URL, USER_SIGNUP_URL } from "../../Constant";
 
 const GoogleAuth = ({ page, navigate }) => {
   let url;
@@ -32,7 +28,7 @@ const GoogleAuth = ({ page, navigate }) => {
     }
   };
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <GoogleLogin onSuccess={onSuccess}>
         <i className="fa-brands fa-google"></i>
         Sign in with google

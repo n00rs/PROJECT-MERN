@@ -52,7 +52,7 @@ const ManageUsers = () => {
       <Table responsive striped borderless hover style={style}>
         <thead>
           <tr className="border-bottom">
-            <th>#</th>
+          <th>#</th>
             <th>
               <span className="ms-2">Name</span>
               {/* Name */}

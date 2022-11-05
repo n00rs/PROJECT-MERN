@@ -1,6 +1,3 @@
-export const GOOGLE_CLIENT_ID =
-  "776116297541-okm4oor8ffa43umtku091bvc8frbfnen.apps.googleusercontent.com";
-
 const USER_BASE_URL = "http://localhost:5000/api/users";
 
 const ADMIN_BASE_URL = "http://localhost:5000/api/admin";
@@ -47,3 +44,7 @@ export const ADMIN_ALLBLOG_API = `${ADMIN_BASE_URL}/all-blogs`;
 export const ADMIN_BLOG_API = `${ADMIN_BASE_URL}/blog/`; //    /api/admin/verify-blog/:blogId
 
 export const ADD_PRODUCT_API = `${ADMIN_BASE_URL}/products`;
+
+export const FETCH_PRODS_API = `${ADMIN_BASE_URL}/products?page=`; //                 /api/admin/products?page=0
+
+export const OUT_OF_STOCK_API = `${ADMIN_BASE_URL}/products/`; //                 /api/admin/products/:prodId

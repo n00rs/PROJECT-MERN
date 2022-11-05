@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -6,6 +7,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
 import { toast } from "react-toastify";
 import { DashBoard } from "./components/admin/DashBoard";
 import { fetchUsers } from "./pages/admin/ManageUsers";
@@ -36,15 +38,15 @@ function App() {
     }
   };
 
-  const adminLoader = () => {
-    // log
-    if (!adminExist) {
-      toast.dark("you are not authorizised ");
-      return redirect("/admin/login");
-    } else {
-     return redirect("/admin/dash");
-    }
-  };
+  // const adminLoader = () => {
+  //   // log
+  //   if (!adminExist) {
+  //     toast.dark("you are not authorizised ");
+  //     return redirect("/admin/login");
+  //   } else {
+  //    return redirect("/admin/dash");
+  //   }
+  // };
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -62,7 +64,7 @@ function App() {
           </Route>
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>
-        <Route path="/admin/login" element={<Login />} loader={adminLoader} />
+        <Route path="/admin/login" element={<Login />} />
         <Route
           path="/admin"
           element={<AdminLayout />}
@@ -84,3 +86,4 @@ function App() {
 }
 
 export default App;
+ 

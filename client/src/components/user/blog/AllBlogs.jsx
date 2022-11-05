@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,7 +29,7 @@ export const AllBlogs = () => {
   // }, [pageNo]);
 
   const dispatch = useDispatch();
-  const [featuredBlog, setFeaturedBlog] = useState({});
+  // const [featuredBlog, setFeaturedBlog] = useState({});
   const { blogs, totalPages, pageNo } = useSelector((state) => state.blog);
   const pages = new Array(totalPages).fill(null).map((val, ind) => ind);
 
@@ -63,6 +63,8 @@ export const AllBlogs = () => {
   // };
   // if (blogs.length > 0) console.log(countComments(blogs));
 
+  //setting featured blog from the blogs
+
   const countComment = blogs?.slice().sort((a, b) => {
     console.log(a?.comments?.length, "comments");
     if (a?.comments.length < b?.comments.length) return 1;
@@ -76,7 +78,7 @@ export const AllBlogs = () => {
       {/* <!-- Featured blog post--> */}
       <BlogCard
         title={countComment[0]?.title}
-        content={countComment[0]?.content.slice(0,20)  }
+        content={countComment[0]?.content.slice(0, 20)}
         date={new Date(countComment[0]?.createdAt).toDateString()}
         image={countComment[0]?.image}
         id={countComment[0]?._id}

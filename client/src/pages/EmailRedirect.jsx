@@ -30,7 +30,7 @@ const EmailRedirect = () => {
       console.log(err);
       toast.error(err.message);
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     verifyToken();

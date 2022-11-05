@@ -27,11 +27,7 @@ const addProduct = async (req, res, next) => {
     );
 
     const check = reqProperties.every(
-      (prop) => {
-        console.log(reqProperties.indexOf(prop));
-        return addProperties.includes(prop) && req.body[prop] !== "";
-      }
-      //
+      (prop) => addProperties.includes(prop) && req.body[prop] !== ""
     );
     console.log(check);
     if (!check) throw { statusCode: 422, message: "invalid request" };
@@ -51,7 +47,7 @@ const addProduct = async (req, res, next) => {
 
 const fetchAllProducts = async (req, res, next) => {
   try {
-    const pageSize = 1;
+    const pageSize = 30;
     const pageNo = req.query?.page;
     if (!pageNo) throw { statusCode: 422, message: "invalid query request" };
     // const totalDocs = req.query?.totalDocs;
@@ -68,16 +64,40 @@ const fetchAllProducts = async (req, res, next) => {
       .skip(pageNo * pageSize);
 
     const totalPages = Math.ceil(totalDocs / pageSize);
-    res.status(200).json({ fetchAllProducts, totalPages, totalDocs });
+    res.status(200).json({ products: fetchAllProducts, totalPages, totalDocs });
   } catch (err) {
     next(err);
   }
 };
 
-//METHOD DELETE
-//ROUTE /api/admin/
+//METHOD PUT
+//ROUTE /api/admin/products/:prodId
+
+const updateOutOfStock = async (req, res, next) => {
+  try {
+    console.log(req.params);
+    const { prodId } = req.params;
+    if (!prodId) throw { statusCode: 422, message: "invalid params request" };
+    else {
+      const markOutOfStock = await ProductModel.findByIdAndUpdate(
+        prodId,
+        {
+          $set: { delete: true, size: {} },
+        },
+        { new: true, __v: false }
+      );
+      console.log(markOutOfStock);
+
+      res.status(200).json(markOutOfStock);
+    }
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
 
 module.exports = {
   addProduct,
   fetchAllProducts,
+  updateOutOfStock,
 };

@@ -13,10 +13,13 @@ const {
   deleteBlog,
 } = require("../../controller/blogController");
 
-const { addProduct, fetchAllProducts } = require("../../controller/adminController");
+const {
+  addProduct,
+  fetchAllProducts,
+  updateOutOfStock,
+} = require("../../controller/adminController");
 
 //ROUTES
-
 
 router.post("/login", adminLogin);
 
@@ -36,7 +39,7 @@ router.post("/products", verifyAdmin, addProduct);
 
 router.get("/products", verifyAdmin, fetchAllProducts);
 
-
+router.put("/products/:prodId", verifyAdmin, updateOutOfStock);
 
 // router.get("/protect", verifyAdmin, (req, res) => res.json("hi from protect"));
 
