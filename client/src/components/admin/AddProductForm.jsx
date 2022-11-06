@@ -1,20 +1,25 @@
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
-// import { ADD_PRODUCT_API } from "../../Constant";
-// import { Spinner } from "../../components/UI/Spinner";
-// import { s3UploadHandler } from "../../store/admin/awsService";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { s3UploadHandler } from "../../store/admin/awsService";
 import { Spinner } from "../UI/Spinner";
-import { ADD_PRODUCT_API } from "../../Constant";
-
-
+import { ADD_PRODUCT_API, UPDATE_STOCK_API } from "../../Constant";
 
 export const AddProductForm = ({ updateProdValues }) => {
-  
+  const initialSizeState = {
+    small: updateProdValues?.size?.small,
+    medium: updateProdValues?.size?.medium,
+    large: updateProdValues?.size?.large,
+    extraLarge: updateProdValues?.size?.extraLarge,
+    xxl: updateProdValues?.size?.xxl,
+    freeSize: updateProdValues?.size?.freeSize,
+  };
+
   const [inputVal, setInputVal] = useState({});
-  const [sizeVal, setSizeVal] = useState({});
-  const [isLoading, setIsloading] = useState();
+  const [sizeVal, setSizeVal] = useState(initialSizeState);
+  const [isLoading, setIsLoading] = useState();
   const fileRef = useRef();
+  const navigate = useNavigate();
 
   const changeHandler = (e) =>
     setInputVal((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -23,7 +28,7 @@ export const AddProductForm = ({ updateProdValues }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setIsloading(true);
+    setIsLoading(true);
 
     try {
       const imageFiles = fileRef.current?.files;
@@ -36,26 +41,35 @@ export const AddProductForm = ({ updateProdValues }) => {
         imageLinks.push(imageLink);
       }
 
-      const body = JSON.stringify({ ...inputVal, size: { ...sizeVal }, images: imageLinks });
-      console.log(body);
-      const res = await fetch(ADD_PRODUCT_API, {
+      const images = imageLinks.length > 0 ? imageLinks : [];
+      let body;
+      if (imageLinks.length > 0)
+        body = JSON.stringify({ ...inputVal, size: { ...sizeVal }, images: imageLinks });
+      else body = JSON.stringify({ ...inputVal, size: { ...sizeVal } });
+
+      const url = updateProdValues ? UPDATE_STOCK_API + updateProdValues._id : ADD_PRODUCT_API;
+
+      const res = await fetch(url, {
         method: "POST",
         body,
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
-      const data = await res.json();
-      console.log(data);
-      if (!res.ok) throw data;
 
-      setIsloading(false);
+      const data = await res.json();
+
+      console.log(data);
+
+      if (!res.ok) throw data;
+      else navigate("/admin/dash");
+      setIsLoading(false);
     } catch (err) {
-      setIsloading(false);
+      setIsLoading(false);
       console.log(err, "err.in add product");
     }
   };
 
-  if (isLoading) return <Spinner  />;
+  if (isLoading) return <Spinner />;
 
   return (
     <Form onSubmit={submitHandler}>
@@ -68,7 +82,7 @@ export const AddProductForm = ({ updateProdValues }) => {
               value="men"
               name="category"
               type="radio"
-              defaultChecked={updateProdValues.category === "men"}
+              defaultChecked={updateProdValues?.category === "men"}
               inline
               onChange={changeHandler}
             />
@@ -77,7 +91,7 @@ export const AddProductForm = ({ updateProdValues }) => {
               type="radio"
               name="category"
               value="women"
-              defaultChecked={updateProdValues.category === "wommen"}
+              defaultChecked={updateProdValues?.category === "wommen"}
               inline
               onChange={changeHandler}
             />
@@ -85,7 +99,7 @@ export const AddProductForm = ({ updateProdValues }) => {
               label="unisex"
               type="radio"
               name="category"
-              defaultChecked={updateProdValues.category === "unisex"}
+              defaultChecked={updateProdValues?.category === "unisex"}
               value="unisex"
               inline
               onChange={changeHandler}
@@ -98,7 +112,7 @@ export const AddProductForm = ({ updateProdValues }) => {
               type="text"
               name="subcategory"
               placeholder="t-shirt,shirt,pants,boots"
-              defaultValue={updateProdValues.subcategory}
+              defaultValue={updateProdValues?.subcategory}
               onChange={changeHandler}
             />
           </FloatingLabel>
@@ -121,7 +135,7 @@ export const AddProductForm = ({ updateProdValues }) => {
             <Form.Control
               type="text"
               name="productName"
-              defaultValue={updateProdValues.productName}
+              defaultValue={updateProdValues?.productName}
               placeholder="product name"
               onChange={changeHandler}
             />
@@ -137,7 +151,7 @@ export const AddProductForm = ({ updateProdValues }) => {
               name="small"
               placeholder="size"
               onChange={sizeHandler}
-              defaultValue={updateProdValues.size?.small}
+              defaultValue={updateProdValues?.size?.small}
             />
           </FloatingLabel>
         </Col>
@@ -148,7 +162,7 @@ export const AddProductForm = ({ updateProdValues }) => {
               name="medium"
               placeholder="size"
               onChange={sizeHandler}
-              defaultValue={updateProdValues.size?.medium}
+              defaultValue={updateProdValues?.size?.medium}
             />
           </FloatingLabel>
         </Col>
@@ -159,7 +173,7 @@ export const AddProductForm = ({ updateProdValues }) => {
               name="large"
               placeholder="size"
               onChange={sizeHandler}
-              defaultValue={updateProdValues.size?.large}
+              defaultValue={updateProdValues?.size?.large}
             />
           </FloatingLabel>
         </Col>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import  { setUser } from "../../store/authSlice";
+import { setUser } from "../../store/authSlice";
 import LoginModal from "./LoginModal/LoginModal";
 import styles from "./Header.module.css";
 import img from "../../assets/logo.png";
@@ -43,13 +43,13 @@ const Header = (onRouteChange) => {
   );
 
   return (
-    <nav >
-      <div className={styles.logo}> 
+    <nav className={styles.navs}>
+      <div className={styles.logo}>
         <Link>
           <img src={img} alt="Logo" className="rounded-circle" />
         </Link>
       </div>
-      <div className={styles.hamburger} >
+      <div className={styles.hamburger}>
         <div className={styles.line1}></div>
         <div className={styles.line2}></div>
         <div className={styles.line3}></div>

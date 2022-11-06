@@ -13,12 +13,7 @@ export const UpdateProdCanvas = ({ show, dispatch, updateProdValues }) => {
       <Offcanvas.Body style={{ color: "InfoText" }}>
         <AddProductForm updateProdValues={updateProdValues} />
         {updateProdValues?.images?.map((img) => (
-          <img
-            src={img}
-            alt=""
-            className=" img-fluid img-thumbnail"
-            // style={{ width: "200px", height: "200px" }}
-          />
+          <img src={img} alt="" key={Math.random()} style={{ width: "200px", height: "200px" }} />
         ))}
       </Offcanvas.Body>
     </Offcanvas>

@@ -17,6 +17,7 @@ const {
   addProduct,
   fetchAllProducts,
   updateOutOfStock,
+  updateProduct,
 } = require("../../controller/adminController");
 
 //ROUTES
@@ -40,6 +41,8 @@ router.post("/products", verifyAdmin, addProduct);
 router.get("/products", verifyAdmin, fetchAllProducts);
 
 router.put("/products/:prodId", verifyAdmin, updateOutOfStock);
+
+router.post("/update-product/:prodId", verifyAdmin, updateProduct);
 
 // router.get("/protect", verifyAdmin, (req, res) => res.json("hi from protect"));
 

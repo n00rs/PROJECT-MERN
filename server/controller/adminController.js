@@ -19,23 +19,26 @@ const addProduct = async (req, res, next) => {
       "description",
       "images",
     ];
-    console.log(
-      reqProperties.every((prop) => {
-        // console.log(reqProperties.indexOf(prop));
-        return addProperties.includes(prop) && req.body[prop] !== "";
-      })
-    );
+
+    // console.log(
+    //   reqProperties.every((prop) => {
+    //     // console.log(reqProperties.indexOf(prop));
+    //     return addProperties.includes(prop) && req.body[prop] !== "";
+    //   })
+    // );
 
     const check = reqProperties.every(
       (prop) => addProperties.includes(prop) && req.body[prop] !== ""
     );
+
     console.log(check);
+
     if (!check) throw { statusCode: 422, message: "invalid request" };
 
     const newProd = new ProductModel(req.body);
+
     const saveProd = await newProd.save();
 
-    console.log(saveProd === newProd);
     res.status(201).json(saveProd === newProd);
   } catch (err) {
     next(err);
@@ -96,8 +99,34 @@ const updateOutOfStock = async (req, res, next) => {
   }
 };
 
+//METHOD POST
+//ROUTE /api/admin/update-product
+
+const updateProduct = async (req, res, next) => {
+  try {
+    console.log(req.body, req.params);
+
+    const { prodId } = req.params;
+
+    if (!prodId || Object.keys(req.body).length === 0)
+      throw { statusCode: 404, message: "invalid request params" };
+
+
+    const updateProd = await ProductModel.findByIdAndUpdate(
+      prodId,
+      { $set: { ...req.body, delete: false } },
+      { new: true }
+    );
+    if (updateProd) res.status(200).json(updateProd);
+    else throw new Error("something wrong in server try again later");
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   addProduct,
   fetchAllProducts,
   updateOutOfStock,
+  updateProduct,
 };

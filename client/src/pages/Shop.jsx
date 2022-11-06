@@ -1,8 +1,9 @@
+import { ShopNav } from "../components/user/shop/Nav"
 
 
 const Shop = () => {
   return (
-    <div>Shop</div>
+   <ShopNav/>
   )
 }
 

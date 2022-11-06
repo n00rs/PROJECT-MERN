@@ -9,7 +9,6 @@ export const USER_LOGIN_URL = `${USER_BASE_URL}/login`;
 export const EMAIL_VERIFY_URL = `${USER_BASE_URL}/verify/`;
 
 export const LOGOUT_URL = `${USER_BASE_URL}/logout`;
-// export const RESEND_EMAIL_URL = `http://localhost:5000`
 
 export const FETCH_USERS_URL = `${USER_BASE_URL}/fetchUsers`;
 
@@ -48,3 +47,5 @@ export const ADD_PRODUCT_API = `${ADMIN_BASE_URL}/products`;
 export const FETCH_PRODS_API = `${ADMIN_BASE_URL}/products?page=`; //                 /api/admin/products?page=0
 
 export const OUT_OF_STOCK_API = `${ADMIN_BASE_URL}/products/`; //                 /api/admin/products/:prodId
+
+export const UPDATE_STOCK_API = `${ADMIN_BASE_URL}/update-product/`;
