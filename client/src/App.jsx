@@ -27,6 +27,7 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Shop from "./pages/Shop";
 import ManageBlogs from "./pages/admin/ManageBlogs";
+import { ViewEachProd } from "./components/user/shop/ViewEachProd";
 
 function App() {
   const { userExist, adminExist } = useSelector((state) => state.auth);
@@ -61,6 +62,7 @@ function App() {
           </Route>
           <Route path="/shop">
             <Route index element={<Shop />} />
+            <Route path="view-product" element={<ViewEachProd/>} />
           </Route>
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>

@@ -1,0 +1,33 @@
+.cardex {
+    border-radius: 10px;
+    background-image:url('../assets//shopmainBanner.jpg');
+    background-size: cover;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    height:45vh;
+    /* margin-top: 80px; */
+    /* margin-bottom: 80px; */
+}
+
+.leftSide {
+    height: 100%;
+}
+
+.btonPink {
+    background: #FF5252;
+    font-size: 16px;
+    color: #fff;
+    width: 150px;
+    height: 40px;
+    border: 1px solid #FF5252;
+    text-transform: uppercase;
+}
+
+.btonPink:hover {
+    background: #F44336;
+}
+
+.shoeimg {
+    height: 220px;
+    width: 90%;
+} 
