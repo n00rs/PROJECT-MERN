@@ -32,5 +32,6 @@ router.get("/fetch-messages/:to", verifyAccessToken, fetchMsgs);
 
 //admin
 
+router.get('/shop/products',)
 
 module.exports = router;

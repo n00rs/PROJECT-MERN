@@ -1,0 +1,31 @@
+.pi.pi-sm {
+    width: 25px;
+    min-height: 15px
+}
+
+.pi {
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    width: 40px;
+    min-height: 30px;
+    background-origin: padding-box;
+}
+
+.pi.pi-paypal {
+    background: url('../../../assets/icons/paypal.svg') 50% no-repeat;
+}
+
+.pi.pi-mastercard {
+    background: url('../../../assets/icons/mastercard.svg') 50% no-repeat;
+}
+
+.pi.pi-visa {
+    background: url('../../../assets/icons/visa.svg') 50% no-repeat;
+}
+
+.pi.pi-american-express {
+    background: url('../../../assets/icons/american-express.svg') 50% no-repeat;
+}
