@@ -1,5 +1,5 @@
 import { Navbar, Nav, NavDropdown, Container, Badge } from "react-bootstrap";
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { CartIcon } from "../../../assets/icons/CartIcon";
 import { FacebookIcon } from "../../../assets/icons/FacebookIcon";
 import { InstagramIcon } from "../../../assets/icons/InstagramIcon";
@@ -47,7 +47,7 @@ export const ShopLayout = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#features">Features</Nav.Link>
+              <NavLink to='/shop/products?category=all' >Features</NavLink>
               <Nav.Link href="#pricing">Pricing</Nav.Link>
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
