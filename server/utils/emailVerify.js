@@ -1,7 +1,6 @@
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 
-
 const sendVerifyEmail = async (email) => {
   console.log(process.env.USER, process.env.PASS);
   const transport = nodemailer.createTransport({

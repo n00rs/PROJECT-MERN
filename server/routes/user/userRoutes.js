@@ -7,6 +7,7 @@ const {
   userLogout,
   adminLogin,
 } = require("../../controller/authController");
+const { fetchProducts } = require("../../controller/shopController");
 
 const { fetchUsers, fetchMsgs } = require("../../controller/userController");
 
@@ -32,6 +33,6 @@ router.get("/fetch-messages/:to", verifyAccessToken, fetchMsgs);
 
 //admin
 
-router.get('/shop/products',)
+router.get('/shop/products',fetchProducts)
 
 module.exports = router;

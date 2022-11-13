@@ -81,7 +81,7 @@ const userSignup = async (req, res, next) => {
     console.log(user);
     await sendEmail(email);
     res.status(201).json({ message: "please verify your email" });
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 };
@@ -89,7 +89,7 @@ const userSignup = async (req, res, next) => {
 //METHOD GET
 //ROUTE /api/users/verify/:token
 
-const verifyEmail = async (req, res, next) => {
+const verifyEmail = async (req, res, next) => { 
   try {
     console.log(req.params);
 

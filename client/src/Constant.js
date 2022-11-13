@@ -30,6 +30,8 @@ export const EACH_BLOG_URL = `${USER_BASE_URL}/blog/`; // blog/:blogId
 
 export const FEATURED_BLOG_URL = `${USER_BASE_URL}/blog/featured-blog`;
 
+export const FETCH_PRODUCTS_URL = `${USER_BASE_URL}/shop/products`;    /// /shop/products?page=&catgory =
+
 //ADMIN_API
 
 export const ADMIN_LOGIN_URL = `${ADMIN_BASE_URL}/login`;
