@@ -27,9 +27,10 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Shop from "./pages/Shop";
 import ManageBlogs from "./pages/admin/ManageBlogs";
-import { ViewEachProd } from "./components/user/shop/ViewEachProd";
+// import { ViewEachProd } from "./components/user/shop/ViewProdImg";
 import { ShopLayout } from "./components/user/shop/ShopLayout";
 import { Category } from "./components/user/shop/Category";
+import ViewProduct from "./pages/ViewProduct";
 
 function App() {
   const { userExist, adminExist } = useSelector((state) => state.auth);
@@ -66,7 +67,7 @@ function App() {
           <Route path="/shop" element={<ShopLayout />}>
             <Route index element={<Shop />} />
             <Route path="products" element={<Category />} />
-            <Route path="view-product" element={<ViewEachProd />} />
+            <Route path="view-product" element={<ViewProduct />} />
           </Route>
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>

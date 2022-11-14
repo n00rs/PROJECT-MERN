@@ -1,8 +1,8 @@
-
 .bg-img-cover {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .bg-overlay-dark:after,
 .bg-overlay-gradient-dark:after {
   content: "";
@@ -20,9 +20,11 @@
 .bg-overlay-dark:after {
   background: rgba(0, 0, 0, 0.4);
 }
+
 .bg-pos-center-center {
   background-position: 50%;
 }
+
 .z-index-20 {
   z-index: 20 !important;
 }
@@ -31,16 +33,18 @@
   padding-top: 7rem !important;
   padding-bottom: 7rem !important;
 }
-.breadcrumb-item + .breadcrumb-item {
+
+.breadcrumb-item+.breadcrumb-item {
   padding-left: 0.5rem;
 }
 
-.breadcrumb-item + .breadcrumb-item:before {
+.breadcrumb-item+.breadcrumb-item:before {
   float: left;
   padding-right: 0.5rem;
   color: #6b7280;
   content: var(--bs-breadcrumb-divider, "/");
 }
+
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
@@ -49,10 +53,12 @@
   font-size: 0.75rem;
   list-style: none;
 }
+
 .breadcrumb-item a {
   color: #6b7280;
   text-decoration: none;
 }
+
 .border-transparent,
 .border-transparent-active:active,
 .border-transparent-focus:focus,
@@ -66,6 +72,7 @@
 .border-transparent-hover:hover {
   border: 1px solid transparent !important;
 }
+
 .card-badges {
   position: absolute;
   z-index: 20;
@@ -74,6 +81,7 @@
   display: flex;
   align-items: center;
 }
+
 .badge-card {
   background: hsla(0, 0%, 100%, 0.9);
   color: #6b7280;
@@ -83,13 +91,14 @@
   align-items: center;
   margin-right: 0.25rem;
 }
+
 .z-index-10 {
   z-index: 10 !important;
 }
 
 .btn-quick-add {
   width: 100%;
-  background: hsla(  0, 0%, 100%, 0.8);
+  background: hsla(0, 0%, 100%, 0.8);
   /* background: white; */
   display: flex;
   align-items: center;
@@ -100,7 +109,9 @@
 
 .card:hover .btn-quick-add {
   opacity: 1;
+
 }
+
 .link-cover:after {
   position: absolute;
   top: 0;
@@ -111,6 +122,7 @@
   pointer-events: auto;
   content: "";
 }
+
 .card-rotate .link-cover:after {
   background: rgba(0, 0, 0, 0.2);
   z-index: 10;
@@ -146,16 +158,14 @@
 }
 
 .progress-bar-striped {
-  background-image: linear-gradient(
-    45deg,
-    hsla(0, 0%, 100%, 0.15) 25%,
-    transparent 0,
-    transparent 50%,
-    hsla(0, 0%, 100%, 0.15) 0,
-    hsla(0, 0%, 100%, 0.15) 75%,
-    transparent 0,
-    transparent
-  );
+  background-image: linear-gradient(45deg,
+      hsla(0, 0%, 100%, 0.15) 25%,
+      transparent 0,
+      transparent 50%,
+      hsla(0, 0%, 100%, 0.15) 0,
+      hsla(0, 0%, 100%, 0.15) 75%,
+      transparent 0,
+      transparent);
   background-size: 1rem 1rem;
 }
 
@@ -170,13 +180,26 @@
     animation: none;
   }
 }
+
 .f-h-1 {
   height: 0.25rem !important;
 }
+
 .f-w-44 {
   width: 11rem !important;
 }
+
 /* off-canvas */
+.transition-all {
+  transition: all .3s linear !important
+}
+
+.text-secondary,
+.text-secondary-active:active,
+.text-secondary-focus:focus,
+.text-secondary-hover:hover {
+  color: #4b5563 !important
+}
 
 .collapse-icon-chevron {
   position: relative;
@@ -195,9 +218,11 @@
 .collapse-icon-chevron[aria-expanded="true"]:before {
   content: "-";
 }
+
 .collapse:not(.show) {
   display: none;
 }
+
 .bg-transparent,
 .bg-transparent-hover:hover {
   background-color: transparent !important;
@@ -212,43 +237,36 @@
   max-height: inherit;
 }
 
+
 .form-check-custom {
   position: relative;
-  padding: 0;
+  padding: 0
 }
 
 .form-check-custom input {
   position: absolute;
   opacity: 0;
-  margin: 0;
+  margin: 0
 }
 
-.form-check-custom input:checked + label:before {
-  --theme-form-checkbox-active-color: #111827;
-
-  border-color: var(--theme-form-checkbox-active-color);
+.form-check-custom input:checked+label:before {
+  border-color: var(--theme-form-checkbox-active-color)
 }
 
-.form-check-custom input:checked + label:after {
-  opacity: 1;
+.form-check-custom input:checked+label:after {
+  opacity: 1
 }
 
-.form-check-custom input:disabled + label {
-  cursor: default;
+.form-check-custom input:disabled+label {
+  cursor: default
 }
 
 .form-check-custom label {
   margin: 0;
-  cursor: pointer;
+  cursor: pointer
 }
 
 .form-check-custom label:before {
-  --theme-form-checkbox-before-size: 20px;
-  --theme-form-checkbox-bg-before-size: 28px;
-
-  --theme-form-checkbox-border-radius: 2px;
-
-  --theme-form-checkbox-active-color: #111827;
   width: var(--theme-form-checkbox-before-size);
   height: var(--theme-form-checkbox-before-size);
   border-radius: var(--theme-form-checkbox-border-radius);
@@ -256,47 +274,41 @@
   content: "";
   border: 1px solid #e5e7eb;
   vertical-align: text-bottom;
-  margin-right: 0.5rem;
+  margin-right: .5rem
 }
 
 .form-check-custom label:after {
-  --theme-form-checkbox-after-width: 6px;
-  --theme-form-checkbox-after-height: 12px;
-  --theme-form-checkbox-after-position-left: 7px;
-  --theme-form-checkbox-after-position-top: 4px;
-  --theme-form-checkbox-bg-after-position-left: 11px;
-  --theme-form-checkbox-bg-after-position-top: 7px;
-  --theme-form-checkbox-after-border-width: 2px;
   content: "";
   position: absolute;
   display: block;
   height: var(--theme-form-checkbox-after-height);
   width: var(--theme-form-checkbox-after-width);
-  border-bottom: var(--theme-form-checkbox-after-border-width) solid
-    var(--theme-form-checkbox-active-color);
-  border-right: var(--theme-form-checkbox-after-border-width) solid
-    var(--theme-form-checkbox-active-color);
+  border-bottom: var(--theme-form-checkbox-after-border-width) solid var(--theme-form-checkbox-active-color);
+  border-right: var(--theme-form-checkbox-after-border-width) solid var(--theme-form-checkbox-active-color);
   transform: rotate(45deg);
   left: var(--theme-form-checkbox-after-position-left);
   top: var(--theme-form-checkbox-after-position-top);
-  opacity: 0;
+  opacity: 0
 }
+
 
 .form-check .form-check-input {
   float: left;
   margin-left: -1.5em;
 }
+
 .form-check-input:checked {
   background-color: #111827;
   border-color: #111827;
 }
+
 .form-check-bg input {
   position: absolute;
   opacity: 0;
   margin: 0;
 }
 
-.form-check-bg input:checked + label {
+.form-check-bg input:checked+label {
   background: var(--theme-form-checkbox-active-color);
   border-color: var(--theme-form-checkbox-active-color);
   color: #fff;

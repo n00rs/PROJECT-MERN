@@ -27,3 +27,85 @@ code {
   background-repeat: no-repeat;
   background-position: 245px;
 }
+
+.mt-6 {
+  margin-top: 3.5rem !important
+}
+
+.mt-7 {
+  margin-top: 4rem !important
+}
+
+.mt-8 {
+  margin-top: 5rem !important
+}
+
+.mt-9 {
+  margin-top: 6rem !important
+}
+
+.mt-10 {
+  margin-top: 7rem !important
+}
+
+.fs-6 {
+  font-size: 1rem !important
+}
+
+.fs-7 {
+  font-size: 90% !important
+}
+
+.fs-8 {
+  font-size: 80% !important
+}
+
+.fs-9 {
+  font-size: .75rem !important
+}
+
+.top-10 {
+  top: 10% !important
+}
+
+.py-6 {
+  padding-top: 3.5rem !important;
+  padding-bottom: 3.5rem !important;
+}
+
+.py-7 {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
+.py-8 {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.py-9 {
+  padding-top: 6rem !important;
+  padding-bottom: 6rem !important;
+}
+
+.py-10 {
+  padding-top: 7rem !important;
+  padding-bottom: 7rem !important;
+}
+
+.g-9,
+.gx-9 {
+  --bs-gutter-x: 6rem;
+}
+
+.g-9,
+.gy-9 {
+  --bs-gutter-y: 6rem;
+}
+
+.fw-bolder {
+  font-weight: 500!important
+}
+.tracking-wider {
+  letter-spacing: 0.25em !important;
+}

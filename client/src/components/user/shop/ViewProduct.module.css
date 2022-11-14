@@ -1,0 +1,121 @@
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    list-style: none;
+  }
+
+  .breadcrumb-item + .breadcrumb-item {
+    padding-left: 0.5rem;
+  }
+
+  .breadcrumb-item + .breadcrumb-item:before {
+    float: left;
+    padding-right: 0.5rem;
+    color: #6b7280;
+    content: var(--bs-breadcrumb-divider, "/");
+  }
+
+  .breadcrumb-item.active {
+    color: #6b7280;
+  }
+  .breadcrumb-item {
+    text-transform: uppercase;
+    color: #6b7280;
+    letter-spacing: 0.04rem;
+  }
+
+  .breadcrumb-item a {
+    color: #6b7280;
+    text-decoration: none;
+  }
+
+  .breadcrumb-item.breadcrumb-light,
+  .breadcrumb-item.breadcrumb-light:before,
+  .breadcrumb-item.breadcrumb-light a {
+    color: #fff;
+  }
+
+
+
+  .rating .stars {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .rating .stars.position-absolute {
+    position: absolute;
+    z-index: 2;
+    flex-wrap: nowrap;
+  }
+
+  .rating .stars i {
+    display: inline-block;
+  }
+  .d-table {
+    display: table !important;
+  }
+  .ri-star-fill:before {
+    content: url("https://api.iconify.design/ri/star-fill.svg");
+  }
+  .form-check-option {
+    position: relative;
+    padding: 0;
+  }
+
+  .form-check-option input {
+    position: absolute;
+    opacity: 0;
+    margin: 0;
+  }
+
+  .form-check-option input:checked + label {
+    background: #111827;
+    border-color: #111827;
+    color: #fff;
+  }
+
+  .form-check-option input:disabled + label {
+    cursor: default;
+    opacity: 0.5;
+    background: #f9fafb;
+    text-decoration: line-through;
+  }
+
+  .form-check-option label {
+    border: 1px solid #e5e7eb;
+    padding: 0.6rem 0.75rem;
+    min-width: 4rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    line-height: 1;
+    font-size: 0.975rem;
+  }
+
+  .form-check-rounded label {
+    border-radius: 0.25rem;
+  }
+
+  .ri-24-hours-fill:after {
+    content: url("https://api.iconify.design/ri/24-hours-line.svg");
+  }
+
+  .ri-24-hours-line:before {
+    content: url("https://api.iconify.design/ri/24-hours-line.svg");
+  }
+
+  .ri-2x {
+    font-size: 2em;
+  }
+  .ri-secure-payment-line::before {
+    content: url("https://api.iconify.design/ri/secure-payment-line.svg");
+  }
+  .ri-service-line::before {
+    content: url("https://api.iconify.design/ri/service-line.svg");
+  }

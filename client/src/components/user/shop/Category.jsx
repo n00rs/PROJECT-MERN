@@ -105,9 +105,7 @@ export const Category = () => {
               <button
                 className="btn bg-light p-3 me-md-3 d-flex align-items-center fs-7 lh-1 w-100 mb-2 mb-md-0 w-md-auto"
                 type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasFilters"
-                aria-controls="offcanvasFilters"
+             onClick={toggleFilter}
               >
                 <FilterIcon />
                 Filters
