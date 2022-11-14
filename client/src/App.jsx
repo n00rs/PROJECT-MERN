@@ -31,6 +31,7 @@ import ManageBlogs from "./pages/admin/ManageBlogs";
 import { ShopLayout } from "./components/user/shop/ShopLayout";
 import { Category } from "./components/user/shop/Category";
 import ViewProduct from "./pages/ViewProduct";
+import Cart from "./pages/Cart";
 
 function App() {
   const { userExist, adminExist } = useSelector((state) => state.auth);
@@ -68,6 +69,7 @@ function App() {
             <Route index element={<Shop />} />
             <Route path="products" element={<Category />} />
             <Route path="view-product" element={<ViewProduct />} />
+            <Route path="cart" element={<Cart />} />
           </Route>
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>

@@ -104,8 +104,90 @@ code {
 }
 
 .fw-bolder {
-  font-weight: 500!important
+  font-weight: 500 !important
 }
+
 .tracking-wider {
   letter-spacing: 0.25em !important;
+}
+
+.vh-lg-100 {
+  height: 100vh !important;
+}
+
+.pt-lg-10 {
+  padding-top: 7rem !important;
+}
+
+.pe-lg-5 {
+  padding-right: 3rem !important;
+}
+
+.f-w-7 {
+  width: 1.75rem !important;
+}
+
+.pt-lg-10 {
+  padding-top: 7rem !important;
+}
+
+.my-lg-0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.mb-md-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+
+.fs-9 {
+  font-size: 0.75rem !important;
+}
+
+.f-w-36 {
+  width: 9rem !important;
+}
+
+.d-lg-block {
+  display: block !important;
+}
+
+
+:root {
+  --bs-font-sans-serif: "Roboto", sans-serif;
+  --bs-spacer: 1rem;
+  --bs-gutter-width: 2.5rem;
+  --theme-font-headings: "Oswald", sans-serif;
+  --theme-font-icon: "remixicon";
+  --theme-font-icon-style: "normal";
+  --theme-breakpoint-xs: 0;
+  --theme-breakpoint-sm: 576px;
+  --theme-breakpoint-md: 768px;
+  --theme-breakpoint-lg: 992px;
+  --theme-breakpoint-xl: 1200px;
+  --theme-breakpoint-xxl: 1400px;
+  --theme-maxwidth-breakpoint-sm: 100%;
+  --theme-maxwidth-breakpoint-md: 100%;
+  --theme-maxwidth-breakpoint-lg: 100%;
+  --theme-maxwidth-breakpoint-xl: 1140px;
+  --theme-maxwidth-breakpoint-xxl: 1320px;
+  --theme-form-checkbox-before-size: 20px;
+  --theme-form-checkbox-bg-before-size: 28px;
+  --theme-form-checkbox-after-width: 6px;
+  --theme-form-checkbox-after-height: 12px;
+  --theme-form-checkbox-border-radius: 2px;
+  --theme-form-checkbox-after-position-left: 7px;
+  --theme-form-checkbox-after-position-top: 4px;
+  --theme-form-checkbox-bg-after-position-left: 11px;
+  --theme-form-checkbox-bg-after-position-top: 7px;
+  --theme-form-checkbox-after-border-width: 2px;
+  --theme-form-checkbox-active-color: #111827;
+  --theme-form-radio-button-after-size: 10px;
+  --theme-form-radio-button-after-position-left: 5px;
+  --theme-form-radio-button-after-position-top: 6px;
+  --theme-form-radio-button-border-radius: 100%;
+  --theme-btn-psuedo-width: 50px;
+  --theme-btn-psuedo-height: 2px;
+  --theme-cart-dropdown-width: 28rem;
 }

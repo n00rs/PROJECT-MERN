@@ -1,6 +1,15 @@
+import { Col } from "react-bootstrap";
 import styles from "./ViewProduct.module.css";
 
 export const ViewProdDetails = () => {
+  const sizeContent = ["S", "M", "L", "XL", "XXL", "NONE"].map((a) => (
+    <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
+      <input type="radio" name="product-option-sizes" value={a} id={a} />
+      <label htmlFor={a}>
+        <small>{a}</small>
+      </label>
+    </div>
+  ));
   return (
     <div className="sticky-top top-5">
       <div className="pb-3" data-aos="fade-in">
@@ -20,11 +29,6 @@ export const ViewProdDetails = () => {
               <i className={`${styles["ri-star-fill"]} text-dark mr-1`}></i>
               <i className={`${styles["ri-star-fill"]} text-dark mr-1`}></i>
               <i className={`${styles["ri-star-fill"]} text-dark mr-1`}></i>
-              <i className={`${styles["ri-star-fill"]} text-dark mr-1`}></i>
-              {/* <i className="ri-star-fill text-dark mr-1"></i>
-                <i className="ri-star-fill text-dark mr-1"></i>
-                <i className="ri-star-fill text-dark mr-1"></i>
-                <i className="ri-star-fill text-dark mr-1"></i> */}
             </div>
             <div className={styles.stars}>
               <i className={`${styles["ri-star-fill"]} mr-1 text-muted opacity-25`}></i>
@@ -32,10 +36,6 @@ export const ViewProdDetails = () => {
               <i className={`${styles["ri-star-fill"]} mr-1 text-muted opacity-25`}></i>
               <i className={`${styles["ri-star-fill"]} mr-1 text-muted opacity-25`}></i>
               <i className={`${styles["ri-star-fill"]} mr-1 text-muted opacity-25`}></i>
-              {/* <i className="ri-star-fill mr-1 text-muted opacity-25"></i>
-                <i className="ri-star-fill mr-1 text-muted opacity-25"></i>
-                <i className="ri-star-fill mr-1 text-muted opacity-25"></i>
-                <i className="ri-star-fill mr-1 text-muted opacity-25"></i> */}
             </div>
           </div>
           <small className="text-muted d-inline-block ms-2 fs-bolder">(105 reviews)</small>
@@ -52,45 +52,13 @@ export const ViewProdDetails = () => {
           <span className="fw-bold">M</span>
         </small>
         <div className="mt-4 d-flex justify-content-start flex-wrap align-items-start">
-          <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-            <input type="radio" name="product-option-sizes" value="S" id="option-sizes-0" />
-            <label for="option-sizes-0">
-              <small>S</small>
-            </label>
-          </div>
-          <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-            <input type="radio" name="product-option-sizes" value="SM" id="option-sizes-1" />
-            <label for="option-sizes-1">
-              <small>SM</small>
-            </label>
-          </div>
-          <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-            <input type="radio" name="product-option-sizes" value="M" checked id="option-sizes-2" />
-            <label for="option-sizes-2">
-              <small>M</small>
-            </label>
-          </div>
-          <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-            <input type="radio" name="product-option-sizes" value="L" id="option-sizes-3" />
-            <label for="option-sizes-3">
-              <small>L</small>
-            </label>
-          </div>
-          <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-            <input type="radio" name="product-option-sizes" value="Xl" id="option-sizes-4" />
-            <label for="option-sizes-4">
-              <small>XL</small>
-            </label>
-          </div>
-          <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-            <input type="radio" name="product-option-sizes" value="XXL" id="option-sizes-5" />
-            <label for="option-sizes-5">
-              <small>XXL</small>
-            </label>
-          </div>
+          {sizeContent}
         </div>
       </div>
-      <button className="btn btn-dark w-100 mt-4 mb-0">Add To Shopping Bag</button>
+
+      <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
+
+      <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
 
       {/* <!-- Product Highlights--> */}
       <div className="my-5">
@@ -118,11 +86,11 @@ export const ViewProdDetails = () => {
       {/* <!-- / Product Highlights--> */}
 
       {/* <!-- Product Accordion --> */}
-      <div className="accordion" id="accordionProduct">
-        <div className="accordion-item">
-          <h2 className="accordion-header" id="headingOne">
+      <div className={styles["accordion"]} id="accordionProduct">
+        <div className={styles["accordion-item"]}>
+          <h2 className={styles["accordion-header"]} id="headingOne">
             <button
-              className="accordion-button"
+              className={styles["accordion-button"]}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseOne"
@@ -134,11 +102,11 @@ export const ViewProdDetails = () => {
           </h2>
           <div
             id="collapseOne"
-            className="accordion-collapse collapse show"
+            className={`${styles["accordion-collapse"]} collapse show`}
             aria-labelledby="headingOne"
             data-bs-parent="#accordionProduct"
           >
-            <div className="accordion-body">
+            <div className={styles["accordion-body"]}>
               <p className="m-0">
                 Made from 100% organic cotton, The Kiikii Osaka Japan T-Shirt was created with
                 everyday use in mind. It features printed graphics and heavyweight fabric for
@@ -147,7 +115,7 @@ export const ViewProdDetails = () => {
             </div>
           </div>
         </div>
-        <div className="accordion-item">
+        {/* <div className="accordion-item">
           <h2 className="accordion-header" id="headingTwo">
             <button
               className="accordion-button collapsed"
@@ -181,11 +149,11 @@ export const ViewProdDetails = () => {
               </ul>
             </div>
           </div>
-        </div>
-        <div className="accordion-item">
-          <h2 className="accordion-header" id="headingThree">
+        </div> */}
+        <div className={styles["accordion-item"]}>
+          <h2 className={styles["accordion-header"]} id="headingThree">
             <button
-              className="accordion-button collapsed"
+              className={`${styles["accordion-button"]} ${styles.collapsed}`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseThree"
@@ -197,11 +165,11 @@ export const ViewProdDetails = () => {
           </h2>
           <div
             id="collapseThree"
-            className="accordion-collapse collapse"
+            className={`${styles["accordion-collapse"]} collapse`}
             aria-labelledby="headingThree"
             data-bs-parent="#accordionProduct"
           >
-            <div className="accordion-body">
+            <div className={styles["accordion-body"]}>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex border-0 row g-0 px-0">
                   <span className="col-4 fw-bolder">Delivery</span>

@@ -27,7 +27,7 @@ const ViewProduct = () => {
         </Container>
       </div>
       <Container className="mt-5" fluid>
-        <Row className="g-9">
+        <Row className="">
           <div className="col-12 col-md-6 col-xl-7">
             <Row className="g-3 p-5">
               <ViewProdImg />

@@ -1,0 +1,199 @@
+/* NAVBAR CART  */
+
+.list-inline,
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.nav-link-checkout {
+  text-decoration: none;
+  color: #6b7280;
+  opacity: 0.75;
+  position: relative;
+  padding: 0;
+}
+
+.nav-link-checkout:after {
+  font-family: var(--theme-font-icon);
+  content: url("https://api.iconify.design/ri/arrow-drop-right-line.svg");
+  position: absolute;
+  right: -1.25rem;
+  top: 0;
+}
+
+.nav-link-checkout:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #111827;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: all 0.3s linear;
+}
+
+.nav-link-checkout.nav-link-last:after {
+  display: none;
+}
+
+.nav-link-checkout.active,
+.nav-link-checkout:active,
+.nav-link-checkout:focus,
+.nav-link-checkout:hover {
+  color: #111827;
+  opacity: 1;
+}
+
+.nav-link-checkout.active:before,
+.nav-link-checkout:active:before,
+.nav-link-checkout:focus:before,
+.nav-link-checkout:hover:before {
+  opacity: 1;
+}
+
+/*END  NAVBAR CART  */
+.ri-close-line:before {
+  content: url("https://api.iconify.design/ri/close-line.svg");
+}
+
+/* flipKart */
+
+.count-box {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #212121;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.count-box .count-btn {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(#fff, #f9f9f9);
+  display: inline-block;
+  border: 1px solid #c2c2c2;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 50%;
+  padding-top: 1px;
+  line-height: 1;
+}
+
+.count-box .count-btn:disabled {
+  color: #c2c2c2;
+  border-color: #e0e0e0;
+  cursor: auto;
+}
+
+.count-box .count-num {
+  display: inline-block;
+  padding: 3px 6px;
+  width: calc(100% - 60px);
+  height: 100%;
+  width: 46px;
+  height: 28px;
+  border-radius: 2px;
+  background-color: #fff;
+  /* border: 1px solid #c2c2c2; */
+  margin: 0 5px;
+}
+
+.count-box .count-num._3UDv-f {
+  border-color: #e0e0e0;
+}
+
+.count-box .count-num .count-inp-box {
+  border: none;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  vertical-align: middle;
+  text-align: center;
+  font-family: Roboto, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+.count-box .count-num .count-inp-box:focus {
+  outline: none;
+}
+
+.count-box .count-num .count-inp-box:disabled {
+  background: #fff;
+}
+
+.checkout-item-qty {
+  position: absolute;
+  border-radius: 100%;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  top: -8px;
+  right: -8px;
+  background: #111827;
+  color: #fff;
+  font-size: 74%;
+}
+
+.fs-9 {
+  font-size: 0.75rem !important;
+}
+
+.ri-close-line:before {
+  content: url("https://api.iconify.design/ri/close-line.svg");
+}
+
+/* PAYMENT CHOOSE */
+.form-check-custom {
+  position: relative;
+  padding: 0;
+}
+
+.form-radio-custom label {
+  display: block;
+  padding-left: 1.95rem;
+}
+
+.form-radio-custom label:before {
+  border-radius: var(--theme-form-radio-button-border-radius);
+  border: 2px solid #e5e7eb;
+  position: absolute;
+  left: 0;
+  top: 4px;
+}
+
+.form-radio-custom label:after {
+  height: var(--theme-form-radio-button-after-size);
+  width: var(--theme-form-radio-button-after-size);
+  border-radius: var(--theme-form-radio-button-border-radius);
+  left: 5px;
+  top: 9px;
+  background: var(--theme-form-checkbox-active-color);
+}
+.form-check-custom.form-check-dark {
+  --theme-form-checkbox-active-color: #111827;
+}
+
+.ri-bank-card-line:before {
+  content: url("https://api.iconify.design/ri/bank-card-line.svg");
+}
+.ri-paypal-line:before {
+  content: url("https://api.iconify.design/ri/paypal-line.svg");
+}
+
+.form-check-input:checked {
+  background-color: #111827;
+  border-color: #111827;
+}
+.bg-light,
+.bg-light-hover:hover {
+  background-color: #f3f5f6 !important;
+}

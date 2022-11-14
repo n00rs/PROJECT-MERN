@@ -47,8 +47,16 @@ export const ShopLayout = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <NavLink to='/shop/products?category=all' >Features</NavLink>
-              <Nav.Link href="#pricing">Pricing</Nav.Link>
+              <NavLink to="/shop/products?category=all" className="nav-link ">
+                View All
+              </NavLink>
+              <NavLink href="/shop/products?category=men" className="nav-link">
+                Men
+              </NavLink>
+              <NavLink href="/shop/products?category=women" className="nav-link">
+                WomMen
+              </NavLink>
+
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -65,7 +73,7 @@ export const ShopLayout = () => {
                 </Badge>
               </Link>
 
-              <Link>
+              <Link to='/shop/cart'>
                 <CartIcon />
 
                 <Badge pill bg="secondary">
