@@ -15,8 +15,8 @@ const Cart = () => {
               <CartBreadcremb />
               <div className="mt-5">
                 {/* <CartTab /> */}
-                {/* <CheckoutInfo /> */}
-                <CheckOutAddressForm/>
+                <CheckoutInfo />
+                {/* <CheckOutAddressForm/> */}
               </div>
             </div>
           </div>

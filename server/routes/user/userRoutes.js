@@ -7,11 +7,11 @@ const {
   userLogout,
   adminLogin,
 } = require("../../controller/authController");
-const { fetchProducts } = require("../../controller/shopController");
+const { fetchProducts, fetchOneProd, addToCart } = require("../../controller/shopController");
 
 const { fetchUsers, fetchMsgs } = require("../../controller/userController");
 
-const {verifyAccessToken} = require("../../middlewares/authMiddleware");
+const { verifyAccessToken } = require("../../middlewares/authMiddleware");
 
 const { upload } = require("../../middlewares/multer");
 
@@ -33,6 +33,10 @@ router.get("/fetch-messages/:to", verifyAccessToken, fetchMsgs);
 
 //admin
 
-router.get('/shop/products',fetchProducts)
+router.get("/shop/products", fetchProducts);
+
+router.get("/shop/each-prod/:prodId", fetchOneProd);
+
+router.post("/shop/cart", verifyAccessToken, addToCart);
 
 module.exports = router;

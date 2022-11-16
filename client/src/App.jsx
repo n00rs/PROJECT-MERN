@@ -34,6 +34,7 @@ import ViewProduct from "./pages/ViewProduct";
 import Cart from "./pages/Cart";
 
 function App() {
+  console.log('welcome to web$');
   const { userExist, adminExist } = useSelector((state) => state.auth);
 
   const userLoader = () => {
@@ -67,8 +68,8 @@ function App() {
           </Route>
           <Route path="/shop" element={<ShopLayout />}>
             <Route index element={<Shop />} />
-            <Route path="products" element={<Category />} />
-            <Route path="view-product" element={<ViewProduct />} />
+            <Route path="products/:category" element={<Category />} />
+            <Route path="view-product/:prodId" element={<ViewProduct />} />
             <Route path="cart" element={<Cart />} />
           </Route>
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />

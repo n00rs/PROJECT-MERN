@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
-import { useCallback } from "react";
-import { useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useRef, useState, useEffect, useCallback } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FilterIcon } from "../../../assets/icons/FilterIcon";
 import { FETCH_PRODUCTS_URL } from "../../../Constant";
@@ -10,17 +10,28 @@ import { ProductCard } from "./ProductCard";
 import { Spinner } from "react-bootstrap";
 import styles from "./ProductPage.module.css";
 import { FilterCanvas } from "./FilterCanvas";
+import { fetchProduct, resetPageNo, resetProd, setPageNo } from "../../../store/shopSlice";
 
 export const Category = () => {
-  const [searchParam, setSearchParams] = useSearchParams();
-  const [products, setProducts] = useState([]);
-  const [pageNo, setPageNo] = useState(0);
-  const [totalsPage, setTotalPages] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
-  let categ = searchParam.get("category");
+  let { category } = useParams();
 
-  categ = categ === "all" ? "" : categ;
+  // const [searchParam, setSearchParams] = useSearchParams();
+
+  // const [products, setProducts] = useState([]);
+
+  // const [pageNo, setPageNo] = useState(0);
+
+  // const [totalsPage, setTotalPages] = useState(0);
+
+  // const [isLoading, setIsLoading] = useState(false);
+
+  const [showFilter, setShowFilter] = useState(false);
+  const dispatch = useDispatch();
+  const { pageNo, isLoading, products, totalPages, error } = useSelector((state) => state.shop);
+  console.log(category);
+  // let category = searchParam.get("category");
+
+  category = category === "all" ? "" : category;
   const observer = useRef();
 
   const lastProdRef = useCallback(
@@ -30,39 +41,49 @@ export const Category = () => {
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && pageNo + 1 < totalsPage) {
-          setPageNo((prev) => prev + 1);
+        console.log(entries);
+        if (entries[0].isIntersecting && pageNo + 1 < totalPages) {
+          dispatch(setPageNo());
         }
       });
-
+      console.log(node);
       if (node) observer.current.observe(node);
     },
     [isLoading]
   );
 
-  // if (!categ) {
+  // if (!category) {
   //   setSearchParams("category", "all");
   // }
+  useEffect(() => {
+    dispatch(resetProd());
+  }, [category]);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(FETCH_PRODUCTS_URL + "?page=" + pageNo + "&category=" + categ)
-      .then((res) => res.json())
-      .then((data) => {
-        setIsLoading(false);
-        if (!data.data) throw data;
-        else {
-          setTotalPages(data?.metaData[0]?.totalPages);
-          setProducts((prev) => [...prev, ...data.data]);
-        }
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        console.log(e);
-        toast.error(e.message);
-      });
-  }, [pageNo, categ]);
-
+    dispatch(fetchProduct(category));
+    // setIsLoading(true);
+    // fetch(FETCH_PRODUCTS_URL + "?page=" + pageNo + "&category=" + category)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setIsLoading(false);
+    //     if (!data.data) throw data;
+    //     else {
+    //       setTotalPages(data?.metaData[0]?.totalPages);
+    //       setProducts((prev) => [...prev, ...data.data]);
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     setIsLoading(false);
+    //     console.log(e);
+    //     toast.error(e.message);
+    //   });
+    
+  }, [pageNo, category]);
+useEffect(()=>{
+ return () => {
+    dispatch(resetPageNo());
+  };
+},[])
   // const pageHandler = () => {
   //   console.log(pageNo, totalsPage);
   //   if () setPageNo((prev) => prev + 1);
@@ -70,7 +91,7 @@ export const Category = () => {
   // };
 
   // console.log(categ);
-
+  if (error) toast(error);
   const prodContent = products?.map((prod, ind) => {
     if (ind + 1 === products.length)
       return <ProductCard product={prod} key={prod._id} ref={lastProdRef} />;
@@ -94,7 +115,7 @@ export const Category = () => {
                   </li>
 
                   <li className={`${styles["breadcrumb-item"]} active`} aria-current="page">
-                    {categ}
+                    {category}
                   </li>
                 </ol>
               </nav>
@@ -105,7 +126,7 @@ export const Category = () => {
               <button
                 className="btn bg-light p-3 me-md-3 d-flex align-items-center fs-7 lh-1 w-100 mb-2 mb-md-0 w-md-auto"
                 type="button"
-             onClick={toggleFilter}
+                onClick={toggleFilter}
               >
                 <FilterIcon />
                 Filters

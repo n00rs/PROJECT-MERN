@@ -47,13 +47,13 @@ export const ShopLayout = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <NavLink to="/shop/products?category=all" className="nav-link ">
+              <NavLink to="/shop/products/all" className="nav-link ">
                 View All
               </NavLink>
-              <NavLink href="/shop/products?category=men" className="nav-link">
+              <NavLink to="/shop/products/men" className="nav-link">
                 Men
               </NavLink>
-              <NavLink href="/shop/products?category=women" className="nav-link">
+              <NavLink to="/shop/products/women" className="nav-link">
                 WomMen
               </NavLink>
 

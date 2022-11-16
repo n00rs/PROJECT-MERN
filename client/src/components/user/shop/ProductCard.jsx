@@ -61,7 +61,7 @@ export const ProductCard = forwardRef(({ product }, ref) => {
         <div className="card-body px-0 ms-1">
           <Link
             className={`text-decoration-none text-black ${styles["link-cover"]}`}
-            to="/shop/view-product"
+            to={`/shop/view-product/${product?._id}`}
           >
             {product?.productName}
           </Link>

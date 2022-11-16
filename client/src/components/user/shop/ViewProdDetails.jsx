@@ -1,21 +1,43 @@
-import { Col } from "react-bootstrap";
+import { Accordion, Col } from "react-bootstrap";
+
 import styles from "./ViewProduct.module.css";
 
-export const ViewProdDetails = () => {
-  const sizeContent = ["S", "M", "L", "XL", "XXL", "NONE"].map((a) => (
-    <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-      <input type="radio" name="product-option-sizes" value={a} id={a} />
-      <label htmlFor={a}>
-        <small>{a}</small>
-      </label>
-    </div>
-  ));
+export const ViewProdDetails = ({ product }) => {
+  
+  // const size = Object.keys(product?.size);
+
+  // let sizeContent;
+
+  // for (const key in product?.size) {
+  //   if (size[key] !== 0) {
+  //     sizeContent = (
+  //       <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
+  //         <input type="radio" name="product-option-sizes" value={key} id={key} />
+  //         <label htmlFor={key}>
+  //           <small>{key}</small>
+  //         </label>
+  //       </div>
+  //     );
+  //   }
+  // }
+
+  const sizeContent = Object.entries(product?.size).map((a) => {
+    if (a[1] !== 0 && a[0] !== '_id')
+      return (
+        <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
+          <input type="radio" name="product-option-sizes" value={a[0]} id={a[0]} />
+          <label htmlFor={a[0]}>
+            <small>{a[0]}</small>
+          </label>
+        </div>
+      );
+  });
   return (
     <div className="sticky-top top-5">
       <div className="pb-3" data-aos="fade-in">
         <div className="d-flex align-items-center mb-3">
           <p className="small fw-bolder text-uppercase tracking-wider text-muted m-0 me-4">
-            KiiKii
+            {product?.brand}
           </p>
           <div
             className="d-flex justify-content-start align-items-center disable-child-pointer cursor-pointer"
@@ -41,8 +63,7 @@ export const ViewProdDetails = () => {
           <small className="text-muted d-inline-block ms-2 fs-bolder">(105 reviews)</small>
         </div>
       </div>
-
-      <h1 className="mb-1 fs-2 fw-bold">Kiikii Osaka Japan Mens T-Shirt Limited Edition</h1>
+      <h1 className="mb-1 fs-2 fw-bold">{product?.productName}</h1>
       <div className="d-flex justify-content-between align-items-center">
         <p className="fs-4 m-0">$34.99</p>
       </div>
@@ -55,11 +76,13 @@ export const ViewProdDetails = () => {
           {sizeContent}
         </div>
       </div>
-
-      <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
-
-      <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
-
+      <Col md={6}>
+        <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
+      </Col>
+      <Col md={6}>
+        <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
+      </Col>
+      {/* <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button> */}
       {/* <!-- Product Highlights--> */}
       <div className="my-5">
         <div className="row">
@@ -84,114 +107,35 @@ export const ViewProdDetails = () => {
         </div>
       </div>
       {/* <!-- / Product Highlights--> */}
-
       {/* <!-- Product Accordion --> */}
-      <div className={styles["accordion"]} id="accordionProduct">
-        <div className={styles["accordion-item"]}>
-          <h2 className={styles["accordion-header"]} id="headingOne">
-            <button
-              className={styles["accordion-button"]}
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
-              aria-expanded="true"
-              aria-controls="collapseOne"
-            >
-              Product Details
-            </button>
-          </h2>
-          <div
-            id="collapseOne"
-            className={`${styles["accordion-collapse"]} collapse show`}
-            aria-labelledby="headingOne"
-            data-bs-parent="#accordionProduct"
-          >
-            <div className={styles["accordion-body"]}>
-              <p className="m-0">
-                Made from 100% organic cotton, The Kiikii Osaka Japan T-Shirt was created with
-                everyday use in mind. It features printed graphics and heavyweight fabric for
-                maximum comfort and lifespan.
-              </p>
-            </div>
-          </div>
-        </div>
-        {/* <div className="accordion-item">
-          <h2 className="accordion-header" id="headingTwo">
-            <button
-              className="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
-              aria-expanded="false"
-              aria-controls="collapseTwo"
-            >
-              Details & Care
-            </button>
-          </h2>
-          <div
-            id="collapseTwo"
-            className="accordion-collapse collapse"
-            aria-labelledby="headingTwo"
-            data-bs-parent="#accordionProduct"
-          >
-            <div className="accordion-body">
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item d-flex border-0 row g-0 px-0">
-                  <span className="col-4 fw-bolder">Composition</span>
-                  <span className="col-7 offset-1">98% Cotton, 2% elastane</span>
-                </li>
-                <li className="list-group-item d-flex border-0 row g-0 px-0">
-                  <span className="col-4 fw-bolder">Care</span>
-                  <span className="col-7 offset-1">
-                    Professional dry clean only. Do not bleach. Do not iron.
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div> */}
-        <div className={styles["accordion-item"]}>
-          <h2 className={styles["accordion-header"]} id="headingThree">
-            <button
-              className={`${styles["accordion-button"]} ${styles.collapsed}`}
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
-              aria-expanded="false"
-              aria-controls="collapseThree"
-            >
-              Delivery & Returns
-            </button>
-          </h2>
-          <div
-            id="collapseThree"
-            className={`${styles["accordion-collapse"]} collapse`}
-            aria-labelledby="headingThree"
-            data-bs-parent="#accordionProduct"
-          >
-            <div className={styles["accordion-body"]}>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item d-flex border-0 row g-0 px-0">
-                  <span className="col-4 fw-bolder">Delivery</span>
-                  <span className="col-7 offset-1">
-                    Standard delivery free for orders over $99. Next day delivery $9.99
-                  </span>
-                </li>
-                <li className="list-group-item d-flex border-0 row g-0 px-0">
-                  <span className="col-4 fw-bolder">Returns</span>
-                  <span className="col-7 offset-1">
-                    30 day return period. See our
-                    <a className="text-black" href="#">
-                      terms & conditions.
-                    </a>
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* <!-- / Product Accordion--> */}
+      <Accordion defaultActiveKey={0} flush>
+        <Accordion.Item eventKey={0}>
+          <Accordion.Header>Product Details</Accordion.Header>
+          <Accordion.Body>{product?.description}</Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey={1}>
+          <Accordion.Header>Delivery & Returns</Accordion.Header>
+          <Accordion.Body>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item d-flex border-0 row g-0 px-0">
+                <span className="col-4 fw-bolder">Delivery</span>
+                <span className="col-7 offset-1">
+                  Standard delivery free for orders over $99. Next day delivery $9.99
+                </span>
+              </li>
+              <li className="list-group-item d-flex border-0 row g-0 px-0">
+                <span className="col-4 fw-bolder">Returns</span>
+                <span className="col-7 offset-1">
+                  30 day return period. See our
+                  <a className="text-black" href="#">
+                    terms & conditions.
+                  </a>
+                </span>
+              </li>
+            </ul>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
     </div>
   );
 };
