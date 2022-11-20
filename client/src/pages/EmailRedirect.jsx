@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { EMAIL_VERIFY_URL } from "../Constant";
+import { EMAIL_VERIFY_URL } from "../api";
 import { toast } from "react-toastify";
 import { Spinner } from "../components/UI/Spinner";
 

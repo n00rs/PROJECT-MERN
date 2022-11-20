@@ -45,7 +45,7 @@ export const CheckoutInfo = () => {
               type="radio"
               name="checkoutPaymentMethod"
               id="checoutPaymentStripe"
-              checked
+              defaultChecked
             />
             <label className="form-check-label" htmlFor="checoutPaymentStripe">
               <span className="d-flex justify-content-between align-items-start">
@@ -103,26 +103,26 @@ export const CheckoutInfo = () => {
           </div>
         </Col>
       </Row>
-      <div class={`${styles['paypal-details']} bg-light p-4 my-3`}>
+      <div className={`${styles["paypal-details"]} bg-light p-4 my-3`}>
         Please click on complete order. You will then be transferred to Paypal to enter your payment
         details.
       </div>
-      <div class="form-group form-check m-0">
-        <input type="checkbox" class="form-check-input" id="accept-terms" checked />
-        <label class="form-check-label fw-bolder" for="accept-terms">
+      <div className="form-group form-check m-0">
+        <input type="checkbox" className="form-check-input" id="accept-terms" defaultChecked />
+        <label className="form-check-label fw-bolder" htmlFor="accept-terms">
           I agree to OldSkool's <a href="#">terms & conditions</a>
         </label>
       </div>
 
-      <div class="pt-5 mt-5 pb-5 border-top d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div className="pt-5 mt-5 pb-5 border-top d-flex flex-column flex-md-row justify-content-between align-items-center">
         <a
           href="./checkout-shipping.html"
-          class="btn ps-md-0 btn-link text-dark w-100 w-md-auto mb-2 mb-md-0"
+          className="btn ps-md-0 btn-link text-dark w-100 w-md-auto mb-2 mb-md-0"
           role="button"
         >
           Back to shipping
         </a>
-        <a href="#" class="btn btn-dark w-100 w-md-auto" role="button">
+        <a href="#" className="btn btn-dark w-100 w-md-auto" role="button">
           Complete Order
         </a>
       </div>

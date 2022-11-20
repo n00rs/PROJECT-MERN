@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ALL_BLOG_URL, NEW_BLOG_URL } from "../Constant";
+import { ALL_BLOG_URL, NEW_BLOG_URL } from "../api";
 
 const initialState = {
   isSubmitting: false,

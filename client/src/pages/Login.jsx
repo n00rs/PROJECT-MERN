@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ADMIN_LOGIN_URL, USER_LOGIN_URL } from "../Constant";
+import { ADMIN_LOGIN_URL, USER_LOGIN_URL } from "../api";
 import { useDispatch } from "react-redux";
 import { setAdmin, setUser } from "../store/authSlice";
 import { LoginContainer } from "../components/UI/LoginContainer";

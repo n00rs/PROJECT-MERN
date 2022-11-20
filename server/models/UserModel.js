@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.signup = async function (userData) {
   console.log(userData, "data");
 
-  const existingUser = await this.findOne({ email: userData.email }); //checking for user already exist better  latency
+  const existingUser = await this.findOne({ email: userData.email });  //                    //checking for user already exist better  latency
 
   console.log(existingUser);
 

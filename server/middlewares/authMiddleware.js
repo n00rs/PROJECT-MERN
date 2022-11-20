@@ -1,6 +1,6 @@
 const { verify } = require("jsonwebtoken");
 
-const verifyAccessToken = async (req, res, next) => {
+const verifyAccessToken =  (req, res, next) => {
   const access_token = req?.cookies?.access_token;
   if (!access_token) throw { statusCode: 403, message: "no token no Authorisation" };
 
@@ -25,4 +25,4 @@ const verifyAdmin = (req, res, next) => {
   next();
 };
 
-module.exports = { verifyAccessToken, verifyAdmin };
+module.exports = { verifyAccessToken, verifyAdmin }; 

@@ -1,37 +1,45 @@
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Accordion, Col } from "react-bootstrap";
-
+import { toast } from "react-toastify";
+import { updateCart } from "../../../store/shopSlice";
 import styles from "./ViewProduct.module.css";
 
 export const ViewProdDetails = ({ product }) => {
-  
-  // const size = Object.keys(product?.size);
+  const dispatch = useDispatch();
 
-  // let sizeContent;
+  const { updatingCart, error } = useSelector((state) => state.shop);
 
-  // for (const key in product?.size) {
-  //   if (size[key] !== 0) {
-  //     sizeContent = (
-  //       <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-  //         <input type="radio" name="product-option-sizes" value={key} id={key} />
-  //         <label htmlFor={key}>
-  //           <small>{key}</small>
-  //         </label>
-  //       </div>
-  //     );
-  //   }
-  // }
+  const [size, setSize] = useState("");
+
+  const chngeSize = (e) => setSize(e.target.value);
+
+  const data = { size, prodId: product._id, quantity: 1 };
+
+  const addCartHandler = () => {
+    size ? dispatch(updateCart(data)) : toast.error("please select an size");
+  };
 
   const sizeContent = Object.entries(product?.size).map((a) => {
-    if (a[1] !== 0 && a[0] !== '_id')
+    if (a[1] !== 0 && a[0] !== "_id")
       return (
-        <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`}>
-          <input type="radio" name="product-option-sizes" value={a[0]} id={a[0]} />
+        <div className={`${styles["form-check-option"]} ${styles["form-check-rounded"]}`} key={a}>
+          <input
+            type="radio"
+            name="product-option-sizes"
+            value={a[0]}
+            id={a[0]}
+            onChange={chngeSize}
+          />
           <label htmlFor={a[0]}>
             <small>{a[0]}</small>
           </label>
         </div>
       );
   });
+
+  if (error) toast.error(error);
+
   return (
     <div className="sticky-top top-5">
       <div className="pb-3" data-aos="fade-in">
@@ -69,19 +77,19 @@ export const ViewProdDetails = ({ product }) => {
       </div>
       <div className="border-top mt-4 mb-3">
         <small className="text-uppercase pt-4 d-block fw-bolder">
-          <span className="text-muted">Available Sizes (Mens)</span> :
-          <span className="fw-bold">M</span>
+          <span className="text-muted">Available Sizes ({product?.category})</span> :
+          <span className="fw-bold">{size}</span>
         </small>
         <div className="mt-4 d-flex justify-content-start flex-wrap align-items-start">
           {sizeContent}
         </div>
       </div>
       <Col md={6}>
-        <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
+        <button className="btn btn-dark w-100 mt-4 mb-0" onClick={addCartHandler}>
+          Add To Shopping Bag
+        </button>
       </Col>
-      <Col md={6}>
-        <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button>
-      </Col>
+
       {/* <button className="btn btn-dark w-100 mt-4 mb-0 ">Add To Shopping Bag</button> */}
       {/* <!-- Product Highlights--> */}
       <div className="my-5">

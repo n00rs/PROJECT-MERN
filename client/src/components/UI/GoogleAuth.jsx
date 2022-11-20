@@ -1,7 +1,7 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import React from "react";
 import { toast } from "react-toastify";
-import { USER_LOGIN_URL, USER_SIGNUP_URL } from "../../Constant";
+import { USER_LOGIN_URL, USER_SIGNUP_URL } from "../../api";
 
 const GoogleAuth = ({ page, navigate }) => {
   let url;

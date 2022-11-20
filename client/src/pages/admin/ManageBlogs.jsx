@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { BlogTable } from "../../components/admin/BlogTable";
-import { ADMIN_ALLBLOG_API, ADMIN_BLOG_API } from "../../Constant";
+import { ADMIN_ALLBLOG_API, ADMIN_BLOG_API } from "../../api";
 
 const ManageBlogs = () => {
 

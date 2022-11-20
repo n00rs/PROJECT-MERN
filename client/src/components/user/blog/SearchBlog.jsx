@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Col, Form, ListGroup, Modal, Row } from "react-bootstrap";
-import { SEARCH_BLOG_URL } from "../../../Constant";
+import { SEARCH_BLOG_URL } from "../../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 

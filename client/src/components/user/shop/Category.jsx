@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FilterIcon } from "../../../assets/icons/FilterIcon";
-import { FETCH_PRODUCTS_URL } from "../../../Constant";
+import { FETCH_PRODUCTS_URL } from "../../../api";
 import { CategoryBanner } from "./CategoryBanner";
 import { ProductCard } from "./ProductCard";
 import { Spinner } from "react-bootstrap";
@@ -46,10 +46,9 @@ export const Category = () => {
           dispatch(setPageNo());
         }
       });
-      console.log(node);
       if (node) observer.current.observe(node);
     },
-    [isLoading]
+    [isLoading, pageNo, totalPages]
   );
 
   // if (!category) {
@@ -77,13 +76,12 @@ export const Category = () => {
     //     console.log(e);
     //     toast.error(e.message);
     //   });
-    
   }, [pageNo, category]);
-useEffect(()=>{
- return () => {
-    dispatch(resetPageNo());
-  };
-},[])
+  useEffect(() => {
+    return () => {
+      dispatch(resetPageNo());
+    };
+  }, []);
   // const pageHandler = () => {
   //   console.log(pageNo, totalsPage);
   //   if () setPageNo((prev) => prev + 1);

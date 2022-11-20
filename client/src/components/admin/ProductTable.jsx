@@ -1,7 +1,7 @@
 // import { useState, useEffect } from "react";
 import { Badge, Button } from "react-bootstrap";
 // import { toast } from "react-toastify";
-import { OUT_OF_STOCK_API } from "../../Constant";
+import { OUT_OF_STOCK_API } from "../../api";
 
 const ProductTable = ({ product, dispatch }) => {
   const stockHandler = async (id) => {

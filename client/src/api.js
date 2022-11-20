@@ -34,6 +34,10 @@ export const FETCH_PRODUCTS_URL = `${USER_BASE_URL}/shop/products`; /// /shop/pr
 
 export const FETCH_EACH_PROD_URL = `${USER_BASE_URL}/shop/each-prod/`; //   /shop/each-prod/:prodId
 
+export const CART_COUNT_API = `${USER_BASE_URL}/shop/cart-count`;
+
+export const CART_API = `${USER_BASE_URL}/shop/cart`;
+
 //ADMIN_API
 
 export const ADMIN_LOGIN_URL = `${ADMIN_BASE_URL}/login`;

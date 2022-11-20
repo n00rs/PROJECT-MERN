@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import { useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserTable } from "../../components/admin/UserTable";
-import { ADMIN_ALLUSERS_URL, BLOCK_USER_URL } from "../../Constant";
+import { ADMIN_ALLUSERS_URL, BLOCK_USER_URL } from "../../api";
 
 const style = {
   border: "none",

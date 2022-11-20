@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { COMMENT_URL, UPDATE_BLOG_URL, USER_BLOGS_URL } from "../Constant";
+import { COMMENT_URL, UPDATE_BLOG_URL, USER_BLOGS_URL } from "../api";
 
 //FETCHing logged in userBlogs
 

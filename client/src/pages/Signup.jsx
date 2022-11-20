@@ -5,7 +5,7 @@ import { useState } from "react";
 import GoogleAuth from "../components/UI/GoogleAuth";
 import useValid from "../hooks/useValid";
 import styles from "../components/UI/LoginModal.module.css";
-import { USER_SIGNUP_URL } from "../Constant";
+import { USER_SIGNUP_URL } from "../api";
 import { toast } from "react-toastify";
 
 

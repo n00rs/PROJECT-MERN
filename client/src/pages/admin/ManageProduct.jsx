@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import ProductTable from "../../components/admin/ProductTable";
 import { PaginationBar } from "../../components/UI/PaginationBar";
 import { useEffect } from "react";
-import { FETCH_PRODS_API } from "../../Constant";
+import { FETCH_PRODS_API } from "../../api";
 import { toast } from "react-toastify";
 import { UpdateProdCanvas } from "../../components/admin/UpdateProdCanvas";
 

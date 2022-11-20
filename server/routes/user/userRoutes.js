@@ -7,7 +7,14 @@ const {
   userLogout,
   adminLogin,
 } = require("../../controller/authController");
-const { fetchProducts, fetchOneProd, addToCart } = require("../../controller/shopController");
+const {
+  fetchProducts,
+  fetchOneProd,
+  addToCart,
+  fetchCart,
+  fetchCartCount,
+  clearCart,
+} = require("../../controller/shopController");
 
 const { fetchUsers, fetchMsgs } = require("../../controller/userController");
 
@@ -38,5 +45,11 @@ router.get("/shop/products", fetchProducts);
 router.get("/shop/each-prod/:prodId", fetchOneProd);
 
 router.post("/shop/cart", verifyAccessToken, addToCart);
+
+router.get("/shop/cart", verifyAccessToken, fetchCart);
+
+router.delete("/shop/cart", verifyAccessToken, clearCart);
+
+router.get("/shop/cart-count", verifyAccessToken, fetchCartCount);
 
 module.exports = router;

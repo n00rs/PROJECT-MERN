@@ -9,7 +9,7 @@ import userBlogBanner from "../../../assets/userBlogBanner.jpg";
 //   COMMENT_URL,
 //   UPDATE_BLOG_URL,
 //   USER_BLOGS_URL,
-// } from "../../../Constant";
+// } from "../../../api";
 import { BlogContainer } from "../../UI/BlogContainer";
 // import { BlogCard } from "./BlogCard";
 import { CommentCanvas } from "./CommentCanvas";

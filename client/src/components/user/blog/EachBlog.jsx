@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 // import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { COMMENT_URL, EACH_BLOG_URL } from "../../../Constant";
+import { COMMENT_URL, EACH_BLOG_URL } from "../../../api";
 import { BlogArticle } from "../../UI/BlogArticle";
+
 
 import { BlogComment } from "./BlogComment";
 

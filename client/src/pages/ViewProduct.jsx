@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { ViewProdDetails } from "../components/user/shop/ViewProdDetails";
 import { ViewProdImg } from "../components/user/shop/ViewProdImg";
 import styles from "../components/user/shop/ViewProduct.module.css";
-import { FETCH_EACH_PROD_URL } from "../Constant";
+import { FETCH_EACH_PROD_URL } from "../api";
 
 const ViewProduct = () => {
   const { prodId } = useParams();
@@ -15,21 +15,21 @@ const ViewProduct = () => {
   const [prod, setProduct] = useState(null);
   console.log(prodId);
   // console.log(prod);
-
+  const fetchProd = async () => {
+    try {
+      const res = await fetch(FETCH_EACH_PROD_URL + prodId);
+      const data = await res.json();
+      if (!res.ok) throw data;
+      else setProduct(data);
+    } catch (e) {
+      // console.debug(e);
+      toast.error(e.message);
+    }
+  };
   useEffect(() => {
     const prods = products.find((prod) => prod._id === prodId);
     if (prods) setProduct(prods);
-    else
-      fetch(FETCH_EACH_PROD_URL + prodId)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data, "fe");
-          setProduct(data);
-        })
-        .catch((e) => {
-          console.log(e);
-          toast.error(e.message);
-        });
+    else fetchProd();
   }, []);
 
   console.log(prod, "prod");

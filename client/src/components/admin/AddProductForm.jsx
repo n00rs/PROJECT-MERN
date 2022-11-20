@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { s3UploadHandler } from "../../store/admin/awsService";
 import { Spinner } from "../UI/Spinner";
-import { ADD_PRODUCT_API, UPDATE_STOCK_API } from "../../Constant";
+import { ADD_PRODUCT_API, UPDATE_STOCK_API } from "../../api";
 
 export const AddProductForm = ({ updateProdValues }) => {
   const initialSizeState = {

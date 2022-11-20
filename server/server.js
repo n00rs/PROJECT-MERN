@@ -31,11 +31,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/users/blog", blogRoutes);
 app.use("/api/admin", adminRoutes);
 
-
-app.use((err,req,res,next)=>{
+app.use((err, req, res, next) => {
+  // console.error(err);
+  console.log(err);
+  // console.log(err.stack);
   const statusCode = err.statusCode ? err.statusCode : 500;
-  res.status(statusCode).json(err.message); 
-})
+  res.status(statusCode).json({ message: err.message });
+});
 
 const server = app.listen(PORT, () => console.log(`server up at :${PORT}`));
 

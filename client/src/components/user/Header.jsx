@@ -5,7 +5,7 @@ import { setUser } from "../../store/authSlice";
 import LoginModal from "./LoginModal/LoginModal";
 import styles from "./Header.module.css";
 import img from "../../assets/logo.png";
-import { LOGOUT_URL } from "../../Constant";
+import { LOGOUT_URL } from "../../api";
 
 const Header = (onRouteChange) => {
   const [showModal, setShowModal] = useState(false);

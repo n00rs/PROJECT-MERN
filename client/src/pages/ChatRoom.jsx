@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { ChatContainer } from "../components/user/chat/ChatContainer";
 import { Contacts } from "../components/user/chat/Contacts";
 import { Welcome } from "../components/user/chat/Welcome";
-import { FETCH_USERS_URL } from "../Constant";
+import { FETCH_USERS_URL } from "../api";
 import { io } from "socket.io-client";
 
 import styles from "./ChatRoom.module.css";

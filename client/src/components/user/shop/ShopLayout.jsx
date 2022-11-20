@@ -8,6 +8,10 @@ import TwitterIcon from "../../../assets/icons/TwitterIcon";
 import { WishListIcon } from "../../../assets/icons/WishListIcon";
 import styles from "./ShopLayout.module.css";
 
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchCartCount } from "../../../store/shopSlice";
+
 const icons = [
   { element: <InstagramIcon />, link: "https://instagram.com" },
   { element: <FacebookIcon />, link: "https://fb.com" },
@@ -39,6 +43,13 @@ const cardsContent = cards.map((cr) => (
 ));
 
 export const ShopLayout = () => {
+  const { cartCount } = useSelector((state) => state.shop);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCartCount());
+  }, [dispatch]);
+
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -68,16 +79,16 @@ export const ShopLayout = () => {
             <Nav>
               <Link>
                 <WishListIcon />
-                <Badge pill bg="secondary">
-                  3
+                <Badge pill bg="danger">
+                  pending
                 </Badge>
               </Link>
 
-              <Link to='/shop/cart'>
+              <Link to="/shop/cart">
                 <CartIcon />
 
                 <Badge pill bg="secondary">
-                  3
+                  {cartCount}
                 </Badge>
               </Link>
             </Nav>
