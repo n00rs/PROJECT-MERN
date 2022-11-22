@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import { FETCH_PRODUCTS_URL, CART_API, CART_COUNT_API } from "../api";
 
 const initialState = {
@@ -47,6 +48,7 @@ export const updateCart = createAsyncThunk(
 
       if (!res.ok) throw resData;
       data.cartCount = resData?.items?.length;
+      console.log(data);
       return fulfillWithValue(data);
     } catch (err) {
       console.log(err);
@@ -63,7 +65,7 @@ export const fetchCartCount = createAsyncThunk(
     try {
       const res = await fetch(CART_COUNT_API, { credentials: "include" });
       const resData = await res.json();
-      console.log(resData, "cartcount");
+
       if (!res.ok) throw resData;
       return fulfillWithValue(resData);
     } catch (err) {
@@ -103,6 +105,10 @@ const shopSlice = createSlice({
     resetPageNo: (state) => {
       state.pageNo = 0;
     },
+    clearCart: (state) => {
+      state.cart = null;
+      state.cartCount = 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -129,15 +135,17 @@ const shopSlice = createSlice({
         state.updatingCart = true;
         state.error = null;
       })
+
       .addCase(updateCart.fulfilled, (state, { payload }) => {
+        toast("cart updated");
         const { prodId, quantity, cartCount, size } = payload;
 
         state.error = null;
         state.updatingCart = false;
         state.cartCount = cartCount;
-
+        console.log(state?.cart);
         if (state.cart) {
-          const existInd = state.cart?.cartItems.findIndex(
+          const existInd = state.cart?.cartItems?.findIndex(
             (item) => item.prodId === prodId && item.size === size
           );
 
@@ -158,8 +166,6 @@ const shopSlice = createSlice({
               state.cart.cartItems[existInd] = updateItem;
             }
           }
-
-          console.log(existItem);
         }
       })
       .addCase(updateCart.rejected, (state, { payload }) => {
@@ -204,5 +210,5 @@ const shopSlice = createSlice({
   },
 });
 
-export const { resetProd, setPageNo, resetPageNo } = shopSlice.actions;
+export const { resetProd, setPageNo, resetPageNo, clearCart } = shopSlice.actions;
 export default shopSlice.reducer;

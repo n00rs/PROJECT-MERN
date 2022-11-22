@@ -1,4 +1,5 @@
 const BlogModel = require("../models/BlogModel");
+const CouponModel = require("../models/CouponModel");
 const ProductModel = require("../models/ProductModel");
 const UserModel = require("../models/UserModel");
 
@@ -96,7 +97,7 @@ const updateOutOfStock = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     next(err);
-  } 
+  }
 };
 
 //METHOD POST
@@ -111,7 +112,6 @@ const updateProduct = async (req, res, next) => {
     if (!prodId || Object.keys(req.body).length === 0)
       throw { statusCode: 404, message: "invalid request params" };
 
-
     const updateProd = await ProductModel.findByIdAndUpdate(
       prodId,
       { $set: { ...req.body, delete: false } },
@@ -124,9 +124,46 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+//METHOD POST
+//ROUTE /api/admin/coupon
+
+const addCoupon = async (req, res, next) => {
+  try {
+    const {
+      couponCode,
+      maxDiscountPrice,
+      discountPercent,
+      minmumPurchaseAmount,
+      expiryDate,
+      type,
+    } = req.body;
+    // const requiredField = [];
+
+    if (!couponCode || !minmumPurchaseAmount || !expiryDate)
+      if (!maxDiscountPrice && !discountPercent)
+        throw { statusCode: 400, message: "please provide validDetails" };
+
+    const types = ["isPercentOnly", "isAmountOnly", "isUserOnly", "isConditional"];
+
+    if (!types.includes(type))
+      throw {
+        statusCode: 400,
+        message:
+          'please provide valid type  ie either ;"isPercentOnly", "isAmountOnly", "isUserOnly", "isConditional"',
+      };
+
+    const newCoupon = await CouponModel.create(req.body);
+    res.status(201).json(newCoupon);
+    
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   addProduct,
   fetchAllProducts,
   updateOutOfStock,
   updateProduct,
+  addCoupon,
 };

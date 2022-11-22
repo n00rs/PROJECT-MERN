@@ -85,9 +85,73 @@ const userBlocking = async (req, res, next) => {
     next(err);
   }
 };
+
+//METHOD GET
+//ROUTE /api/users/user-details
+
+const fetchUserData = async (req, res, next) => {
+  try {
+    const { userId } = req;
+    if (!userId) throw { statusCode: 403, message: "you are not supposed to be here" };
+    const userData = await UserModel.findById(userId, {
+      password: 0,
+      email_verified: 0,
+      isBlocked: 0,
+      picture: 0,
+      __v: 0,
+    });
+
+    console.log(userData);
+    if (userData) res.status(200).json(userData);
+    else throw { message: "oops somethings wrong call help" };
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD POST
+//ROUTE /api/users/user-details
+
+const addAddress = async (req, res, next) => {
+  try {
+    // console.log("add", req.body);
+
+    const { userId } = req;
+    if (!userId) throw { statusCode: 403, message: "your are not supposed to be here" };
+
+    const reqKeys = Object.keys(req.body);
+
+    const requiredData = ["address", "phone", "city", "pincode", "state", "landmark"];
+console.log(req.body)
+    const check = requiredData.every((i) => reqKeys.includes(i) && req.body[i] !== "");
+    console.log(check);
+    if (!check)
+      throw { statusCode: 422, message: "invalid reqeust please provide required details." };
+
+    const updateAddress = await UserModel.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          address: { $each: [req.body], $slice: -5 },
+        },
+      },
+      {
+        new: true,
+        projection: { password: 0, email_verified: 0, isBlocked: 0, picture: 0, __v: 0 },
+      }
+    );
+    console.log(updateAddress.address.length);
+    res.status(200).json(updateAddress);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   fetchUsers,
   fetchMsgs,
   userBlocking,
-  fetchAllUsers
+  fetchAllUsers,
+  fetchUserData,
+  addAddress,
 };

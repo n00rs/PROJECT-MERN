@@ -34,7 +34,7 @@ import ViewProduct from "./pages/ViewProduct";
 import Cart from "./pages/Cart";
 
 function App() {
-  console.log('welcome to web$');
+  console.log("welcome to  ♥'s web$");
   const { userExist, adminExist } = useSelector((state) => state.auth);
 
   const userLoader = () => {

@@ -1,3 +1,9 @@
+const { verifyAccessToken } = require("../../middlewares/authMiddleware");
+
+const { upload } = require("../../middlewares/multer");
+
+const router = require("express").Router();
+
 const {
   userLogin,
   userSignup,
@@ -16,13 +22,12 @@ const {
   clearCart,
 } = require("../../controller/shopController");
 
-const { fetchUsers, fetchMsgs } = require("../../controller/userController");
-
-const { verifyAccessToken } = require("../../middlewares/authMiddleware");
-
-const { upload } = require("../../middlewares/multer");
-
-const router = require("express").Router();
+const {
+  fetchUsers,
+  fetchMsgs,
+  fetchUserData,
+  addAddress,
+} = require("../../controller/userController");
 
 router.post("/login", userLogin);
 
@@ -38,7 +43,11 @@ router.get("/fetchUsers", verifyAccessToken, fetchUsers);
 
 router.get("/fetch-messages/:to", verifyAccessToken, fetchMsgs);
 
-//admin
+router.get("/user-details", verifyAccessToken, fetchUserData);
+
+router.post("/user-details", verifyAccessToken, addAddress);
+
+//shop
 
 router.get("/shop/products", fetchProducts);
 

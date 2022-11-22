@@ -1,5 +1,10 @@
-import { Col, Form, Row } from "react-bootstrap";
+// import { useCallback, useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+// import { USER_DATA_API } from "../../../api";
+// import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import styles from "./CartStyles.module.css";
+
 export const CheckoutInfo = () => {
   return (
     <>
@@ -110,7 +115,7 @@ export const CheckoutInfo = () => {
       <div className="form-group form-check m-0">
         <input type="checkbox" className="form-check-input" id="accept-terms" defaultChecked />
         <label className="form-check-label fw-bolder" htmlFor="accept-terms">
-          I agree to OldSkool's <a href="#">terms & conditions</a>
+          I agree to OldSkool's <Link>terms & conditions</Link>
         </label>
       </div>
 
@@ -122,149 +127,7 @@ export const CheckoutInfo = () => {
         >
           Back to shipping
         </a>
-        <a href="#" className="btn btn-dark w-100 w-md-auto" role="button">
-          Complete Order
-        </a>
-      </div>
-    </>
-  );
-};
-
-export const CheckOutAddressForm = () => {
-  return (
-    <>
-      <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-4">
-        <h3 className="fs-5 fw-bolder m-0 lh-1">Contact Information</h3>
-        <small className="text-muted fw-bolder">
-          Already registered? <a href="./login.html">Login</a>
-        </small>
-      </div>
-      <Row>
-        {/* <!-- First Name--> */}
-        <Col sm={6}>
-          <Form.Group>
-            <Form.Label>First name</Form.Label>
-            <Form.Control type="text" placeholder="first NAme" />
-          </Form.Group>
-        </Col>
-
-        {/* <!-- Last Name--> */}
-        <Col sm={6}>
-          <Form.Group>
-            <Form.Label>First name</Form.Label>
-            <Form.Control type="text" placeholder="first NAme" />
-          </Form.Group>
-        </Col>
-
-        {/* <!-- Email--> */}
-
-        <div className="col-12">
-          <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="BootStrap@example.com" />
-          </Form.Group>
-
-          {/* <!-- Mailing List Signup--> */}
-          <Form.Group className="m-0">
-            <Form.Check
-              className="small text-muted"
-              type="checkbox"
-              label=" Keep me updated with your latest news and offers"
-            />
-          </Form.Group>
-        </div>
-      </Row>
-
-      <h3 className="fs-5 mt-5 fw-bolder mb-4 border-bottom pb-4">Shipping Address</h3>
-      <Row>
-        {/* <!-- First Name--> */}
-        <Col sm={6}>
-          <Form.Group>
-            <Form.Label>First name</Form.Label>
-            <Form.Control type="text" />
-          </Form.Group>
-        </Col>
-
-        {/* <!-- Last Name--> */}
-        <Col sm={6}>
-          <div className="form-group">
-            <label htmlFor="lastName" className="form-label">
-              Last name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="lastName"
-              placeholder=""
-              value=""
-              required=""
-            />
-          </div>
-        </Col>
-
-        {/* <!-- Address--> */}
-        <div className="col-12">
-          <div className="form-group">
-            <label htmlFor="address" className="form-label">
-              Address
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="address"
-              placeholder="123 Some Street Somewhere"
-              required=""
-            />
-          </div>
-        </div>
-
-        {/* <!-- Country--> */}
-        <div className="col-12">
-          <div className="form-group">
-            <label htmlFor="Country" className="form-label">
-              Country
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="Country"
-              placeholder="country..."
-              required=""
-            />
-          </div>
-        </div>
-
-        {/* <!-- State--> */}
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="state" className="form-label">
-              State
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="state"
-              placeholder="State..."
-              required=""
-            />
-          </div>
-        </div>
-
-        {/* <!-- Post Code--> */}
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="zip" className="form-label">
-              Zip/Post Code
-            </label>
-            <input type="text" className="form-control" id="zip" placeholder="" required="" />
-          </div>
-        </div>
-      </Row>
-
-      <div className="pt-5 mt-2 pb-5 border-top d-flex justify-content-md-end align-items-center">
-        <a href="./checkout-shipping.html" className="btn btn-dark w-100 w-md-auto" role="button">
-          Proceed to shipping
-        </a>
+        <button className="btn btn-dark w-100 w-md-auto">Complete Order</button>
       </div>
     </>
   );

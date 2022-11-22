@@ -198,3 +198,45 @@
 .bg-light-hover:hover {
   background-color: #f3f5f6 !important;
 }
+
+.aside-checkout {
+  position: relative;
+}
+
+.aside-checkout:after {
+  background: #f3f5f6;
+  width: 100;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  bottom: 0;
+  z-index: -1;
+}
+
+@media (max-width: 991.98px) {
+  .aside-checkout:after {
+    display: none;
+  }
+}
+
+.checkout-item-qty {
+  position: absolute;
+  border-radius: 100%;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  top: -8px;
+  right: -8px;
+  background: #111827;
+  color: #fff;
+  font-size: 74%;
+}
+
+.fs-9 {
+  font-size: 0.75rem !important;
+}

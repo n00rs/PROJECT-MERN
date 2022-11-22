@@ -13,7 +13,7 @@ const ViewProduct = () => {
   const { prodId } = useParams();
   const { products } = useSelector((state) => state.shop);
   const [prod, setProduct] = useState(null);
-  console.log(prodId);
+  // console.log(prodId);
   // console.log(prod);
   const fetchProd = async () => {
     try {
@@ -32,7 +32,7 @@ const ViewProduct = () => {
     else fetchProd();
   }, []);
 
-  console.log(prod, "prod");
+  // console.log(prod, "prod");
 
   return (
     <section className="mt-0">

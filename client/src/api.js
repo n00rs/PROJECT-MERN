@@ -38,6 +38,8 @@ export const CART_COUNT_API = `${USER_BASE_URL}/shop/cart-count`;
 
 export const CART_API = `${USER_BASE_URL}/shop/cart`;
 
+export const USER_DATA_API = `${USER_BASE_URL}/user-details`
+
 //ADMIN_API
 
 export const ADMIN_LOGIN_URL = `${ADMIN_BASE_URL}/login`;

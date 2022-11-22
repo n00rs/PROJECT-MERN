@@ -90,12 +90,18 @@ export const Category = () => {
 
   // console.log(categ);
   if (error) toast(error);
+
   const prodContent = products?.map((prod, ind) => {
     if (ind + 1 === products.length)
       return <ProductCard product={prod} key={prod._id} ref={lastProdRef} />;
     else return <ProductCard product={prod} key={prod._id} />;
   });
+  
+  
   const toggleFilter = () => setShowFilter((prev) => !prev);
+  
+  
+  
   return (
     <>
       <section className="mt-0 p-2">

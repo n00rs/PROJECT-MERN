@@ -49,7 +49,7 @@ const Login = ({ onToggle }) => {
       }
     } catch (err) {
       console.log(err, "er.......");
-      toast.error(err, "error");
+      toast.error(err.message, "error");
     }
   }
 

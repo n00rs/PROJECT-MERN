@@ -264,3 +264,15 @@ code {
   box-shadow: none;
 }
 
+
+
+.swal-class {
+  background-color: black;
+  opacity: .8;
+
+}
+
+.swal-class button {
+  background-color: yellow;
+  color: black;
+}

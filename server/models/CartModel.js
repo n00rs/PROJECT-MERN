@@ -24,6 +24,7 @@ cartSchema.statics.fetchUserCart = async function (query) {
     { $unwind: "$items" },
     {
       $project: {
+        // itemId: "$items._id",
         prodId: "$items.prodId",
         size: "$items.size",
         quantity: "$items.quantity",
@@ -35,24 +36,26 @@ cartSchema.statics.fetchUserCart = async function (query) {
       $project: {
         userId: 1,
         prodId: 1,
+        // itemId: 1,
         quantity: 1,
         size: 1,
         products: { $arrayElemAt: ["$cartItems", 0] },
       },
     },
     {
-      $group: { 
+      $group: {
         _id: "$_id",
         userId: { $first: "$userId" },
         cartItems: {
           $push: {
+            // itemId: "$itemId",
             prodId: "$products._id",
             quantity: "$quantity",
             size: "$size",
             name: "$products.productName",
             price: "$products.price",
             image: { $arrayElemAt: ["$products.images", 0] },
-            itemTotal: { $sum: { $multiply: ["$quantity", "$products.price"] } },
+            // itemTotal: { $sum: { $multiply: ["$quantity", "$products.price"] } },
           },
         },
         cartTotal: { $sum: { $multiply: ["$quantity", "$products.price"] } },
@@ -68,4 +71,3 @@ cartSchema.pre("findOneAndUpdate", (_id) => {
 });
 
 module.exports = model("Cart", cartSchema);
- 
