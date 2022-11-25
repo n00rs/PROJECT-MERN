@@ -1,18 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../../../store/shopSlice";
-import { Link } from "react-router-dom";
+// import { Link, Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { CART_API } from "../../../api";
 import { toast } from "react-toastify";
 import { CartItem } from "../../UI/CartItem";
+import { DiscountInput } from "./DiscountInput";
+// import { Modal } from "react-bootstrap";
 
-let count = 0;
 export const CartTab = () => {
-  console.log(count++);
-
   const dispatch = useDispatch();
-  const { cart } = useSelector((state) => state.shop);
+  const { cart, orderDetails } = useSelector((state) => state.shop);
 
+  console.log(cart, "cart");
+  // console.log(orderDetails);
   const clearcart = async () => {
     try {
       const { isConfirmed } = await Swal.fire({
@@ -36,17 +37,20 @@ export const CartTab = () => {
     }
   };
 
-  if (!cart?.cartItems)
-    return (
-      <>
-        <Link className="btn bg-light mb-md-0 w-md-auto float-end" type="button" to={"/shop"}>
-          start Shopping
-        </Link>
-        <h3 className="fs-5 fw-bolder mb-0 border-bottom pb-4">
-          Your Cart is empty start shopping
-        </h3>
-      </>
-    );
+  // const emptyCart =()=> Swal.fire("cart is empty").then(() => navigate(-1));
+  console.log(!cart || cart?.cartItems?.length < 1);
+  
+  // return
+  // (
+  //   <>
+  //     <Link className="btn bg-light mb-md-0 w-md-auto float-end" type="button" to={"/shop"}>
+  //       start Shopping
+  //     </Link>
+  //     <h3 className="fs-5 fw-bolder mb-0 border-bottom pb-4">
+  //       Your Cart is empty start shopping
+  //     </h3>
+  //   </>
+  // );
 
   return (
     <>
@@ -92,12 +96,7 @@ export const SideContent = ({ handleNavlinks }) => {
           <p className="m-0 fs-5 fw-bold">&#8377; {cart?.cartTotal}</p>
         </div>
       </div>
-      <div className="py-4">
-        <div className="input-group mb-0">
-          <input type="text" className="form-control" placeholder="Enter coupon code" />
-          <button className="btn btn-secondary btn-sm px-4">Apply</button>
-        </div>
-      </div>
+      <DiscountInput />
       <a className="btn btn-dark w-100 text-center" role="button" onClick={proceedHandler}>
         Proceed to checkout
       </a>

@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Col, Form, Row } from "react-bootstrap";
 import { USER_DATA_API } from "../../../api";
 import { toast } from "react-toastify";
+import { setUserData, updateOrderDetails } from "../../../store/shopSlice";
 
-export const CheckOutAddressForm = () => {
-  const [userData, setUserData] = useState();
+export const CheckOutAddressForm = ({ proceed }) => {
+  // const [userData, setUserData] = useState();
   const [formData, setFormData] = useState();
-  const [addressId, setAddresId] = useState("");
+  const dispatch = useDispatch();
+  // const [addressId, setAddresId] = useState("");
   const [showForm, setShowForm] = useState(false);
+
+  const { userData, orderDetails } = useSelector((state) => state.shop);
+  // const { userData } = shop;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -16,15 +22,14 @@ export const CheckOutAddressForm = () => {
         const resData = await res.json();
         if (!res.ok) throw resData;
 
-        console.log(resData);
-        setUserData(resData);
+        dispatch(setUserData(resData));
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [dispatch]);
 
   const FormHandler = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -51,9 +56,14 @@ export const CheckOutAddressForm = () => {
     }
   };
 
-  const z = (e) => setAddresId(e.target.value);
+  const z = (e) => dispatch(updateOrderDetails({ addressId: e.target.value }));
 
-  // console.log(userData);
+  const checkoutHandler = () => {
+    console.log(orderDetails);
+    if (!orderDetails.addressId) toast(`please select an address to continue`);
+    else proceed("payment");
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-4">
@@ -67,26 +77,25 @@ export const CheckOutAddressForm = () => {
         </small>
       </div>
       <Row>
-        {/* <Form> */}
         {userData?.address?.map((addr) => (
           <Form.Group className="p-3 bg-light" key={addr._id}>
             <Form.Label>
-              <div className="d-flex flex-row align-items-center cursor-pointer">
+              <div className="d-flex flex-row align-items-center ">
                 <Form.Check type="radio" onChange={z} id="1" value={addr._id} name="address" />
+
                 <div className="d-flex flex-column ms-3">
                   <h6 className="fw-bold">{userData?.firstName + userData?.lastName}</h6>
                   <h6 className="fw-bold">{addr?.phone}</h6>
-
                   <span>
                     {`${addr?.address},  ${addr?.city} `} <br />
-                    {`${addr?.state} ${addr?.pincode}`}
+                    {`${addr?.state} ${addr?.pincode}`} <br />
+                    landmark : {addr?.landmark}
                   </span>
                 </div>
               </div>
             </Form.Label>
           </Form.Group>
         ))}
-        {/* </Form> */}
       </Row>
 
       <h3 className="fs-5 mt-5 fw-bolder mb-4 border-bottom pb-4">Shipping Address</h3>
@@ -160,7 +169,9 @@ export const CheckOutAddressForm = () => {
       )}
 
       <div className="pt-5 mt-2 pb-5 border-top d-flex justify-content-md-end align-items-center">
-        <button className="btn btn-dark w-100 w-md-auto">Proceed to shipping</button>
+        <button className="btn btn-dark w-100 w-md-auto" onClick={checkoutHandler}>
+          Proceed to shipping
+        </button>
       </div>
     </>
   );

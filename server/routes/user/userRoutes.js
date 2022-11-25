@@ -20,6 +20,8 @@ const {
   fetchCart,
   fetchCartCount,
   clearCart,
+  verifyCoupon,
+  newOrder,
 } = require("../../controller/shopController");
 
 const {
@@ -60,5 +62,10 @@ router.get("/shop/cart", verifyAccessToken, fetchCart);
 router.delete("/shop/cart", verifyAccessToken, clearCart);
 
 router.get("/shop/cart-count", verifyAccessToken, fetchCartCount);
+
+router.get("/shop/verify-coupon/", verifyCoupon);
+
+router.post('/shop/new-order',verifyAccessToken,newOrder)
+
 
 module.exports = router;

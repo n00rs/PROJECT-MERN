@@ -18,7 +18,7 @@ cartSchema.index({ userId: 1, unique: true });
 
 cartSchema.statics.fetchUserCart = async function (query) {
   // cartSchemaaggregate([{$match}])
-  console.log(query);
+  // console.log(query);
   const cart = await this.aggregate([
     { $match: query },
     { $unwind: "$items" },
@@ -66,8 +66,8 @@ cartSchema.statics.fetchUserCart = async function (query) {
   return cart;
 };
 
-cartSchema.pre("findOneAndUpdate", (_id) => {
-  console.log(this.items, _id(), "this");
-});
+// cartSchema.pre("findOneAndUpdate", (_id) => {
+//   console.log(this.items, _id(), "this");
+// });
 
 module.exports = model("Cart", cartSchema);

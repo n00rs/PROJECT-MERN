@@ -1,8 +1,9 @@
 const { ObjectID } = require("bson");
-// const { } = require('mongoose')
-const { mongo } = require("mongoose");
 const CartModel = require("../models/CartModel");
+const CouponModel = require("../models/CouponModel");
+const OrderModel = require("../models/OrderModel");
 const ProductModel = require("../models/ProductModel");
+const UserModel = require("../models/UserModel");
 
 //METHOD GET
 //ROUTE /api/users/shop/
@@ -247,9 +248,9 @@ const fetchCartCount = async (req, res, next) => {
 const fetchCart = async (req, res, next) => {
   try {
     const { userId } = req;
-    const cart = await CartModel.fetchUserCart({ userId: ObjectID(userId) });
-
-    console.log(cart);
+    const query = { userId: ObjectID(userId) };
+    const cart = await CartModel.fetchUserCart(query);
+    // console.log(cart);
     if (cart) res.status(200).json(cart);
   } catch (err) {
     next(err);
@@ -268,12 +269,102 @@ const clearCart = async (req, res, next) => {
     console.log(removeCart);
 
     res.status(200).json(removeCart);
-
-
-    
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { fetchProducts, fetchOneProd, addToCart, fetchCartCount, fetchCart, clearCart };
+//METHOD GET
+//ROUTE /api/users/shop/verify-coupon?couponCode=""
+
+const verifyCoupon = async (req, res, next) => {
+  try {
+    console.log(req.params);
+    const { couponCode } = req.query;
+    // const { couponCode } = req.params;
+
+    if (!couponCode) throw { statusCode: 404, message: "invalid reqeust" };
+
+    const fetchCoupon = await CouponModel.findOne({ couponCode }, { __v: 0 });
+
+    console.log(fetchCoupon);
+
+    if (!fetchCoupon) throw { statusCode: 404, message: "invalid coupon code please try again" };
+    else res.status(200).json(fetchCoupon);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD POST
+//ROUTE /api/users/shop/new-order
+
+const newOrder = async (req, res, next) => {
+  try {
+    const { userId } = req,
+      { cartId, addressId, couponCode, payment } = req.body;
+
+    if (!userId || !cartId || !addressId || !payment)
+      throw { statusCode: 422, message: "please provide required data" };
+
+    const paymentOptions = ["COD", "STRIPE", "RAZORPAY", "PAYPAL", "PAYTM"];
+
+    if (!paymentOptions.includes(payment))
+      throw { statusCode: 422, message: `please select either ${paymentOptions}` };
+
+    const query = { _id: userId, "address._id": addressId };
+
+    const projection = { firstName: 1, "address.$": 1, _id: 0 };
+
+    const userInfo = await UserModel.findOne(query, projection); ///// q1
+
+    if (!userInfo?.firstName || !userInfo?.address) throw { message: "cant find orderaddress" };
+    const {  firstName ,address: [address] } = userInfo;
+    // console.log(firstName, address);
+
+    const shippingAddress = {
+      name: firstName,
+      phone: address.phone,
+      address: `${address.address} ,  ${address.city} , ${address.state} - ${address.pincode}`,
+      landmark: address.landmark,
+    };
+
+    const [cart] = await CartModel.fetchUserCart({ _id: ObjectID(cartId) }); //q2
+    if (!cart) throw { message: "cant find the cart" };
+
+    const products = [...cart.cartItems];
+
+    const offer = await CouponModel.applyOffer({ couponCode, cartTotal: cart.cartTotal }); //q3
+
+    let total;
+
+    if (offer) total = cart.cartTotal - offer.offerAmount;
+    console.log(offer);
+    const newOrder = await new OrderModel({
+      userId,
+      shippingAddress,
+      products,
+      offer,
+      paymentMethod: payment,
+      subTotal: cart.cartTotal,
+      total,
+    }).save();
+
+    res.status(200).json(newOrder);
+  
+  
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  fetchProducts,
+  fetchOneProd,
+  addToCart,
+  fetchCartCount,
+  fetchCart,
+  clearCart,
+  verifyCoupon,
+  newOrder,
+};

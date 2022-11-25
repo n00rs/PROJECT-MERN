@@ -122,7 +122,7 @@ const addAddress = async (req, res, next) => {
     const reqKeys = Object.keys(req.body);
 
     const requiredData = ["address", "phone", "city", "pincode", "state", "landmark"];
-console.log(req.body)
+    console.log(req.body);
     const check = requiredData.every((i) => reqKeys.includes(i) && req.body[i] !== "");
     console.log(check);
     if (!check)

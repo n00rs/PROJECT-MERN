@@ -6,7 +6,7 @@ const addressSchema = new mongoose.Schema({
   address: { type: String, required: [true, "please provide an address"] },
   city: { type: String, required: [true, "please provide an city"] },
   state: { type: String, required: [true, "please provide an state"] },
-  pincode: { type: Number, required: [true, "please provide an pincode"] },
+  pincode: { type: String, required: [true, "please provide an pincode"] },
   landmark: String,
 });
 
@@ -68,6 +68,56 @@ userSchema.statics.login = async function ({ email, password }) {
   if (user && user.email_verified && !user.isBlocked && compareSync(password, user?.password))
     return { firstName: user.firstName, _id: user._id };
   else throw { statusCode: 403, message: "user does'nt exist or not verified" };
+};
+
+//not used
+
+userSchema.statics.orderAddress = async function (query) {
+  const { userId, addressId } = query;
+  const address = await this.aggregate([
+    {
+      $match: {
+        _id: userId,
+      },
+    },
+    {
+      $project: {
+        name: { $concat: ["$firstName", " ", "$lastName"] },
+        address: {
+          $filter: {
+            input: "$address",
+            as: "add",
+            cond: { $eq: ["$$add._id", addressId] },
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        address: { $mergeObjects: [{ $arrayElemAt: ["$address", 0] }, { name: "$name" }] },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        name: "$address.name",
+        phone: "$address.phone",
+        address: {
+          $concat: [
+            "$address.address",
+            " , ",
+            "$address.city",
+            " , ",
+            "$address.state",
+            " - ",
+            "$address.pincode",
+          ],
+        },
+        landmark: "$address.landmark",
+      },
+    },
+  ]);
+  return address;
 };
 
 module.exports = mongoose.model("User", userSchema);

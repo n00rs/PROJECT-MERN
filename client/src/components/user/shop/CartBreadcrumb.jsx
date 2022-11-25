@@ -7,11 +7,11 @@ export const CartBreadcrumb = ({ handleNavlinks, activeLink }) => {
 
   return (
     <>
-      <a className="navbar-brand fw-bold fs-3 flex-shrink-0 mx-0 px-0" href="./index.html">
+      <div className="navbar-brand fw-bold fs-3 flex-shrink-0 mx-0 px-0">
         <div className="d-flex align-items-center">
           <Logo />
         </div>
-      </a>
+      </div>
 
       <nav className="d-none d-md-block">
         <ul className="list-unstyled d-flex justify-content-start mt-4 align-items-center fw-bolder small">
@@ -41,7 +41,7 @@ export const CartBreadcrumb = ({ handleNavlinks, activeLink }) => {
                   : `${styles["nav-link-checkout"]} ${styles["nav-link-last"]}`
               }
               // className={`${styles["nav-link-checkout"]} `}
-              onClick={() => handleNavlinks("payment")}
+              // onClick={() => handleNavlinks("payment")}
             >
               Payment
             </Link>

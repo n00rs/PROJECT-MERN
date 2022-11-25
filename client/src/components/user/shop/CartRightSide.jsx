@@ -1,13 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { updateCart } from "../../../store/shopSlice";
+// import { updateCart } from "../../../store/shopSlice";
 import { CartItem } from "../../UI/CartItem";
-import styles from "./CartStyles.module.css";
+import { DiscountInput } from "./DiscountInput";
+// import styles from "./CartStyles.module.css";
 
 export const CartRightSide = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.shop);
 
   const cartItem = cart?.cartItems?.map((item) => <CartItem item={item} key={Math.random()} />);
+  const grandTotal = cart?.discountedTotal ? cart?.discountedTotal : cart?.cartTotal;
   return (
     <div className="p-4 ">
       <div className="pb-3">{cartItem}</div>
@@ -18,7 +20,7 @@ export const CartRightSide = () => {
         </div>
         <div className="d-flex justify-content-between align-items-center">
           <p className="m-0 fw-bolder fs-6">discount</p>
-          <p className="m-0 fs-6 fw-bolder">&#8377; 8.95</p>
+          <p className="m-0 fs-6 fw-bolder">&#8377; {cart?.discount}</p>
         </div>
       </div>
       <div className="py-4 border-bottom">
@@ -27,15 +29,10 @@ export const CartRightSide = () => {
             <p className="m-0 fw-bold fs-5">Grand Total</p>
             {/* <span className="text-muted small">Inc $45.89 sales tax</span> */}
           </div>
-          <p className="m-0 fs-5 fw-bold">&#8377; {cart?.cartTotal}</p>
+          <p className="m-0 fs-5 fw-bold">&#8377; {grandTotal}</p>
         </div>
       </div>
-      <div className="py-4">
-        <div className="input-group mb-0">
-          <input type="text" className="form-control" placeholder="Enter your coupon code" />
-          <button className="btn btn-dark btn-sm px-4">Apply</button>
-        </div>
-      </div>
+      <DiscountInput />
     </div>
   );
 };

@@ -34,6 +34,18 @@ import ViewProduct from "./pages/ViewProduct";
 import Cart from "./pages/Cart";
 
 function App() {
+  var console_head_style =
+      'color: #ffbc04; font-size:large; font-weight: bold; font-family:"Inter", sans-serif;',
+    console_desc_style =
+      'font-size: medium; color: #666; font-weight: light; font-family:"Inter", sans-serif; ',
+    console_link_style =
+      'font-size: medium; color: #5851D3!important; font-weight: light; font-family:"Inter", sans-serif; ';
+  console.log(
+    "\n%cwelcome to  ♥'s web$\n%c Check  out here: %chttps://github.com/n00rs\n\n",
+    console_head_style,
+    console_desc_style,
+    console_link_style
+  );
   console.log("welcome to  ♥'s web$");
   const { userExist, adminExist } = useSelector((state) => state.auth);
 
@@ -66,14 +78,17 @@ function App() {
             <Route path="new-blog" element={<NewBlog />} loader={userLoader} />
             <Route path="my-blogs" element={<UserBlogs />} loader={userLoader} />
           </Route>
+
           <Route path="/shop" element={<ShopLayout />}>
             <Route index element={<Shop />} />
             <Route path="products/:category" element={<Category />} />
             <Route path="view-product/:prodId" element={<ViewProduct />} />
             <Route path="cart" element={<Cart />} />
           </Route>
+
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>
+
         <Route path="/admin/login" element={<Login />} />
         <Route
           path="/admin"
@@ -86,7 +101,6 @@ function App() {
           <Route path="manage-orders" element={<Orders />} />
           <Route path="manage-products" element={<ManageProduct />} />
           <Route path="manage-blogs" element={<ManageBlogs />} />
-
           <Route path="manage-users" element={<ManageUsers />} loader={fetchUsers} />
         </Route>
       </>

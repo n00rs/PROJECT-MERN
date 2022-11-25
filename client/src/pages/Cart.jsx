@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container, Modal, Row } from "react-bootstrap";
 import { CartBreadcrumb } from "../components/user/shop/CartBreadcrumb";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartItems } from "../store/shopSlice";
@@ -8,6 +8,7 @@ import { CartRightSide } from "../components/user/shop/CartRightSide";
 import { CheckoutInfo } from "../components/user/shop/CheckoutInfo";
 import { CheckOutAddressForm } from "../components/user/shop/AddressForm";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import styles from "../components/user/shop/CartStyles.module.css";
 
 const Cart = () => {
@@ -16,6 +17,7 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const { cart, error, fetchingCart } = useSelector((state) => state.shop);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchCartItems());
@@ -24,6 +26,19 @@ const Cart = () => {
   const changeNav = (link) => setNavlink(link);
 
   if (error) toast.error(error);
+  if (!cart || cart?.cartItems?.length < 1) {
+    
+    return (
+      <Modal show={!cart || cart?.cartItems?.length < 1} onHide={() => navigate(-1)}>
+        <Modal.Header closeButton>
+          <Modal.Title>cart IS EMPTY START shopping</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img src="https://maplelifesciences.com/image/noitem.png" alt="" />
+        </Modal.Body>
+      </Modal>
+    );
+  }
   return (
     <section className='"mt-0 overflow-lg-hidden vh-lg-100"'>
       <Container>
@@ -33,7 +48,7 @@ const Cart = () => {
               <CartBreadcrumb handleNavlinks={changeNav} activeLink={navlink} />
               <div className="mt-5">
                 {navlink === "cart" && <CartTab />}
-                {navlink === "address" && <CheckOutAddressForm />}
+                {navlink === "address" && <CheckOutAddressForm proceed={changeNav} />}
                 {navlink === "payment" && <CheckoutInfo />}
               </div>
             </div>

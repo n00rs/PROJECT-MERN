@@ -12,6 +12,12 @@ const initialState = {
   cart: null,
   updatingCart: false,
   fetchingCart: false,
+  orderDetails: {
+    cartId: "",
+    addressId: "",
+    couponCode: "",
+  },
+  userData: "",
 };
 
 //FETCHING PRODUCTS
@@ -99,23 +105,100 @@ const shopSlice = createSlice({
     resetProd: (state) => {
       state.products = [];
     },
+
     setPageNo: (state) => {
       state.pageNo = state.pageNo + 1;
     },
+
     resetPageNo: (state) => {
       state.pageNo = 0;
     },
+
     clearCart: (state) => {
       state.cart = null;
       state.cartCount = 0;
     },
+
+    updateOrderDetails: ({ orderDetails }, { payload }) => {
+      // console.log(addressId, "bfre update");
+      console.log(payload);
+      if (payload.cartId) orderDetails.cartId = payload.cartId;
+      if (payload.addressId) orderDetails.addressId = payload.addressId;
+      if (payload.couponCode) orderDetails.couponCode = payload.couponCode;
+      // console.log(addressId);
+    },
+
+    setUserData: (state, action) => {
+      state.userData = action.payload;
+    },
+    resetOrder: (state, action) => {
+      state.orderDetails = initialState.orderDetails;
+    },
+    applyDiscount: (state, { payload }) => {
+      // const { payload } = action;
+      console.log(payload.type, "fromreducer");
+      // state.orderDetails.couponCode = payload?.couponCode;
+      // switch
+
+      let { cartTotal } = state.cart;
+
+      const check = cartTotal >= payload?.minmumPurchaseAmount;
+
+      if (!check) {
+        toast.error(`the required total cart value id  RS. ${payload?.minmumPurchaseAmount}`);
+        return;
+      }
+
+      switch (payload.type) {
+        case "isAmountOnly":
+          // console.log(cartTotal - payload?.maxDiscountPrice);
+          state.cart.discount = payload?.maxDiscountPrice;
+          state.cart.discountedTotal =
+            cartTotal >= payload?.minmumPurchaseAmount
+              ? cartTotal - payload?.maxDiscountPrice
+              : cartTotal;
+          state.orderDetails.couponCode = payload?.couponCode;
+
+          break;
+
+        case "isPercentOnly":
+          state.cart.discount = cartTotal * (parseInt(payload?.discountPercent) / 100);
+          state.cart.discountedTotal =
+            cartTotal >= payload?.minmumPurchaseAmount
+              ? cartTotal - cartTotal * (parseInt(payload?.discountPercent) / 100)
+              : cartTotal;
+          state.orderDetails.couponCode = payload?.couponCode;
+
+          break;
+
+        case "isConditional":
+          const discount = cartTotal * (parseInt(payload?.discountPercent) / 100);
+          Math.round(discount);
+          if (cartTotal >= payload?.minmumPurchaseAmount && discount < payload?.maxDiscountPrice) {
+            state.cart.discountedTotal = cartTotal - discount;
+            state.cart.discount = discount;
+          }
+          if (cartTotal >= payload?.minmumPurchaseAmount && discount > payload?.maxDiscountPrice) {
+            state.cart.discountedTotal = cartTotal - payload?.maxDiscountPrice;
+            state.cart.discount = payload?.maxDiscountPrice;
+          }
+          state.orderDetails.couponCode = payload?.couponCode;
+
+          break;
+        default:
+          toast("this was not supposed to be happen");
+          
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
+
       .addCase(fetchProduct.pending, (state) => {
         state.isLoading = true;
         state.error = false;
       })
+
       .addCase(fetchProduct.fulfilled, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
@@ -123,6 +206,7 @@ const shopSlice = createSlice({
         state.totalPages = action.payload.metaData[0]?.totalPages;
         state.products = [...state.products, ...action.payload.data];
       })
+
       .addCase(fetchProduct.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
@@ -136,15 +220,22 @@ const shopSlice = createSlice({
         state.error = null;
       })
 
-      .addCase(updateCart.fulfilled, (state, { payload }) => {
+      .addCase(updateCart.fulfilled, (state, action) => {
         toast("cart updated");
-        const { prodId, quantity, cartCount, size } = payload;
+
+        console.log(action);
+
+        const { prodId, quantity, cartCount, size } = action.payload;
 
         state.error = null;
+
         state.updatingCart = false;
+
         state.cartCount = cartCount;
-        console.log(state?.cart);
-        if (state.cart) {
+
+        console.log(state.cart);
+
+        if (state.cart?.cartItems) {
           const existInd = state.cart?.cartItems?.findIndex(
             (item) => item.prodId === prodId && item.size === size
           );
@@ -155,7 +246,8 @@ const shopSlice = createSlice({
             state.cart.cartTotal = state.cart.cartTotal + quantity * existItem.price;
 
             if (existItem.quantity === 1 && quantity === -1)
-              state.cart.cartItems = state.cart.cartItems.filter((item) => item.prodId !== prodId);
+              state.cart?.cartItems?.splice(existInd, 1);
+            // state.cart.cartItems = state.cart.cartItems.filter((item) => item.prodId !== prodId);
             else {
               const updateItem = {
                 ...existItem,
@@ -195,11 +287,12 @@ const shopSlice = createSlice({
         state.fetchingCart = true;
         state.error = null;
       })
-      .addCase(fetchCartItems.fulfilled, (state, { payload }) => {
-        console.log(payload);
-        state.fetchingCart = false;
-        state.cart = payload.length > 0 ? payload[0] : [];
 
+      .addCase(fetchCartItems.fulfilled, (state, { payload }) => {
+        console.log(payload, "fetch");
+        state.fetchingCart = false;
+        state.cart = payload.length > 0 ? payload[0] : null;
+        state.orderDetails.cartId = payload[0]?._id;
         state.error = null;
       })
       .addCase(fetchCartItems.rejected, (state, { payload }) => {
@@ -210,5 +303,14 @@ const shopSlice = createSlice({
   },
 });
 
-export const { resetProd, setPageNo, resetPageNo, clearCart } = shopSlice.actions;
+export const {
+  resetProd,
+  setPageNo,
+  resetPageNo,
+  clearCart,
+  updateOrderDetails,
+  setUserData,
+  applyDiscount,
+} = shopSlice.actions;
+
 export default shopSlice.reducer;
