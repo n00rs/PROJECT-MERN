@@ -6,7 +6,7 @@ const orderSchema = new Schema(
     userId: { type: Types.ObjectId, required: true, ref: "User" },
     reciptNo: { type: String, default: `proMERN ${randomNum}` },
     shippingAddress: {
-      name: {type: String, required: true },
+      name: { type: String, required: true },
       phone: { type: String, required: true },
       address: { type: String, required: [true, "please provide an address"] },
       landmark: String,
@@ -28,7 +28,8 @@ const orderSchema = new Schema(
       offerAmount: Number,
     },
     paymentMethod: { type: String, required: true },
-
+    paymentStatus: String,
+    paymentId: String,
     subTotal: { type: Number, requred: true },
 
     total: { type: Number, default: this.subTotal },

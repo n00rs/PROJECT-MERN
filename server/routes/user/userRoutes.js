@@ -22,6 +22,7 @@ const {
   clearCart,
   verifyCoupon,
   newOrder,
+  razorpayVerify,
 } = require("../../controller/shopController");
 
 const {
@@ -65,7 +66,8 @@ router.get("/shop/cart-count", verifyAccessToken, fetchCartCount);
 
 router.get("/shop/verify-coupon/", verifyCoupon);
 
-router.post('/shop/new-order',verifyAccessToken,newOrder)
+router.post("/shop/new-order", verifyAccessToken, newOrder);
 
+router.post("/razorpay-verify", verifyAccessToken, razorpayVerify);
 
 module.exports = router;

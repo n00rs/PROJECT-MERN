@@ -43,6 +43,10 @@ export const USER_DATA_API = `${USER_BASE_URL}/user-details`;
 export const COUPON_API = `${USER_BASE_URL}/shop/verify-coupon`; //            /api/shop/shop/verify-coupon/:couponCode
 
 export const NEWORDER_API = `${USER_BASE_URL}/shop/new-order`
+
+export const RAZORPAY_SUCCESS_API = `${USER_BASE_URL}/razorpay-verify`
+
+
 //ADMIN_API
 
 export const ADMIN_LOGIN_URL = `${ADMIN_BASE_URL}/login`;
@@ -62,3 +66,6 @@ export const FETCH_PRODS_API = `${ADMIN_BASE_URL}/products?page=`; //           
 export const OUT_OF_STOCK_API = `${ADMIN_BASE_URL}/products/`; //                 /api/admin/products/:prodId
 
 export const UPDATE_STOCK_API = `${ADMIN_BASE_URL}/update-product/`;
+
+
+// export const 

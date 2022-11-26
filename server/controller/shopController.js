@@ -4,6 +4,7 @@ const CouponModel = require("../models/CouponModel");
 const OrderModel = require("../models/OrderModel");
 const ProductModel = require("../models/ProductModel");
 const UserModel = require("../models/UserModel");
+const { createOrder, veriryPaymentSign } = require("../utils/razorpay");
 
 //METHOD GET
 //ROUTE /api/users/shop/
@@ -319,7 +320,10 @@ const newOrder = async (req, res, next) => {
     const userInfo = await UserModel.findOne(query, projection); ///// q1
 
     if (!userInfo?.firstName || !userInfo?.address) throw { message: "cant find orderaddress" };
-    const {  firstName ,address: [address] } = userInfo;
+    const {
+      firstName,
+      address: [address],
+    } = userInfo;
     // console.log(firstName, address);
 
     const shippingAddress = {
@@ -336,10 +340,12 @@ const newOrder = async (req, res, next) => {
 
     const offer = await CouponModel.applyOffer({ couponCode, cartTotal: cart.cartTotal }); //q3
 
-    let total;
+    let total = cart.cartTotal;
 
-    if (offer) total = cart.cartTotal - offer.offerAmount;
+    if (offer) total = total - offer.offerAmount;
+
     console.log(offer);
+
     const newOrder = await new OrderModel({
       userId,
       shippingAddress,
@@ -350,10 +356,45 @@ const newOrder = async (req, res, next) => {
       total,
     }).save();
 
-    res.status(200).json(newOrder);
-  
-  
+    if (!newOrder) throw { message: "error in placing order", statusCode: 501 };
+    switch (payment) {
+      case "COD":
+        res.status(201).json({ payment, data: "success" });
+        break;
+      case "RAZORPAY":
+        const order = await createOrder({ total, orderId: newOrder._id });
+        res.status(201).json({ payment, data: order });
+        break;
+      case "PAYPAL":
+        break;
+      default:
+        break;
+    }
+    // res.status(200).json(newOrder);
   } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD POST
+//ROUTE /api/users/razorpay-verify
+
+const razorpayVerify = async (req, res, next) => {
+  try {
+    console.log(req.body,'raxoypay');
+    const { razorpayOrderId, razorpayPaymentId, razorpaySignature, orderId } = req.body;
+    const checkSignature = veriryPaymentSign({
+      razorpayOrderId,
+      razorpayPaymentId,
+      razorpaySignature,
+    });
+    if (!checkSignature) throw { statusCode: 400, message: "failed to verify payments" };
+    const updatePaymentStat = await OrderModel.updateOne(
+      { _id: orderId },
+      { $set: { paymentStatus: "received", paymentId: razorpayPaymentId } }
+    );
+    res.status(200).json({data: "success" });
+  } catch (e) {
     next(err);
   }
 };
@@ -367,4 +408,5 @@ module.exports = {
   clearCart,
   verifyCoupon,
   newOrder,
+  razorpayVerify,
 };

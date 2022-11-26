@@ -1,7 +1,7 @@
 // import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 // import { USER_DATA_API } from "../../../api";
 // import { toast } from "react-toastify";
@@ -9,13 +9,14 @@ import styles from "./CartStyles.module.css";
 import { RazorPay } from "../../../assets/icons/RazorPay";
 import Swal from "sweetalert2";
 import { NEWORDER_API } from "../../../api";
+import { popupRazor } from "../../../utils/razorpay";
 
 export const CheckoutInfo = () => {
   const { userData, orderDetails } = useSelector((state) => state.shop);
+  const navigate = useNavigate();
+  const [payment, setPayment] = useState();
 
   const address = userData?.address?.find((add) => add._id === orderDetails.addressId);
-
-  const [payment, setPayment] = useState();
 
   const paymentOption = (e) => setPayment(e.target.value);
 
@@ -39,6 +40,21 @@ export const CheckoutInfo = () => {
       });
       const resData = await res.json();
       if (!res.ok) throw resData;
+      const { payment, data } = resData;
+      Swal.close();
+
+      switch (payment) {
+        case "COD":
+          if (data === "success") navigate("/shop", { replace: true });
+          break;
+        case "RAZORPAY":
+          console.log(data);
+          popupRazor({ data, address }, navigate);
+
+          break;
+        default:
+          break;
+      }
     } catch (err) {
       console.error(err);
     }
