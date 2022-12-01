@@ -16,7 +16,6 @@ const GoogleAuth = ({ page, navigate }) => {
         headers: { Authorization: `Bearer ${data.credential}` },
         credentials: "include",
       });
-
       const resData = await response.json();
       console.log(resData);
       if (!response.ok) throw resData;

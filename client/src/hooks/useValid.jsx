@@ -18,17 +18,15 @@ const reducerFunc = (state, action) => {
 
 const useValid = (validateFunc) => {
   const [state, dispatch] = useReducer(reducerFunc, initialState);
-
   const isValid = validateFunc(state.value); //pasing the value to the callback func
-
   const isError = !isValid && state.isTouched; //checking for err
-
   const valueChangeHandler = (event) =>
     dispatch({ type: "INPUT", value: event.target.value });
 
   const blurHandler = (e) => dispatch({ type: "BLUR" });
 
   const reset = () => dispatch({ type: "RESET" });
+
   return {
     value: state.value,
     isValid,

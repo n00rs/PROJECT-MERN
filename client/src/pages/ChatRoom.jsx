@@ -22,11 +22,11 @@ const ChatRoom = () => {
     try {
       const response = await fetch(FETCH_USERS_URL, { credentials: "include" });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (!response.ok) throw data;
       setContacts(data);
     } catch (err) {
-      console.log(err + "...errin fetcinhg user");
+      console.log(err + "...errin chat fetcinhg user");
     }
   };
 
@@ -46,6 +46,7 @@ const ChatRoom = () => {
   }, []);
 
   const chatHandler = (chat) => setCurrentChat(chat);
+  
   return (
     <div className={styles["chatRoom-container"]}>
       <div className={styles.container2}>

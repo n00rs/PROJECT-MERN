@@ -56,7 +56,7 @@ export const LandingBontent3 = () => {
             ,
             <a className="text-black" href="./category.html">
               Afends
-            </a>{" "}
+            </a>
             and many more.
           </p>
           <p className="lead">
@@ -77,7 +77,7 @@ export const LandingBontent3 = () => {
             <img
               className="img-fluid"
               src="https://oldskool-html-bootstrap.vercel.app/assets/images/banners/banner-5.jpg"
-              alt="HTML Bootstrap Template by Pixel Rocket"
+              alt=""
             />
           </picture>
           <picture
@@ -86,7 +86,7 @@ export const LandingBontent3 = () => {
             <img
               className="img-fluid"
               src="https://oldskool-html-bootstrap.vercel.app/assets/images/banners/banner-6.jpg"
-              alt="HTML Bootstrap Template by Pixel Rocket"
+              alt=""
             />
           </picture>
           <picture
@@ -95,7 +95,7 @@ export const LandingBontent3 = () => {
             <img
               className="img-fluid"
               src="https://oldskool-html-bootstrap.vercel.app/assets/images/banners/banner-7.jpg"
-              alt="HTML Bootstrap Template by Pixel Rocket"
+              alt=""
             />
           </picture>
         </div>
@@ -134,24 +134,24 @@ export const LandingBontent3 = () => {
           <div className="col-12 col-xl-6" data-aos="fade-left">
             <div className="row g-4 justify-content-end">
               <LandCard
-                category={"women"}
+                category={"all"}
                 img="https://oldskool-html-bootstrap.vercel.app/assets/images/banners/banner-8.jpg"
-                link="shop/category/women"
+                link="/shop/products/all"
               />
               <LandCard
                 category={"men"}
                 img="https://oldskool-html-bootstrap.vercel.app/assets/images/banners/banner-9.jpg"
-                link="shop/category/women"
+                link="/shop/products/men"
               />
               <LandCard
-                category={"t-shirt"}
+                category={"women"}
                 img="https://oldskool-html-bootstrap.vercel.app/assets/images/banners/banner-10.jpg"
-                link="shop/category/women"
+                link="/shop/products/women"
               />
               <LandCard
                 category={"all"}
                 img="https://oldskool-html-bootstrap.vercel.app/assets/images/banners/banner-11.jpg"
-                link="shop/category/women"
+                link="/shop/products/women"
               />
             </div>
           </div>

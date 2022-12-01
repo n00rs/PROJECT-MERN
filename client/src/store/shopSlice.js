@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { FETCH_PRODUCTS_URL, CART_API, CART_COUNT_API } from "../api";
 
@@ -20,12 +20,15 @@ const initialState = {
   userData: "",
 };
 
+
+
 //FETCHING PRODUCTS
+
 
 export const fetchProduct = createAsyncThunk("fetchProduct/shop", async (category, thunkApi) => {
   try {
     const { shop } = thunkApi.getState();
-    console.log(shop["pageNo"]);
+    // console.log(shop["pageNo"]);
     const res = await fetch(FETCH_PRODUCTS_URL + "?page=" + shop.pageNo + "&category=" + category);
     const resData = await res.json();
 
@@ -102,6 +105,33 @@ const shopSlice = createSlice({
   name: "shop",
   initialState,
   reducers: {
+    sortProd: (state, action) => {
+      console.log(action);
+      switch (action.payload) {
+        case "PRICE_ASCE":
+          state.products = state.products.sort((a, b) => b.price - a.price);
+          break;
+        case "PRICE_DESC":
+          state.products = state.products.sort((a, b) => a.price - b.price);
+          break;
+        case "NAME":
+          state.products = state.products.sort((a, b) =>
+            a.productName.localeCompare(b.productName)
+          );
+          break;
+        default:
+          console.log("inside log");
+          state.products = state.products.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          break;
+      }
+      // if ( === "PRICE_ASCE")
+      //   if (action.payload === "PRICE_DESC")
+      //     state.products = state.products.sort((a, b) => a.price - b.price);
+
+      // if (action.payload === "NAME")
+    },
     resetProd: (state) => {
       state.products = [];
     },
@@ -135,10 +165,7 @@ const shopSlice = createSlice({
       state.orderDetails = initialState.orderDetails;
     },
     applyDiscount: (state, { payload }) => {
-      // const { payload } = action;
       console.log(payload.type, "fromreducer");
-      // state.orderDetails.couponCode = payload?.couponCode;
-      // switch
 
       let { cartTotal } = state.cart;
 
@@ -187,7 +214,6 @@ const shopSlice = createSlice({
           break;
         default:
           toast("this was not supposed to be happen");
-          
       }
     },
   },
@@ -311,6 +337,7 @@ export const {
   updateOrderDetails,
   setUserData,
   applyDiscount,
+  sortProd,
 } = shopSlice.actions;
 
 export default shopSlice.reducer;

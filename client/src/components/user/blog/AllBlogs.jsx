@@ -33,6 +33,12 @@ export const AllBlogs = () => {
   const { blogs, totalPages, pageNo } = useSelector((state) => state.blog);
   const pages = new Array(totalPages).fill(null).map((val, ind) => ind);
 
+  const prev = () => dispatch(prevPage());
+
+  const next = () => dispatch(nextPage());
+
+  const changePage = (pageNo) => dispatch(setPageNo(pageNo));
+
   const blogContent = blogs.map((blog) => (
     <BlogCard
       key={blog._id}
@@ -45,11 +51,6 @@ export const AllBlogs = () => {
     />
   ));
 
-  const prev = () => dispatch(prevPage());
-
-  const next = () => dispatch(nextPage());
-
-  const changePage = (pageNo) => dispatch(setPageNo(pageNo));
 
   // useEffect(()=>{
   //   fetch()
@@ -72,7 +73,7 @@ export const AllBlogs = () => {
     return 0;
   });
   //  return  a?.comments.length - b?.comments.length});
-  console.log(countComment);
+  // console.log(countComment);
   return (
     <>
       {/* <!-- Featured blog post--> */}

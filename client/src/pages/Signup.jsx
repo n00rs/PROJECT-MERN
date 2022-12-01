@@ -8,7 +8,6 @@ import styles from "../components/UI/LoginModal.module.css";
 import { USER_SIGNUP_URL } from "../api";
 import { toast } from "react-toastify";
 
-
 const isNotEmpty = (val) => val.trim() !== "";
 const isEmail = (val) => val.includes("@");
 const isPass = (val) => val.trim().length === 7;
@@ -61,11 +60,9 @@ const Signup = ({ onToggle }) => {
     reset: confirmPassReset,
   } = useValid((val) => val === enteredPass);
 
-
   let formValid = false;
 
-  if (fnameValid && lnameValid && emailValid && passValid && confirmPassValid)
-    formValid = true;
+  if (fnameValid && lnameValid && emailValid && passValid && confirmPassValid) formValid = true;
 
   const toggleLogin = () => onToggle("login");
 
@@ -97,13 +94,10 @@ const Signup = ({ onToggle }) => {
         passReset();
         confirmPassReset();
         setIsLoading(false);
-        console.log(Date.now() - a);
         toggleLogin();
       } catch (err) {
         console.log(err);
         setIsLoading(false);
-        console.log(Date.now() - a);
-
         toast.error(err.message);
       }
     }
@@ -125,9 +119,7 @@ const Signup = ({ onToggle }) => {
             value={enteredFname}
             isInvalid={fnameError}
           />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid Name.
-          </Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">Please provide a valid Name.</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group as={Col} controlId="lname">
@@ -160,9 +152,7 @@ const Signup = ({ onToggle }) => {
           isInvalid={emailError}
         />
 
-        <Form.Control.Feedback type="invalid">
-          Please provide a valid Email.
-        </Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">Please provide a valid Email.</Form.Control.Feedback>
       </Form.Group>
 
       <Row>
@@ -195,9 +185,7 @@ const Signup = ({ onToggle }) => {
             value={enteredConfirmPass}
             isInvalid={confirmPassError}
           />
-          <Form.Control.Feedback type="invalid">
-            Password doesn't match
-          </Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">Password doesn't match</Form.Control.Feedback>
         </Form.Group>
       </Row>
 
@@ -212,7 +200,7 @@ const Signup = ({ onToggle }) => {
       {formValid && <button className={styles.loginBTN}>Signup</button>}
       <span className="or">OR</span>
 
-      <GoogleAuth page="signup" navigate={toggleLogin}/>
+      <GoogleAuth page="signup" navigate={toggleLogin} />
 
       <span>
         alreadey signed up account ?

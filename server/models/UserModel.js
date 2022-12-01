@@ -34,7 +34,7 @@ userSchema.statics.signup = async function (userData) {
 
   const existingUser = await this.findOne({ email: userData.email }); //                    //checking for user already exist better  latency
 
-  console.log(existingUser);
+  // console.log(existingUser);
 
   if (existingUser) throw { statusCode: 422, message: "user Exist please login" };
 

@@ -12,7 +12,6 @@ const { createOrder, veriryPaymentSign } = require("../utils/razorpay");
 const fetchProducts = async (req, res, next) => {
   try {
     const pageSize = 10;
-
     const PageNo = req.query.page || 0;
     let category = req.query.category;
     console.log(category, "category");
@@ -357,6 +356,10 @@ const newOrder = async (req, res, next) => {
     }).save();
 
     if (!newOrder) throw { message: "error in placing order", statusCode: 501 };
+
+
+    const removeCart = await CartModel.deleteOne({ _id: ObjectID(cartId) });
+
     switch (payment) {
       case "COD":
         res.status(201).json({ payment, data: "success" });
@@ -370,7 +373,6 @@ const newOrder = async (req, res, next) => {
       default:
         break;
     }
-    // res.status(200).json(newOrder);
   } catch (err) {
     next(err);
   }
@@ -398,6 +400,7 @@ const razorpayVerify = async (req, res, next) => {
     next(err);
   }
 };
+
 
 module.exports = {
   fetchProducts,

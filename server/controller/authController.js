@@ -11,9 +11,8 @@ const { compareSync } = require("bcryptjs");
 
 const userLogin = async (req, res, next) => {
   try {
-    console.log();
-    //checking for google credentials
-    if (req?.headers?.authorization?.startsWith("Bearer")) {
+   //checking for google credentials
+    if (req.headers?.authorization?.startsWith("Bearer")) {
       const credentials = req.headers.authorization.split(" ")[1];
 
       //user details from googleToken
@@ -36,10 +35,11 @@ const userLogin = async (req, res, next) => {
       //creating access token
     } else {
       const { email, password } = req.body;
+
       if (!email || !password)
         throw { statusCode: 400, message: "please provide login credentials" };
-      const user = await UserModel.login(req.body);
 
+      const user = await UserModel.login(req.body);
       loginRespone(res, user);
     }
   } catch (err) {
@@ -49,6 +49,7 @@ const userLogin = async (req, res, next) => {
 
 //METHOD POST
 //ROUTE /api/users/signup
+
 const userSignup = async (req, res, next) => {
   try {
     if (req?.headers?.authorization?.startsWith("Bearer")) {
@@ -59,7 +60,7 @@ const userSignup = async (req, res, next) => {
         idToken: token,
         audience: process.env.GOOGLE_CLIENT_ID,
       });
-      console.log(data, "from");
+      // console.log(data, "from");
 
       const userData = {
         email: data.payload.email,
@@ -69,14 +70,13 @@ const userSignup = async (req, res, next) => {
         email_verified: data.payload.email_verified,
       };
 
-      console.log(userData);
+      // console.log(userData);
       const user = await UserModel.signup(userData);
-      console.log(user);
+      // console.log(user);
       res.status(200).json({ success: true, ...user });
     }
-    console.log(req.body);
+    // console.log(req.body);
     const { email } = req.body;
-
     const user = await UserModel.signup(req.body);
     console.log(user);
     await sendEmail(email);

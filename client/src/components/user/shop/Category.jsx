@@ -10,7 +10,13 @@ import { ProductCard } from "./ProductCard";
 import { Spinner } from "react-bootstrap";
 import styles from "./ProductPage.module.css";
 import { FilterCanvas } from "./FilterCanvas";
-import { fetchProduct, resetPageNo, resetProd, setPageNo } from "../../../store/shopSlice";
+import {
+  fetchProduct,
+  resetPageNo,
+  resetProd,
+  setPageNo,
+  sortProd,
+} from "../../../store/shopSlice";
 
 export const Category = () => {
   let { category } = useParams();
@@ -96,12 +102,25 @@ export const Category = () => {
       return <ProductCard product={prod} key={prod._id} ref={lastProdRef} />;
     else return <ProductCard product={prod} key={prod._id} />;
   });
-  
-  
+
   const toggleFilter = () => setShowFilter((prev) => !prev);
-  
-  
-  
+  // const sortProd = (e) => {
+  //   switch (e.target.value) {
+  //     case "1":
+  //       products.sort((a, b) => a.price - b.price);
+  //       break;
+  //     case "-1":
+  //       products.sort((a, b) => b.price - a.price);
+  //       break;
+  //     case "a":
+  //       products.sort((a, b) => a.productName - b.productName);
+  //       break;
+  //     default:
+  //       products.sort((a, b) => a.createdAt - b.createdAt);
+  //       break;
+  //   }
+  // };
+
   return (
     <>
       <section className="mt-0 p-2">
@@ -135,14 +154,18 @@ export const Category = () => {
                 <FilterIcon />
                 Filters
               </button>
-              {/* <!-- / Filter Trigger--> */}
 
-              {/* <!-- Sort Options--> */}
-              <select className="form-select form-select-sm border-0 bg-light p-3 pe-5 lh-1 fs-7">
+              <select
+                className="form-select form-select-sm border-0 bg-light p-3 pe-5 lh-1 fs-7"
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  dispatch(sortProd(e.target.value));
+                }}
+              >
                 <option>Sort By</option>
-                <option defaultValue="1">Hi Low</option>
-                <option defaultValue="2">Low Hi</option>
-                <option defaultValue="3">Name</option>
+                <option value="PRICE_ASCE">Hi Low</option>
+                <option value="PRICE_DESC">Low Hi</option>
+                <option value="NAME">Name</option>
               </select>
               {/* <!-- / Sort Options--> */}
             </div>
@@ -155,18 +178,18 @@ export const Category = () => {
             <div
               className={`${styles["progress-bar"]} bg-dark`}
               role="progressbar"
-              style={{ width: "25%" }}
+              style={{ width: "100%" }}
               aria-valuenow="25"
               aria-valuemin="0"
               aria-valuemax="100"
             ></div>
           </div>
-          <a
-            // onClick={pageHandler}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="btn btn-outline-dark btn-sm mt-5 align-self-center py-3 px-4 border-2"
           >
-            Load More
-          </a>
+            TOP ^
+          </button>
         </div>
       </section>
       <FilterCanvas show={showFilter} close={toggleFilter} />

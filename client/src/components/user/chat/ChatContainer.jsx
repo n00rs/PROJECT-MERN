@@ -11,6 +11,7 @@ export const ChatContainer = ({ currentChat, socket }) => {
   const scrollRef = useRef();
 
   const handleMsg = async (msg) => {
+    
     try {
       // console.log(currentChat);
       // console.log(msg);

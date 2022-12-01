@@ -1,4 +1,3 @@
-import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { RAZORPAY_SUCCESS_API } from "../api";
 

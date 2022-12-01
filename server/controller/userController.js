@@ -36,7 +36,7 @@ const fetchAllUsers = async (req, res, next) => {
 
 const fetchMsgs = async (req, res, next) => {
   try {
-    console.log(req.userId, req.params.to);
+    // console.log(req.userId, req.params.to);
 
     const from = req?.userId,
       to = req?.params?.to;
@@ -54,7 +54,7 @@ const fetchMsgs = async (req, res, next) => {
         message: msg.message.text,
       };
     });
-    console.log(projectMsg);
+    // console.log(projectMsg);
 
     res.status(200).json(projectMsg);
   } catch (err) {
