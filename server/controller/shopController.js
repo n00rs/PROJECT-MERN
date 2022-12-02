@@ -4,6 +4,8 @@ const CouponModel = require("../models/CouponModel");
 const OrderModel = require("../models/OrderModel");
 const ProductModel = require("../models/ProductModel");
 const UserModel = require("../models/UserModel");
+const CurrencyConverter = require("../utils/currencyConverter");
+const Paypal = require("../utils/paypal");
 const { createOrder, veriryPaymentSign } = require("../utils/razorpay");
 
 //METHOD GET
@@ -144,42 +146,42 @@ const addToCart = async (req, res, next) => {
 //     if (!userId || !prodId || !size)
 //       throw { statusCode: 422, message: "please  provide required details" };
 
-//     // const crt = await CartModel.findOneAndUpdate(
-//     //   { userId },
-//     //   [
-//     //     {
-//     //       $set: {
-//     //         items: {
-//     //           $cond: [
-//     //             { $in: [ObjectID(prodId), "$items.prodId"] },
-//     //             {
-//     //               $map: {
-//     //                 input: "$items",
-//     //                 in: {
-//     //                   $cond: [
-//     //                     {
-//     //                       $and: [
-//     //                         { $eq: ["$$this.prodId", ObjectID(prodId)] },
-//     //                         { $eq: ["$$this.size", size] },
-//     //                       ],
-//     //                     },
-//     //                     {
-//     //                       $mergeObjects: ["$$this", { quantity: { $add: ["$$this.quantity", 1] } }],
-//     //                     },
-//     //                     "$$this",
-//     //                   ],
-//     //                 },
-//     //               },
-//     //             },
-//     //             { $concatArrays: ["$items", [{ prodId, size, quantity: 1 }]] },
-//     //           ],
-//     //         },
-//     //       },
-//     //     },
-//     //   ],
-//     //   { new: true }
-//     // );
-
+//      const crt = await CartModel.findOneAndUpdate(
+//   { userId },
+//   [
+//     {
+//       $set: {
+//         items: {
+//           $cond: [
+//             { $in: [ObjectID(prodId), "$items.prodId"] },
+//             {
+//               $map: {
+//                 input: "$items",
+//                 in: {
+//                   $cond: [
+//                     {
+//                       $and: [
+//                         { $eq: ["$$this.prodId", ObjectID(prodId)] },
+//                         { $eq: ["$$this.size", size] },
+//                       ],
+//                     },
+//                     {
+//                       $mergeObjects: ["$$this", { quantity: { $add: ["$$this.quantity", 1] } }],
+//                     },
+//                     "$$this",
+//                   ],
+//                 },
+//               },
+//             },
+//             { $concatArrays: ["$items", [{ prodId, size, quantity: 1 }]] },
+//           ],
+//         },
+//       },
+//     },
+//   ],
+//   { new: true }
+// );
+//
 //     const crt = await CartModel.findOneAndUpdate({ userId }, [
 //       {
 //         $set: {
@@ -210,7 +212,7 @@ const addToCart = async (req, res, next) => {
 //         userId,
 //         items: [{ prodId, quantity: 1, size }],
 //       }).save();
-
+//
 //       console.log(newCart);
 //       res.status(201).json(newCart);
 //     }
@@ -357,7 +359,6 @@ const newOrder = async (req, res, next) => {
 
     if (!newOrder) throw { message: "error in placing order", statusCode: 501 };
 
-
     const removeCart = await CartModel.deleteOne({ _id: ObjectID(cartId) });
 
     switch (payment) {
@@ -369,6 +370,14 @@ const newOrder = async (req, res, next) => {
         res.status(201).json({ payment, data: order });
         break;
       case "PAYPAL":
+        const currencyConverter = new CurrencyConverter("INR", "USD");
+        console.log(total);
+        const amountInUsd = await currencyConverter.convert(total);
+        const payPalorder = await Paypal.createOrder({
+          orderId: newOrder._id,
+          amount: amountInUsd,
+        });
+        res.status(201).json({ payment, data: payPalorder });
         break;
       default:
         break;
@@ -383,7 +392,7 @@ const newOrder = async (req, res, next) => {
 
 const razorpayVerify = async (req, res, next) => {
   try {
-    console.log(req.body,'raxoypay');
+    console.log(req.body, "raxoypay");
     const { razorpayOrderId, razorpayPaymentId, razorpaySignature, orderId } = req.body;
     const checkSignature = veriryPaymentSign({
       razorpayOrderId,
@@ -395,12 +404,50 @@ const razorpayVerify = async (req, res, next) => {
       { _id: orderId },
       { $set: { paymentStatus: "received", paymentId: razorpayPaymentId } }
     );
-    res.status(200).json({data: "success" });
+    res.status(200).json({ data: "success" });
   } catch (e) {
     next(err);
   }
 };
 
+//METHOD GET
+//ROUTE /api/users/paypal/client-token
+
+const paypalClientToken = async (req, res, next) => {
+  try {
+    const clientID = await Paypal.generateClientToken();
+    res.status(200).json({ clientID });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD POST
+//ROUTE /api/users/paypal/:orderId/capture
+
+const capturePayment = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    console.log(orderId);
+    const captureData = await Paypal.capturePayment(orderId);
+
+    const transaction = captureData.purchase_units[0].payments.captures[0];
+    const orderID = captureData.purchase_units[0].reference_id;
+    console.log(captureData);
+
+    console.log(transaction.status, transaction.id, orderID);
+
+    if (transaction.status === "COMPLETED") {
+      const updatePaymentStat = await OrderModel.updateOne(
+        { _id: orderID },
+        { $set: { paymentStatus: "received", paymentId: transaction.id } }
+      );
+      res.status(200).json({ data: "success" });
+    } else throw new Error("failed payment");
+  } catch (err) {
+    next(err);
+  }
+};
 
 module.exports = {
   fetchProducts,
@@ -412,4 +459,6 @@ module.exports = {
   verifyCoupon,
   newOrder,
   razorpayVerify,
+  paypalClientToken,
+  capturePayment,
 };

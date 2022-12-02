@@ -12,6 +12,7 @@ const userRoutes = require("./routes/user/userRoutes");
 const blogRoutes = require("./routes/user/blogRoutes");
 const MessageModel = require("./models/MessageModel");
 const adminRoutes = require("./routes/adminRoutes/adminRoute");
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -33,7 +34,7 @@ app.use("/api/admin", adminRoutes);
 
 app.use((err, req, res, next) => {
   // console.error(err);
-  console.log(err);
+  console.error(err.message);
   // console.log(err.stack);
   const statusCode = err.statusCode ? err.statusCode : 500;
   res.status(statusCode).json({ message: err.message });

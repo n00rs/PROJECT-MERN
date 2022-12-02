@@ -1,10 +1,12 @@
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useEffect, useState } from "react";
-import { PAYPAL_CLIENT_TOKEN, PAYPAL_ORDER_API } from "../../api";
+import { NEWORDER_API, PAYPAL_CLIENT_TOKEN, PAYPAL_ORDER_API } from "../../api";
 import { toast } from "react-toastify";
-export const PaypalBtn = () => {
-  const [clientId, setClientId] = useState("");
+import { useNavigate } from "react-router-dom";
 
+export const PaypalBtn = ({ orderHandler }) => {
+  const [clientId, setClientId] = useState("");
+  const navigate = useNavigate();
   // const createClientId = useCallback(() => {
   //   // const
   // }, []);
@@ -20,22 +22,7 @@ export const PaypalBtn = () => {
     createClientId();
   }, []);
 
-  const createOrder = async (orderData) => {
-    try {
-      const res = await fetch(PAYPAL_ORDER_API, {
-        method: "POST",
-        body: JSON.stringify(orderData),
-        credentials: "include",
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw data;
-      return data.id;
-    } catch (err) {
-      console.log(err.message);
-      toast.error("error in paypal create order");
-    }
-  };
+  // const createOrder = orderHandler;
 
   const onApprove = async (data, actions) => {
     try {
@@ -43,11 +30,17 @@ export const PaypalBtn = () => {
         method: "POST",
         credentials: "include",
       });
-
       const resData = await res.json();
-      console.log(resData);
+      if (!res.ok) throw resData;
+      // console.log(resData);
+
+      if (resData.data === "success") {
+        toast("order placed successfully");
+        navigate("/shop");
+      }
     } catch (err) {
       console.error(err);
+      toast.error("err.message");
     }
   };
 
@@ -60,7 +53,7 @@ export const PaypalBtn = () => {
 
   return (
     <PayPalScriptProvider options={options}>
-      <PayPalButtons createOrder={createOrder} onApprove={onApprove} fundingSource="paypal" />
+      <PayPalButtons createOrder={orderHandler} onApprove={onApprove} fundingSource="paypal" />
     </PayPalScriptProvider>
   );
 };

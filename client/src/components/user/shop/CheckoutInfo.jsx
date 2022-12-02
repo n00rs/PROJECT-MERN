@@ -57,6 +57,8 @@ export const CheckoutInfo = () => {
           console.log(data);
           popupRazor({ data, address }, navigate);
           break;
+        case "PAYPAL":
+          return data.id;
         default:
           break;
       }
@@ -99,7 +101,7 @@ export const CheckoutInfo = () => {
           Back to shipping
         </button>
         {payment === "PAYPAL" ? (
-          <PaypalBtn />
+          <PaypalBtn orderHandler={orderHandler} />
         ) : (
           <button className="btn btn-dark w-100 w-md-auto" onClick={orderHandler}>
             Complete Order

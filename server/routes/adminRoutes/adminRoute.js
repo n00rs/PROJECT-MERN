@@ -19,6 +19,8 @@ const {
   updateOutOfStock,
   updateProduct,
   addCoupon,
+  paypalDetails,
+  razorpayPaymentDetails,
 } = require("../../controller/adminController");
 
 //ROUTES
@@ -47,7 +49,9 @@ router.post("/update-product/:prodId", verifyAdmin, updateProduct);
 
 router.post("/coupon", verifyAdmin, addCoupon);
 
+router.get("/paypal/payment-details/:paymentId", paypalDetails);
 
+router.get("/razorpay/payment-details/:paymentId",razorpayPaymentDetails);
 // router.get("/protect", verifyAdmin, (req, res) => res.json("hi from protect"));
 
 module.exports = router;

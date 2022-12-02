@@ -23,6 +23,8 @@ const {
   verifyCoupon,
   newOrder,
   razorpayVerify,
+  paypalClientToken,
+  capturePayment,
 } = require("../../controller/shopController");
 
 const {
@@ -31,6 +33,7 @@ const {
   fetchUserData,
   addAddress,
 } = require("../../controller/userController");
+const Paypal = require("../../utils/paypal");
 
 router.post("/login", userLogin);
 
@@ -69,5 +72,10 @@ router.get("/shop/verify-coupon/", verifyCoupon);
 router.post("/shop/new-order", verifyAccessToken, newOrder);
 
 router.post("/razorpay-verify", verifyAccessToken, razorpayVerify);
+
+router.get("/paypal/client-token", verifyAccessToken, paypalClientToken);
+
+router.post("/paypal/orders/:orderId/capture", verifyAccessToken, capturePayment);
+
 
 module.exports = router;

@@ -2,6 +2,8 @@ const BlogModel = require("../models/BlogModel");
 const CouponModel = require("../models/CouponModel");
 const ProductModel = require("../models/ProductModel");
 const UserModel = require("../models/UserModel");
+const Paypal = require("../utils/paypal");
+const { fetchPayment } = require("../utils/razorpay");
 
 //METHOD POST
 //ROUTE /api/admin/product
@@ -154,7 +156,31 @@ const addCoupon = async (req, res, next) => {
 
     const newCoupon = await CouponModel.create(req.body);
     res.status(201).json(newCoupon);
-    
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD GET
+//ROUTE /api/admin/paypal/paymentDetails
+
+const paypalDetails = async (req, res, next) => {
+  try {
+    const { paymentId } = req.params;
+    const paymentData = await Paypal.fetchPayment(paymentId);
+    res.status(200).json(paymentData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const razorpayPaymentDetails = async (req, res, next) => {
+  try {
+    const { paymentId } = req.params;
+    if (!paymentId) throw { statusCode: 422, message: "please provide paymnet id" };
+    const paymentData = await fetchPayment(paymentId);
+    if (!paymentData) throw { statusCode: 404, message: "cant access razorpay now" };
+    res.status(200).json(paymentData);
   } catch (err) {
     next(err);
   }
@@ -166,4 +192,6 @@ module.exports = {
   updateOutOfStock,
   updateProduct,
   addCoupon,
+  paypalDetails,
+  razorpayPaymentDetails,
 };
