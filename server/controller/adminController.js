@@ -131,6 +131,7 @@ const updateProduct = async (req, res, next) => {
 
 const addCoupon = async (req, res, next) => {
   try {
+    console.log(req.body);
     const {
       couponCode,
       maxDiscountPrice,
@@ -156,6 +157,21 @@ const addCoupon = async (req, res, next) => {
 
     const newCoupon = await CouponModel.create(req.body);
     res.status(201).json(newCoupon);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD GET
+//ROUTE /api/admin/coupon
+
+const fetchOffers = async (req, res, next) => {
+  try {
+    const availableOffers = await CouponModel.find({ __v: 0 });
+
+    if (availableOffers.length < 1) throw { statusCode: 400, message: "opps database error" };
+
+    res.status(200).json(availableOffers);
   } catch (err) {
     next(err);
   }
@@ -194,4 +210,5 @@ module.exports = {
   addCoupon,
   paypalDetails,
   razorpayPaymentDetails,
+  fetchOffers,
 };

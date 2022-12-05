@@ -48,9 +48,9 @@ export const BlogTable = ({ tabs, blogs, onVerify, onDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {blogs?.map((blog) => (
+          {blogs?.map((blog,i) => (
             <tr className="border-bottotom" key={blog._id}>
-              <td>1</td>
+              <td>{i+1}</td>
               <td>
                 <div className="p-2">
                   <span className="font-weight-bold">{blog.author}</span>

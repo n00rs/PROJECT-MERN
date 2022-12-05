@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { USER_ORDER_API } from "../api";
 
 const UserOrders = () => {
   const [metaData, setMetaData] = useState([]);
@@ -8,7 +9,7 @@ const UserOrders = () => {
   useEffect(() => {
     const a = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users/shop/orders", {
+        const res = await fetch(USER_ORDER_API, {
           method: "GET",
           credentials: "include",
         });

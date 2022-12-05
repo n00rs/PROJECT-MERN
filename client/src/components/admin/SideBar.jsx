@@ -10,21 +10,13 @@ import { BlogIcon } from "../../assets/icons/BlogIcon";
 export const SideBar = () => {
   return (
     <>
-      <Navbar
-        collapseOnSelect
-        expand="lg"
-        bg="black"
-        variant="dark"
-        className="text-warning"
-      >
+      <Navbar collapseOnSelect expand="lg" bg="black" variant="dark" className="text-warning">
         <Container>
-          <Navbar.Brand >React-Bootstrap</Navbar.Brand>
+          <Navbar.Brand>React-Bootstrap</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link eventKey={2} >
-                Logout
-              </Nav.Link>
+              <Nav.Link eventKey={2}>Logout</Nav.Link>
             </Nav>
             <Nav></Nav>
           </Navbar.Collapse>
@@ -45,9 +37,7 @@ export const SideBar = () => {
               <NavLink
                 to="/admin/dash"
                 className={({ isActive }) =>
-                  isActive
-                    ? "nav-link active bg-warning"
-                    : "nav-link text-white ms-1"
+                  isActive ? "nav-link active bg-warning" : "nav-link text-white ms-1"
                 }
               >
                 <DashIcon />
@@ -58,7 +48,7 @@ export const SideBar = () => {
               <NavLink
                 to="/admin/manage-products"
                 className={({ isActive }) =>
-                  isActive ? "nav-link active bg-warning" : "nav-link"
+                  isActive ? "nav-link active bg-warning" : "nav-link text-white"
                 }
               >
                 <GridIcon />
@@ -69,7 +59,7 @@ export const SideBar = () => {
               <NavLink
                 to="/admin/manage-orders"
                 className={({ isActive }) =>
-                  isActive ? "nav-link active bg-warning" : "nav-link"
+                  isActive ? "nav-link active bg-warning" : "nav-link text-white text-white"
                 }
               >
                 <TableIcon />
@@ -80,7 +70,7 @@ export const SideBar = () => {
               <NavLink
                 to="/admin/add-products"
                 className={({ isActive }) =>
-                  isActive ? "nav-link active bg-warning" : "nav-link"
+                  isActive ? "nav-link active bg-warning" : "nav-link text-white"
                 }
               >
                 <WareHouseIcon />
@@ -91,7 +81,7 @@ export const SideBar = () => {
               <NavLink
                 to="/admin/manage-users"
                 className={({ isActive }) =>
-                  isActive ? "nav-link active bg-warning" : "nav-link"
+                  isActive ? "nav-link active bg-warning" : "nav-link text-white"
                 }
               >
                 <UsersIcon />
@@ -102,11 +92,22 @@ export const SideBar = () => {
               <NavLink
                 to="/admin/manage-blogs"
                 className={({ isActive }) =>
-                  isActive ? "nav-link active bg-warning" : "nav-link"
+                  isActive ? "nav-link active bg-warning" : "nav-link text-white"
                 }
               >
                 <BlogIcon />
                 Blogs
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/admin/manage-offers"
+                className={({ isActive }) =>
+                  isActive ? "nav-link active bg-warning" : "nav-link text-white"
+                }
+              >
+                <BlogIcon />
+                Coupons
               </NavLink>
             </li>
           </ul>

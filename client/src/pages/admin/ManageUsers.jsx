@@ -28,9 +28,7 @@ const ManageUsers = () => {
 
       if (!res.ok) throw data;
       else {
-        setUsers((prev) =>
-          prev.map((user) => (user._id === data._id ? data : user))
-        );
+        setUsers((prev) => prev.map((user) => (user._id === data._id ? data : user)));
         //  users = users.map((user) => (user._id === data._id ? data : user));
       }
     } catch (err) {
@@ -39,12 +37,7 @@ const ManageUsers = () => {
   };
 
   const tbodyContent = users.map((user, index) => (
-    <UserTable
-      key={user._id}
-      data={{ ...user }}
-      blockHandler={blockHandler}
-      index={index}
-    />
+    <UserTable key={user._id} data={{ ...user }} blockHandler={blockHandler} index={index} />
   ));
 
   return (
@@ -52,7 +45,7 @@ const ManageUsers = () => {
       <Table responsive striped borderless hover style={style}>
         <thead>
           <tr className="border-bottom">
-          <th>#</th>
+            <th>#</th>
             <th>
               <span className="ms-2">Name</span>
               {/* Name */}
@@ -72,6 +65,7 @@ const ManageUsers = () => {
 };
 
 export default ManageUsers;
+
 export const fetchUsers = async ({ request, params }) => {
   console.log(request, params);
   const res = await fetch(ADMIN_ALLUSERS_URL, { credentials: "include" });

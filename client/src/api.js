@@ -50,6 +50,10 @@ export const PAYPAL_ORDER_API = `${USER_BASE_URL}/paypal/orders`;
 
 export const PAYPAL_CLIENT_TOKEN = `${USER_BASE_URL}/paypal/client-token`;
 
+export const NEWS_API = `${USER_BASE_URL}/news/`;
+
+export const USER_ORDER_API = `${USER_BASE_URL}/shop/ordersI`;
+
 //ADMIN_API
 
 export const ADMIN_LOGIN_URL = `${ADMIN_BASE_URL}/login`;
@@ -69,5 +73,7 @@ export const FETCH_PRODS_API = `${ADMIN_BASE_URL}/products?page=`; //           
 export const OUT_OF_STOCK_API = `${ADMIN_BASE_URL}/products/`; //                 /api/admin/products/:prodId
 
 export const UPDATE_STOCK_API = `${ADMIN_BASE_URL}/update-product/`;
+
+export const OFFERS_API = `${ADMIN_BASE_URL}/coupon`;
 
 // export const

@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom";
 
 import { Col, Container, Row } from "react-bootstrap";
 import { NewsCard } from "../components/UI/NewsCard";
+import { NEWS_API } from "../api";
 
 const News = () => {
   const data = useLoaderData();
@@ -12,10 +13,9 @@ const News = () => {
         <Container className="mt-5">
           <Row>
             {data?.map((newsContent) => (
-              <Col md={4} xs={6} >
+              <Col md={4} xs={6} key={Math.random()}>
                 <a
                   href={newsContent.link}
-                  key={Math.random()}
                   className="text-decoration-none text-black "
                   rel="noopener noreferrer"
                   target={"_blank"}
@@ -39,7 +39,7 @@ const News = () => {
 export default News;
 
 export const loader = async () => {
-  const res = await fetch("http://localhost:5000/api/users/news/");
+  const res = await fetch(NEWS_API);
   const data = await res.json();
   return data;
 };

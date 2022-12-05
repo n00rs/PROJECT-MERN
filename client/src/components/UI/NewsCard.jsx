@@ -3,7 +3,7 @@ import { Row, Card } from "react-bootstrap";
 
 export const NewsCard = ({ imgSrc, title, content, date }) => {
   return (
-    <Card className="mb-3">
+    <Card className="mb-3 a">
       <Row className="g-0">
         <Card.Img src={imgSrc} alt="cardImage" className="p-0" />
         <Card.Body>

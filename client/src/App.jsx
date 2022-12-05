@@ -34,6 +34,8 @@ import ViewProduct from "./pages/ViewProduct";
 import Cart from "./pages/Cart";
 import UserOrders from "./pages/UserOrders";
 import News, { loader as newsLoader } from "./pages/News";
+import ManageOffers from "./pages/admin/ManageOffers";
+import { actions as addCouponAction } from "./components/admin/AddCoupon";
 
 function App() {
   var console_head_style =
@@ -89,7 +91,7 @@ function App() {
             <Route path="orders" element={<UserOrders />} />
           </Route>
           <Route path="news" element={<News />} loader={newsLoader} />
-          
+
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>
 
@@ -106,6 +108,7 @@ function App() {
           <Route path="manage-products" element={<ManageProduct />} />
           <Route path="manage-blogs" element={<ManageBlogs />} />
           <Route path="manage-users" element={<ManageUsers />} loader={fetchUsers} />
+          <Route path="manage-offers" element={<ManageOffers />} action={addCouponAction} />
         </Route>
       </>
     )

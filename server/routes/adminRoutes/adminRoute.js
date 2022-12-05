@@ -19,6 +19,7 @@ const {
   updateOutOfStock,
   updateProduct,
   addCoupon,
+  fetchOffers,
   paypalDetails,
   razorpayPaymentDetails,
 } = require("../../controller/adminController");
@@ -53,5 +54,7 @@ router.get("/paypal/payment-details/:paymentId", paypalDetails);
 
 router.get("/razorpay/payment-details/:paymentId",razorpayPaymentDetails);
 // router.get("/protect", verifyAdmin, (req, res) => res.json("hi from protect"));
+
+router.get('/coupon',fetchOffers)
 
 module.exports = router;
