@@ -67,7 +67,10 @@ export const ShopLayout = () => {
               <NavLink to="/shop/products/women" className="nav-link">
                 WomMen
               </NavLink>
-
+              <NavLink to="/shop/orders" className="nav-link">
+                orders
+              </NavLink>
+              
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

@@ -371,7 +371,6 @@ const newOrder = async (req, res, next) => {
         break;
       case "PAYPAL":
         const currencyConverter = new CurrencyConverter("INR", "USD");
-        console.log(total);
         const amountInUsd = await currencyConverter.convert(total);
         const payPalorder = await Paypal.createOrder({
           orderId: newOrder._id,
@@ -449,6 +448,40 @@ const capturePayment = async (req, res, next) => {
   }
 };
 
+//METHOD GET
+//ROUTE /api/users/shop/orders
+const userOrders = async (req, res, next) => {
+  try {
+    const { userId } = req;
+    const limit = 10;
+    const pageNo = req.query.page || 0;
+    // const
+
+    const userOrders = await OrderModel.aggregate([
+      { $match: { userId: ObjectID(userId) } },
+      {
+        $facet: {
+          metaData: [
+            { $count: "total_docs" },
+            { $addFields: { totalPages: { $ceil: { $divide: ["$total_docs", limit] } } } },
+          ],
+          data: [
+            { $skip: pageNo * limit },
+            { $limit: limit },
+            { $sort: { createdAt: -1 } },
+            { $project: { __v: 0, userId: 0, updatedAt: 0 } },
+          ],
+        },
+      },
+    ]);
+    if (userOrders[0]?.data?.length > 0) res.status(200).json(userOrders[0]);
+    else throw { statusCode: 404, message: "no userOrders found" };
+    // res.status(200).json(userOrders);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   fetchProducts,
   fetchOneProd,
@@ -461,4 +494,5 @@ module.exports = {
   razorpayVerify,
   paypalClientToken,
   capturePayment,
+  userOrders,
 };

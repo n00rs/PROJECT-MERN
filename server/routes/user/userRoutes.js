@@ -25,6 +25,7 @@ const {
   razorpayVerify,
   paypalClientToken,
   capturePayment,
+  userOrders,
 } = require("../../controller/shopController");
 
 const {
@@ -34,6 +35,7 @@ const {
   addAddress,
 } = require("../../controller/userController");
 const Paypal = require("../../utils/paypal");
+const { techNews, fashionNews } = require("../../utils/scrap");
 
 router.post("/login", userLogin);
 
@@ -77,5 +79,15 @@ router.get("/paypal/client-token", verifyAccessToken, paypalClientToken);
 
 router.post("/paypal/orders/:orderId/capture", verifyAccessToken, capturePayment);
 
+router.get("/shop/orders", verifyAccessToken, userOrders);
 
-module.exports = router;
+router.get("/news", async (req, res, next) => {
+  try {
+    const arr = [...(await techNews()), ...(await fashionNews())];
+    res.status(200).json(arr);
+  } catch (err) {
+    next(err);
+  }
+});
+
+module.exports = router; 

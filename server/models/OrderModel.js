@@ -4,7 +4,8 @@ const randomNum = Math.random().toFixed(6).slice(-6);
 const orderSchema = new Schema(
   {
     userId: { type: Types.ObjectId, required: true, ref: "User" },
-    reciptNo: { type: String, default: `proMERN ${randomNum}` },
+
+    receiptNo: { type: String, default: `proMERN ${randomNum}` },
     shippingAddress: {
       name: { type: String, required: true },
       phone: { type: String, required: true },
@@ -36,5 +37,7 @@ const orderSchema = new Schema(
   },
   { timestamps: true }
 );
+
+orderSchema.index({ userId: 1, paymentMethod: 1, createdAt: 1 });
 
 module.exports = model("Order", orderSchema);

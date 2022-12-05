@@ -8,11 +8,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import Layout from "./components/UI/Layout";
 import { toast } from "react-toastify";
 import { DashBoard } from "./components/admin/DashBoard";
 import { fetchUsers } from "./pages/admin/ManageUsers";
 import { AdminLayout } from "./components/UI/AdminLayout";
-import Layout from "./components/UI/Layout";
 import { NewBlog } from "./components/user/blog/NewBlog";
 import { UserBlogs } from "./components/user/blog/UserBlogs";
 import { AddProduct } from "./pages/admin/AddProduct";
@@ -32,6 +32,8 @@ import { ShopLayout } from "./components/user/shop/ShopLayout";
 import { Category } from "./components/user/shop/Category";
 import ViewProduct from "./pages/ViewProduct";
 import Cart from "./pages/Cart";
+import UserOrders from "./pages/UserOrders";
+import News, { loader as newsLoader } from "./pages/News";
 
 function App() {
   var console_head_style =
@@ -84,8 +86,10 @@ function App() {
             <Route path="products/:category" element={<Category />} />
             <Route path="view-product/:prodId" element={<ViewProduct />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="orders" element={<UserOrders />} />
           </Route>
-
+          <Route path="news" element={<News />} loader={newsLoader} />
+          
           <Route path="/emailVerify/:token" element={<EmailRedirect />} />
         </Route>
 
