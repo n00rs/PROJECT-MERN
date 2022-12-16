@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
 import { useActionData, useNavigation } from "react-router-dom";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import { OFFERS_API } from "../../api";
 import { TrashIcon } from "../../assets/icons/TrashIcon";
 import AddCoupon from "../../components/admin/AddCoupon";
@@ -15,19 +16,17 @@ const style = {
 const ManageOffers = () => {
   const [offers, setOffers] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  // const {} = useActionData();
   const { state } = useNavigation();
-
-  console.log(state);
   let data = useActionData();
 
-  // if (data) {
-  //   update(data);
-  //   // setOffers(prev=>[...prev,data])
-  //   data = null;
-  //   // setShowForm(false)
-  // }
   console.log(data, "data");
+
+  useEffect(() => {
+    if (data) {
+      setOffers((prev) => [...prev, data]);
+      setShowForm(false);
+    }
+  }, [data]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,13 +44,20 @@ const ManageOffers = () => {
     fetchData();
   }, []);
 
-
-
   const deleteHandler = async (id) => {
     try {
-      const res = await fetch(OFFERS_API + "/" + id, { credentials: "include" });
+      const { isConfirmed } = await Swal.fire(
+        "are you sure ?",
+        "wanna remove this offer",
+        "warning"
+      );
+      if (!isConfirmed) return;
+      const res = await fetch(OFFERS_API + "/" + id, { method: "DELETE", credentials: "include" });
       const data = await res.json();
+      if (!res.ok) throw data;
+      setOffers((prev) => prev.filter((offer) => offer._id !== id));
       console.log(data);
+      toast.success(data.message);
     } catch (err) {
       console.error(err);
       toast.error("error in removing offer");
@@ -60,12 +66,6 @@ const ManageOffers = () => {
 
   const addCouponToggler = () => setShowForm((prev) => !prev);
 
-  // if (data) {
-  //   // setShowForm(false);
-  //    setOffers((prev) => [...prev, data]);
-  //   // data = null
-  // }
-
   return (
     <>
       <section>
@@ -73,7 +73,7 @@ const ManageOffers = () => {
           <div className="text-center">
             <Button onClick={addCouponToggler}>ADD OFFER</Button>
           </div>
-          <Table responsive striped hover style={style}>
+          <Table responsive striped hover style={style}>  
             <thead>
               <tr className="border-bottom">
                 <th>#</th>

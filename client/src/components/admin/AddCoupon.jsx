@@ -18,10 +18,21 @@ const AddCoupon = ({ toggle, show, submitting }) => {
             <BootForm.Control placeholder="code" type="number" name="maxDiscountPrice" />
           </FloatingLabel>
           <FloatingLabel className="mb-3" label="Max Discount Percent %">
-            <BootForm.Control placeholder="code" name="discountPercent" type="text" />
+            <BootForm.Control
+              placeholder="code"
+              name="discountPercent"
+              type="text"
+              pattern="[0-9]+(\.[0-9]{1,2})?%?"
+              title="This must be a number with up to 2 decimal places and/or % "
+            />
           </FloatingLabel>
           <FloatingLabel className="mb-3" label="minmum Purchase Amount &#8377;">
-            <BootForm.Control placeholder="code" name="minmumPurchaseAmount" type="number" />
+            <BootForm.Control
+              placeholder="code"
+              name="minmumPurchaseAmount"
+              type="number"
+              required
+            />
           </FloatingLabel>
           <FloatingLabel className="mb-3" label="validity">
             <BootForm.Control placeholder="code" type="date" name="expiryDate" required />
@@ -76,14 +87,16 @@ export const actions = async ({ request }) => {
     // return body;
     const res = await fetch(OFFERS_API, {
       method: "POST",
+      //   body: JSON.stringify(formData),
+      //   headers: { "Content-Type": "multipart/form-data" },
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
       credentials: "include",
     });
     const data = await res.json();
     if (!res.ok) throw data;
-    console.log(data);
-    return redirect("/admin/manage");
+    // console.log(data);
+    return data;
   } catch (err) {
     toast.error("error in  adding new offer");
   }

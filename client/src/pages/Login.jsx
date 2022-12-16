@@ -36,7 +36,7 @@ const Login = ({ onToggle }) => {
         const data = await res.json();
 
         if (!res.ok) throw data;
-        
+
         onToggle("");
         dispatch(setUser(data._id));
         toast(`welcome back ${data?.firstName}`);
@@ -48,7 +48,6 @@ const Login = ({ onToggle }) => {
 
   const adminLoginHandler = async () => {
     try {
-      console.log(config, "inside adminLogin Han");
       const res = await fetch(ADMIN_LOGIN_URL, config);
       const data = await res.json();
       if (!res.ok) throw data;

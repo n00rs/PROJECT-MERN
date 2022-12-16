@@ -1,5 +1,6 @@
 const BlogModel = require("../models/BlogModel");
 const CouponModel = require("../models/CouponModel");
+const OrderModel = require("../models/OrderModel");
 const ProductModel = require("../models/ProductModel");
 const UserModel = require("../models/UserModel");
 const Paypal = require("../utils/paypal");
@@ -170,8 +171,24 @@ const fetchOffers = async (req, res, next) => {
     const availableOffers = await CouponModel.find({ __v: 0 });
 
     if (availableOffers.length < 1) throw { statusCode: 400, message: "opps database error" };
-
     res.status(200).json(availableOffers);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD DELETE
+//ROUTE /api/admin/coupon
+const removeOffer = async (req, res, next) => {
+  try {
+    const { offerId } = req.params;
+    if (!offerId) throw { statusCode: 403, message: "please provide an id " };
+    const { deletedCount } = await CouponModel.deleteOne({ _id: offerId });
+    // console.log(removerOffer);
+    console.log(deletedCount);
+    if (deletedCount === 1)
+      res.status(200).json({ success: true, message: "offer has been removed" });
+    else throw { message: "error while removing coupon " };
   } catch (err) {
     next(err);
   }
@@ -190,6 +207,7 @@ const paypalDetails = async (req, res, next) => {
   }
 };
 
+//TODO =  make use of it in frontend
 const razorpayPaymentDetails = async (req, res, next) => {
   try {
     const { paymentId } = req.params;
@@ -197,6 +215,37 @@ const razorpayPaymentDetails = async (req, res, next) => {
     const paymentData = await fetchPayment(paymentId);
     if (!paymentData) throw { statusCode: 404, message: "cant access razorpay now" };
     res.status(200).json(paymentData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//METHOD GET
+//ROUTE /api/admin/orders
+const allOrders = async (req, res, next) => {
+  try {
+    const limit = 1;
+    const pageNo = req.query.page || 0;
+
+    const allOrders = await OrderModel.aggregate([
+      //later add match query
+      {
+        $facet: {
+          metaData: [
+            { $count: "total_docs" },
+            { $addFields: { totalPages: { $ceil: { $divide: ["$total_docs", limit] } } } },
+          ],
+          data: [
+            { $sort: { createdAt: -1 } },
+            { $skip: pageNo * limit },
+            { $limit: limit },
+            { $project: { __v: 0, userId: 0, updatedAt: 0 } },
+          ],
+        },
+      },
+    ]);
+    if (allOrders[0].data.length < 1) throw { statusCode: 404, message: "no more orders" };
+    res.status(200).json(allOrders);
   } catch (err) {
     next(err);
   }
@@ -211,4 +260,6 @@ module.exports = {
   paypalDetails,
   razorpayPaymentDetails,
   fetchOffers,
+  removeOffer,
+  allOrders,
 };

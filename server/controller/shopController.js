@@ -468,8 +468,8 @@ const userOrders = async (req, res, next) => {
           data: [
             { $skip: pageNo * limit },
             { $limit: limit },
-            { $sort: { createdAt: -1 } },
             { $project: { __v: 0, userId: 0, updatedAt: 0 } },
+            { $sort: { createdAt: -1 } },
           ],
         },
       },

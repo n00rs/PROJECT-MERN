@@ -13,10 +13,7 @@ class CurrencyConverter {
     const data = await res.json();
     if (!res.ok) throw new Error("converter api on leave please look up");
     // console.log(data);
-
-
     // console.log(this.convertFrom, this.convertTo);
-
     const from = data?.rates[this.convertFrom];
     const to = data?.rates[this.convertTo];
 

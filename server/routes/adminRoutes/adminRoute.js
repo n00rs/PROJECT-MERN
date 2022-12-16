@@ -22,6 +22,8 @@ const {
   fetchOffers,
   paypalDetails,
   razorpayPaymentDetails,
+  removeOffer,
+  allOrders,
 } = require("../../controller/adminController");
 
 //ROUTES
@@ -48,13 +50,18 @@ router.put("/products/:prodId", verifyAdmin, updateOutOfStock);
 
 router.post("/update-product/:prodId", verifyAdmin, updateProduct);
 
+router.get("/coupon", verifyAdmin, fetchOffers);
+
 router.post("/coupon", verifyAdmin, addCoupon);
 
+router.delete("/coupon/:offerId", verifyAdmin, removeOffer);
+
+router.get("/orders", verifyAdmin, allOrders);
+
+//not called
 router.get("/paypal/payment-details/:paymentId", paypalDetails);
+router.get("/razorpay/payment-details/:paymentId", razorpayPaymentDetails);
 
-router.get("/razorpay/payment-details/:paymentId",razorpayPaymentDetails);
 // router.get("/protect", verifyAdmin, (req, res) => res.json("hi from protect"));
-
-router.get('/coupon',fetchOffers)
 
 module.exports = router;
