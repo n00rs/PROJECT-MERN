@@ -204,6 +204,7 @@ const search = async (req, res, next) => {
 
 const fetchEachBlog = async (req, res, next) => {
   try {
+    // const blogID = req.params.blogId
     const { blogId } = req.params;
 
     if (!blogId) throw { statusCode: 404, message: "please provide an id" };
@@ -215,6 +216,10 @@ const fetchEachBlog = async (req, res, next) => {
     next(err);
   }
 };
+
+async function featuredBlog (){
+
+} 
 
 //METHOD GET
 //ROUTE /api/users/blog/featured-blog

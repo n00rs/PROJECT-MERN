@@ -62,7 +62,7 @@ const Header = (onRouteChange) => {
           <Link to="#">Gallery</Link>
         </li>
         <li>
-          <Link to="#">Latest News</Link>
+          <Link to="/news">Latest News</Link>
         </li>
         <li>
           <Link to="/shop">Shop</Link>
